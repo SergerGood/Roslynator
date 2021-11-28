@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -63,18 +63,6 @@ namespace Roslynator
                     descriptor: descriptor,
                     location: location,
                     messageArgs: messageArgs));
-        }
-
-        public static void ReportDiagnostic(
-            SymbolAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            Location location,
-            AnalyzerOptionDescriptor obsoleteAnalyzerOption,
-            params object[] messageArgs)
-        {
-            ReportDiagnostic(context, descriptor, location, messageArgs);
-
-            ReportObsolete(context, location, obsoleteAnalyzerOption);
         }
 
         public static void ReportDiagnostic(
@@ -172,21 +160,6 @@ namespace Roslynator
         public static void ReportDiagnostic(
             SyntaxNodeAnalysisContext context,
             DiagnosticDescriptor descriptor,
-            SyntaxNode node,
-            AnalyzerOptionDescriptor obsoleteAnalyzerOption,
-            params object[] messageArgs)
-        {
-            ReportDiagnostic(
-                context: context,
-                descriptor: descriptor,
-                location: node.GetLocation(),
-                obsoleteAnalyzerOption,
-                messageArgs: messageArgs);
-        }
-
-        public static void ReportDiagnostic(
-            SyntaxNodeAnalysisContext context,
-            DiagnosticDescriptor descriptor,
             SyntaxToken token,
             params object[] messageArgs)
         {
@@ -228,18 +201,6 @@ namespace Roslynator
             SyntaxNodeAnalysisContext context,
             DiagnosticDescriptor descriptor,
             Location location,
-            AnalyzerOptionDescriptor obsoleteAnalyzerOption,
-            params object[] messageArgs)
-        {
-            ReportDiagnostic(context, descriptor, location, messageArgs);
-
-            ReportObsolete(context, location, obsoleteAnalyzerOption);
-        }
-
-        public static void ReportDiagnostic(
-            SyntaxNodeAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            Location location,
             IEnumerable<Location> additionalLocations,
             params object[] messageArgs)
         {
@@ -272,19 +233,6 @@ namespace Roslynator
             SyntaxNodeAnalysisContext context,
             DiagnosticDescriptor descriptor,
             Location location,
-            ImmutableDictionary<string, string> properties,
-            AnalyzerOptionDescriptor obsoleteAnalyzerOption,
-            params object[] messageArgs)
-        {
-            ReportDiagnostic(context, descriptor, location, properties, messageArgs);
-
-            ReportObsolete(context, location, obsoleteAnalyzerOption);
-        }
-
-        public static void ReportDiagnostic(
-            SyntaxNodeAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            Location location,
             IEnumerable<Location> additionalLocations,
             ImmutableDictionary<string, string> properties,
             params object[] messageArgs)
@@ -297,42 +245,6 @@ namespace Roslynator
                     additionalLocations: additionalLocations,
                     properties: properties,
                     messageArgs: messageArgs));
-        }
-
-        public static void ReportObsolete(
-            SyntaxNodeAnalysisContext context,
-            SyntaxNode node,
-            AnalyzerOptionDescriptor analyzerOption)
-        {
-            if (analyzerOption.Descriptor?.IsEffective(context.Compilation) == true)
-                ReportDiagnostic(context, CreateObsoleteDiagnostic(analyzerOption, node.GetLocation()));
-        }
-
-        public static void ReportObsolete(
-            SyntaxNodeAnalysisContext context,
-            Location location,
-            AnalyzerOptionDescriptor analyzerOption)
-        {
-            if (analyzerOption.Descriptor?.IsEffective(context.Compilation) == true)
-                ReportDiagnostic(context, CreateObsoleteDiagnostic(analyzerOption, location));
-        }
-
-        private static void ReportObsolete(
-            SymbolAnalysisContext context,
-            Location location,
-            AnalyzerOptionDescriptor analyzerOption)
-        {
-            if (analyzerOption.Descriptor?.IsEffective(context.Compilation) == true)
-                ReportDiagnostic(context, CreateObsoleteDiagnostic(analyzerOption, location));
-        }
-
-        private static Diagnostic CreateObsoleteDiagnostic(AnalyzerOptionDescriptor analyzerOption, Location location)
-        {
-            return Diagnostic.Create(
-                descriptor: CommonDiagnosticRules.AnalyzerIsObsolete,
-                location: location,
-                $"option '{analyzerOption.Descriptor.Id}'",
-                $" Use EditorConfig option '{analyzerOption.OptionKey} = true' instead.");
         }
 
         public static void ReportToken(SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, SyntaxToken token, params object[] messageArgs)

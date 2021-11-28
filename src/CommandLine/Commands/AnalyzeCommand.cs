@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -84,7 +84,7 @@ namespace Roslynator.CommandLine
             }
 
             return new AnalyzeCommandResult(
-                (results.Any(f => f.Diagnostics.Length > 0)) ? CommandStatus.Success : CommandStatus.NotSuccess,
+                (results.Any(f => f.Diagnostics.Length > 0)) ? CommandStatus.NotSuccess : CommandStatus.Success,
                 results);
         }
 

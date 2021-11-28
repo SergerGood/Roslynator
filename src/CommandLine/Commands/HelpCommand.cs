@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -32,14 +32,14 @@ namespace Roslynator.CommandLine
                     manual: Options.Manual,
                     includeValues: ConsoleOut.Verbosity > Verbosity.Normal,
                     filter: Filter);
+
+                return CommandStatus.Success;
             }
             catch (ArgumentException ex)
             {
                 WriteError(ex);
                 return CommandStatus.Fail;
             }
-
-            return CommandStatus.Success;
         }
 
         private static void WriteHelp(

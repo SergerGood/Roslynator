@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Analysis
             if (!SymbolUtility.IsAwaitable(typeSymbol))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddCallToConfigureAwaitOrViceVersa, awaitExpression.Expression, AnalyzerOptions.RemoveCallToConfigureAwait);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddCallToConfigureAwaitOrViceVersa, awaitExpression.Expression);
         }
 
         private static void RemoveCallToConfigureAwait(SyntaxNodeAnalysisContext context)
@@ -95,8 +95,7 @@ namespace Roslynator.CSharp.Analysis
                                 DiagnosticRules.ReportOnly.RemoveCallToConfigureAwait,
                                 Location.Create(
                                     awaitExpression.SyntaxTree,
-                                    TextSpan.FromBounds(invocationInfo.OperatorToken.SpanStart, expression.Span.End)),
-                                AnalyzerOptions.RemoveCallToConfigureAwait);
+                                    TextSpan.FromBounds(invocationInfo.OperatorToken.SpanStart, expression.Span.End)));
                         }
 
                         break;

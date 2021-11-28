@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -75,7 +75,7 @@ namespace Roslynator.CodeGeneration.CSharp
         {
             MethodDeclarationSyntax methodDeclaration = base.CreateVisitAbstractSyntaxMethodDeclaration(metadataName);
 
-            if (metadataName != MetadataNames.CodeAnalysis.Microsoft_CodeAnalysis_CSharp_Syntax_BaseTypeSyntax)
+            if (metadataName != RoslynMetadataNames.Microsoft_CodeAnalysis_CSharp_Syntax_BaseTypeSyntax)
             {
                 methodDeclaration = methodDeclaration.WithModifiers(Modifiers.Private());
             }

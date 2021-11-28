@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
@@ -43,7 +43,10 @@ namespace Roslynator.CSharp.Analysis
 
             ExpressionSyntax value = initializer?.Value?.WalkDownParentheses();
 
-            if (value?.IsKind(SyntaxKind.SuppressNullableWarningExpression) != false)
+            if (value == null)
+                return;
+
+            if (!CanBeConstantValue(value))
                 return;
 
             if (initializer.SpanOrLeadingTriviaContainsDirectives())
@@ -61,6 +64,26 @@ namespace Roslynator.CSharp.Analysis
                 return;
 
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantAutoPropertyInitialization, value);
+        }
+
+        private static bool CanBeConstantValue(ExpressionSyntax value)
+        {
+            if (value is CastExpressionSyntax castExpression)
+                value = castExpression.Expression.WalkDownParentheses();
+
+            switch (value.Kind())
+            {
+                case SyntaxKind.NullLiteralExpression:
+                case SyntaxKind.NumericLiteralExpression:
+                case SyntaxKind.TrueLiteralExpression:
+                case SyntaxKind.FalseLiteralExpression:
+                case SyntaxKind.CharacterLiteralExpression:
+                case SyntaxKind.DefaultLiteralExpression:
+                case SyntaxKind.DefaultExpression:
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 }

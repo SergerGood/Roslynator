@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using Microsoft.CodeAnalysis;
 
@@ -27,10 +27,9 @@ namespace Roslynator
             Document document,
             SyntaxTree syntaxTree)
         {
-            return analyzerOption.Parent.IsEffective(syntaxTree, document.Project.CompilationOptions)
+            return analyzerOption.Descriptor.IsEffective(syntaxTree, document.Project.CompilationOptions)
                 && analyzerOption.IsEnabled(
                     syntaxTree,
-                    document.Project.CompilationOptions,
                     document.Project.AnalyzerOptions);
         }
 

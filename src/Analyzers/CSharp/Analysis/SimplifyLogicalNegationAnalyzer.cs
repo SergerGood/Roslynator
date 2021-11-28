@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
@@ -90,6 +90,22 @@ namespace Roslynator.CSharp.Analysis
                         {
                             ReportDiagnostic();
                         }
+
+                        break;
+                    }
+                case SyntaxKind.IsPatternExpression:
+                    {
+                        if (((CSharpParseOptions)expression.SyntaxTree.Options).LanguageVersion >= LanguageVersion.CSharp9)
+                        {
+                            var isPatternExpression = (IsPatternExpressionSyntax)expression;
+
+                            if (isPatternExpression.Pattern is ConstantPatternSyntax constantPattern
+                                && constantPattern.Expression.IsKind(SyntaxKind.NullLiteralExpression))
+                            {
+                                ReportDiagnostic();
+                            }
+                        }
+
 
                         break;
                     }

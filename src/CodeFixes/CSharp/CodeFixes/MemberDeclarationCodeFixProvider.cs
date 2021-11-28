@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using System.Composition;
@@ -186,13 +186,14 @@ namespace Roslynator.CSharp.CodeFixes
                             {
                                 case SyntaxKind.MethodDeclaration:
                                     {
-                                        if (memberDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
+                                        if (memberDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
                                             node = memberDeclaration.Parent;
 
                                         break;
                                     }
                                 case SyntaxKind.ClassDeclaration:
                                 case SyntaxKind.StructDeclaration:
+                                case SyntaxKind.RecordStructDeclaration:
                                 case SyntaxKind.InterfaceDeclaration:
                                 case SyntaxKind.RecordDeclaration:
                                     {

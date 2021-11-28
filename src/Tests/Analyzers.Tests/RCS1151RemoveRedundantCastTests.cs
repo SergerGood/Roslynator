@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -407,7 +407,7 @@ class B : C
 ");
         }
 
-        //TODO: Add test for default interface implementation (RCS1151)
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
         internal async Task TestNoDiagnostic_DefaultInterfaceImplementation()
         {
             await VerifyNoDiagnosticAsync(@"

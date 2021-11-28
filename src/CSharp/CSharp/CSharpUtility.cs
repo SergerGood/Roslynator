@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -304,6 +304,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.ClassDeclaration:
                     return ((ClassDeclarationSyntax)node).Identifier;
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return ((StructDeclarationSyntax)node).Identifier;
                 case SyntaxKind.InterfaceDeclaration:
                     return ((InterfaceDeclarationSyntax)node).Identifier;
@@ -395,6 +396,7 @@ namespace Roslynator.CSharp
                     case SyntaxKind.NamespaceDeclaration:
                     case SyntaxKind.ClassDeclaration:
                     case SyntaxKind.StructDeclaration:
+                    case SyntaxKind.RecordStructDeclaration:
                     case SyntaxKind.InterfaceDeclaration:
                     case SyntaxKind.RecordDeclaration:
                     case SyntaxKind.EnumDeclaration:
@@ -430,6 +432,7 @@ namespace Roslynator.CSharp
                             {
                                 case SyntaxKind.Argument:
                                 case SyntaxKind.ArgumentList:
+                                case SyntaxKind.BracketedArgumentList:
                                 case SyntaxKind.EqualsValueClause:
                                 case SyntaxKind.Interpolation:
                                 case SyntaxKind.VariableDeclaration:
@@ -742,6 +745,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.InterfaceDeclaration:
                     return ((InterfaceDeclarationSyntax)declaration).TypeParameterList;
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return ((StructDeclarationSyntax)declaration).TypeParameterList;
                 case SyntaxKind.MethodDeclaration:
                     return ((MethodDeclarationSyntax)declaration).TypeParameterList;

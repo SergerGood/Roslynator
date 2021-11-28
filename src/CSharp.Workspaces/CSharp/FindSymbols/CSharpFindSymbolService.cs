@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using System.Composition;
@@ -38,6 +38,7 @@ namespace Roslynator.CSharp.FindSymbols
                         case SyntaxKind.PropertyDeclaration:
                         case SyntaxKind.RecordDeclaration:
                         case SyntaxKind.StructDeclaration:
+                        case SyntaxKind.RecordStructDeclaration:
                         case SyntaxKind.TypeParameter:
                         case SyntaxKind.UsingDirective:
                         case SyntaxKind.VariableDeclarator:

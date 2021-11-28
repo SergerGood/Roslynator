@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
@@ -74,12 +74,23 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
 
             foreach (VariableDeclaratorSyntax declarator in localInfo.Variables)
             {
-                if (!HasConstantValue(declarator.Initializer?.Value, typeSymbol, context.SemanticModel, context.CancellationToken))
+                ExpressionSyntax value = declarator.Initializer?.Value?.WalkDownParentheses();
+
+                if (value?.IsMissing != false)
+                    return;
+
+                if (!HasConstantValue(value, typeSymbol, context.SemanticModel, context.CancellationToken))
                     return;
             }
 
             if (!CanBeMarkedAsConst(localInfo.Variables, statements, index + 1))
                 return;
+
+            if (((CSharpParseOptions)context.Node.SyntaxTree.Options).LanguageVersion <= LanguageVersion.CSharp9
+                && ContainsInterpolatedString(localInfo.Variables))
+            {
+                return;
+            }
 
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.MarkLocalVariableAsConst, localInfo.Type);
         }
@@ -118,9 +129,6 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default)
         {
-            if (expression?.IsMissing != false)
-                return false;
-
             switch (typeSymbol.SpecialType)
             {
                 case SpecialType.System_Boolean:
@@ -132,7 +140,7 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
                     }
                 case SpecialType.System_Char:
                     {
-                        if (expression.Kind() == SyntaxKind.CharacterLiteralExpression)
+                        if (expression.IsKind(SyntaxKind.CharacterLiteralExpression))
                             return true;
 
                         break;
@@ -149,21 +157,47 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
                 case SpecialType.System_Single:
                 case SpecialType.System_Double:
                     {
-                        if (expression.Kind() == SyntaxKind.NumericLiteralExpression)
+                        if (expression.IsKind(SyntaxKind.NumericLiteralExpression))
                             return true;
 
                         break;
                     }
                 case SpecialType.System_String:
                     {
-                        if (expression.Kind() == SyntaxKind.StringLiteralExpression)
-                            return true;
+                        switch (expression.Kind())
+                        {
+                            case SyntaxKind.StringLiteralExpression:
+                                return true;
+                            case SyntaxKind.InterpolatedStringExpression:
+                                return false;
+                        }
 
                         break;
                     }
             }
 
             return semanticModel.HasConstantValue(expression, cancellationToken);
+        }
+
+        private static bool ContainsInterpolatedString(SeparatedSyntaxList<VariableDeclaratorSyntax> variables)
+        {
+            foreach (VariableDeclaratorSyntax declarator in variables)
+            {
+                ExpressionSyntax value = declarator.Initializer.Value.WalkDownParentheses();
+
+                if (value is not LiteralExpressionSyntax)
+                {
+                    foreach (SyntaxNode node in value.DescendantNodes())
+                    {
+                        if (node.IsKind(SyntaxKind.InterpolatedStringExpression))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

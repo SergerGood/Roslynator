@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Spelling
 
             static SyntaxWalkerDepth GetWalkerDepth(SpellingAnalysisContext context)
             {
-                if ((context.Options.ScopeFilter & (SpellingScopeFilter.DocumentationComment | SpellingScopeFilter.RegionDirective)) != 0)
+                if ((context.Options.ScopeFilter & (SpellingScopeFilter.DocumentationComment | SpellingScopeFilter.Region)) != 0)
                     return SyntaxWalkerDepth.StructuredTrivia;
 
                 if ((context.Options.ScopeFilter & SpellingScopeFilter.NonDocumentationComment) != 0)
@@ -76,14 +76,14 @@ namespace Roslynator.CSharp.Spelling
                 case SyntaxKind.RegionDirectiveTrivia:
                 case SyntaxKind.EndRegionDirectiveTrivia:
                     {
-                        if (ShouldVisit(SpellingScopeFilter.RegionDirective))
+                        if (ShouldVisit(SpellingScopeFilter.Region))
                             base.VisitTrivia(trivia);
 
                         break;
                     }
                 case SyntaxKind.PreprocessingMessageTrivia:
                     {
-                        Debug.Assert(ShouldVisit(SpellingScopeFilter.RegionDirective));
+                        Debug.Assert(ShouldVisit(SpellingScopeFilter.Region));
 
                         AnalyzeText(trivia.ToString(), trivia.SyntaxTree, trivia.Span);
                         break;
@@ -161,6 +161,7 @@ namespace Roslynator.CSharp.Spelling
                         break;
                     }
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     {
                         if (ShouldVisit(SpellingScopeFilter.Struct))
                             base.VisitTupleType(node);
@@ -558,6 +559,31 @@ namespace Roslynator.CSharp.Spelling
             _stack.Push(node);
             base.VisitIndexerDeclaration(node);
             _stack.Pop();
+        }
+
+        public override void VisitLiteralExpression(LiteralExpressionSyntax node)
+        {
+            if (node.IsKind(SyntaxKind.StringLiteralExpression)
+                && ShouldVisit(SpellingScopeFilter.Literal))
+            {
+                SyntaxToken token = node.Token;
+
+                AnalyzeText(token.Text, node.SyntaxTree, token.Span);
+            }
+
+            base.VisitLiteralExpression(node);
+        }
+
+        public override void VisitInterpolatedStringText(InterpolatedStringTextSyntax node)
+        {
+            if (ShouldVisit(SpellingScopeFilter.Literal))
+            {
+                SyntaxToken token = node.TextToken;
+
+                AnalyzeText(token.Text, node.SyntaxTree, token.Span);
+            }
+
+            base.VisitInterpolatedStringText(node);
         }
 
         private bool ShouldVisit(SpellingScopeFilter filter)

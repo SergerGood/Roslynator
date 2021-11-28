@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections;
@@ -180,6 +180,7 @@ namespace Roslynator.CSharp.Syntax
                 case SyntaxKind.ClassDeclaration:
                 case SyntaxKind.RecordDeclaration:
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                 case SyntaxKind.InterfaceDeclaration:
                     {
                         var typeDeclaration = (TypeDeclarationSyntax)node;
@@ -239,6 +240,7 @@ namespace Roslynator.CSharp.Syntax
                         return new MemberDeclarationListInfo(declaration, declaration.Members);
                     }
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     {
                         var declaration = (StructDeclarationSyntax)Parent;
                         declaration = declaration.WithMembers(members);
@@ -291,6 +293,7 @@ namespace Roslynator.CSharp.Syntax
                         return new MemberDeclarationListInfo(declaration, declaration.Members);
                     }
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     {
                         var declaration = (StructDeclarationSyntax)Parent;
                         declaration = declaration.RemoveNode(node, options);
@@ -343,6 +346,7 @@ namespace Roslynator.CSharp.Syntax
                         return new MemberDeclarationListInfo(declaration, declaration.Members);
                     }
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     {
                         var declaration = (StructDeclarationSyntax)Parent;
                         declaration = declaration.ReplaceNode(oldNode, newNode);

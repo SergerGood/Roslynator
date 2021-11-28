@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -103,7 +103,7 @@ namespace Roslynator.Spelling
 
             ImmutableArray<SpellingFixResult>.Builder results = ImmutableArray.CreateBuilder<SpellingFixResult>();
 
-            bool commentsFixed = (Options.ScopeFilter & SpellingScopeFilter.NonSymbol) == 0;
+            bool nonSymbolsFixed = (Options.ScopeFilter & (SpellingScopeFilter.NonSymbol)) == 0;
 
             while (true)
             {
@@ -177,11 +177,11 @@ namespace Roslynator.Spelling
                     spellingDiagnostics.Add(spellingDiagnostic);
                 }
 
-                if (!commentsFixed)
+                if (!nonSymbolsFixed)
                 {
                     List<SpellingFixResult> commentResults = await FixCommentsAsync(project, spellingDiagnostics, cancellationToken).ConfigureAwait(false);
                     results.AddRange(commentResults);
-                    commentsFixed = true;
+                    nonSymbolsFixed = true;
                 }
 
                 if ((Options.ScopeFilter & SpellingScopeFilter.Symbol) == 0)
@@ -537,7 +537,7 @@ namespace Roslynator.Spelling
         {
             string containingValue = diagnostic.Parent;
 
-            if (Options.AutoFix
+            if (Options.Autofix
                 && containingValue != null
                 && SpellingData.Fixes.TryGetKey(containingValue, out string actualKey)
                 && string.Equals(containingValue, actualKey, StringComparison.Ordinal))
@@ -557,7 +557,7 @@ namespace Roslynator.Spelling
         {
             string value = diagnostic.Value;
 
-            if (Options.AutoFix)
+            if (Options.Autofix)
             {
                 TextCasing textCasing = TextUtility.GetTextCasing(value);
 

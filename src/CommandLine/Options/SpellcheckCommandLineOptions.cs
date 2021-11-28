@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using CommandLine;
@@ -33,7 +33,7 @@ namespace Roslynator.CommandLine
 
         [Option(
             longName: OptionNames.IgnoredScope,
-            HelpText = "Defines syntax that should not be analyzed. Allowed values are comment, type, member, local, parameter, non-symbol and symbol.",
+            HelpText = "Defines syntax that should not be analyzed. Allowed values are comment, type, member, local, parameter, literal, non-symbol and symbol.",
             MetaValue = "<SCOPE>")]
         public IEnumerable<string> IgnoredScope { get; set; }
 
@@ -60,10 +60,15 @@ namespace Roslynator.CommandLine
             HelpText = "Specifies minimal word length to be checked. Default value is 3.",
             MetaValue = "<NUM>")]
         public int MinWordLength { get; set; }
-
+#if DEBUG
+        [Option(
+            longName: OptionNames.NoAutofix,
+            HelpText = "Disable applying predefined fixes.")]
+        public bool NoAutofix { get; set; }
+#endif
         [Option(
             longName: OptionNames.Scope,
-            HelpText = "Defines syntax that should be analyzed. Allowed values are comment, type, member, local, parameter, non-symbol and symbol.",
+            HelpText = "Defines syntax that should be analyzed. Allowed values are comment, type, member, local, parameter, literal, non-symbol, symbol and all. Literals are not analyzed by default.",
             MetaValue = "<SCOPE>")]
         public IEnumerable<string> Scope { get; set; }
 

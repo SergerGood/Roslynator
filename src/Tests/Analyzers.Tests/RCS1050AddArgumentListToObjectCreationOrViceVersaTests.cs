@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -49,7 +49,7 @@ public class C
 {
     List<string> items = new List<string> { ""a"", ""b"", ""c"" };
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.RemoveArgumentListFromObjectCreation));
+", options: Options.EnableConfigOption(AnalyzerOptions.RemoveArgumentListFromObjectCreation.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddArgumentListToObjectCreationOrViceVersa)]
@@ -88,7 +88,7 @@ public class C
 {
     List<string> items = new List<string>();
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.RemoveArgumentListFromObjectCreation));
+", options: Options.EnableConfigOption(AnalyzerOptions.RemoveArgumentListFromObjectCreation.OptionKey));
         }
     }
 }

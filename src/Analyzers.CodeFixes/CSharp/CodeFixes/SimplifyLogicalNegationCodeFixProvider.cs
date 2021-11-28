@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using System.Composition;
@@ -102,6 +102,18 @@ namespace Roslynator.CSharp.CodeFixes
                         InvocationExpressionSyntax newNode = invocationExpression.ReplaceNode(logicalNot2, logicalNot2.Operand.WithTriviaFrom(logicalNot2));
 
                         return SyntaxRefactorings.ChangeInvokedMethodName(newNode, (memberAccessExpression.Name.Identifier.ValueText == "All") ? "Any" : "All");
+                    }
+                case SyntaxKind.IsPatternExpression:
+                    {
+                        var isPatternExpression = (IsPatternExpressionSyntax)expression;
+
+                        var pattern = (ConstantPatternSyntax)isPatternExpression.Pattern;
+
+                        UnaryPatternSyntax newPattern = NotPattern(pattern.WithoutTrivia()).WithTriviaFrom(pattern);
+
+                        return isPatternExpression.WithPattern(newPattern)
+                            .PrependToLeadingTrivia(logicalNot.GetLeadingTrivia())
+                            .AppendToTrailingTrivia(logicalNot.GetTrailingTrivia());
                     }
             }
 

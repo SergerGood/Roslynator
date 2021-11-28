@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
@@ -125,8 +125,7 @@ namespace Roslynator.CSharp.Analysis
                                             DiagnosticHelpers.ReportDiagnostic(
                                                 context,
                                                 DiagnosticRules.UseElementAccess,
-                                                Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)),
-                                                AnalyzerOptions.DoNotUseElementAccessWhenExpressionIsInvocation);
+                                                Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)));
                                         }
 
                                         OptimizeLinqMethodCallAnalysis.AnalyzeWhere(context, invocationInfo);
@@ -256,8 +255,7 @@ namespace Roslynator.CSharp.Analysis
                                         DiagnosticHelpers.ReportDiagnostic(
                                             context,
                                             DiagnosticRules.UseElementAccess,
-                                            Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)),
-                                            AnalyzerOptions.DoNotUseElementAccessWhenExpressionIsInvocation);
+                                            Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)));
                                     }
 
                                     break;

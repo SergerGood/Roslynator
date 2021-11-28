@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -81,7 +81,7 @@ class C
         string s = b ? ""true"" : ""false"";
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken));
+", options: Options.EnableConfigOption(AnalyzerOptions.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression)]
@@ -96,7 +96,7 @@ public class C
         string s = b ? ""true"" : ""false"";
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken));
+", options: Options.EnableConfigOption(AnalyzerOptions.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken.OptionKey));
         }
     }
 }

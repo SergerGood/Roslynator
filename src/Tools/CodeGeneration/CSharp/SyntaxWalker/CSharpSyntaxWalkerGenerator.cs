@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CodeGeneration.CSharp.CSharpFactory2;
-using static Roslynator.MetadataNames.CodeAnalysis;
+using static Roslynator.RoslynMetadataNames;
 using static Roslynator.CodeGeneration.CSharp.Symbols;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -72,6 +72,7 @@ namespace Roslynator.CodeGeneration.CSharp
 
             if (EliminateDefaultVisit)
             {
+                AddIfNotNull(CreateVisitAbstractSyntaxMethodDeclaration(Microsoft_CodeAnalysis_CSharp_Syntax_BaseExpressionColonSyntax));
                 AddIfNotNull(CreateVisitAbstractSyntaxMethodDeclaration(Microsoft_CodeAnalysis_CSharp_Syntax_BaseTypeSyntax));
                 AddIfNotNull(CreateVisitAbstractSyntaxMethodDeclaration(Microsoft_CodeAnalysis_CSharp_Syntax_CrefSyntax));
                 AddIfNotNull(CreateVisitAbstractSyntaxMethodDeclaration(Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax));
@@ -230,6 +231,8 @@ namespace Roslynator.CodeGeneration.CSharp
                     case "FunctionPointerCallingConventionListSyntax":
                     case "FunctionPointerUnmanagedCallingConventionSyntax":
                     case "FunctionPointerUnmanagedCallingConventionListSyntax":
+                    case "LineDirectivePositionSyntax":
+                    case "BaseExpressionColonSyntax":
                         {
                             if (UseCustomVisitMethod)
                             {
@@ -453,6 +456,7 @@ namespace Roslynator.CodeGeneration.CSharp
                     case "VariableDesignationSyntax":
                     case "XmlAttributeSyntax":
                     case "XmlNodeSyntax":
+                    case "BaseExpressionColonSyntax":
                         {
                             if (typeSymbol
                                 .ContainingNamespace

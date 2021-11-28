@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -3209,6 +3209,7 @@ namespace Roslynator.CSharp
                     case SyntaxKind.ReturnStatement:
                     case SyntaxKind.SetAccessorDeclaration:
                     case SyntaxKind.StructDeclaration:
+                    case SyntaxKind.RecordStructDeclaration:
                     case SyntaxKind.SwitchStatement:
                     case SyntaxKind.ThrowStatement:
                     case SyntaxKind.TryStatement:
@@ -3256,6 +3257,8 @@ namespace Roslynator.CSharp
                     case SyntaxKind.SimpleAssignmentExpression:
                     case SyntaxKind.SimpleMemberAccessExpression:
                     case SyntaxKind.SubtractAssignmentExpression:
+                    case SyntaxKind.SwitchExpression:
+                    case SyntaxKind.SwitchExpressionArm:
                     case SyntaxKind.VariableDeclaration:
                     case SyntaxKind.VariableDeclarator:
                         {
@@ -4224,6 +4227,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.RecordDeclaration:
                     return ((RecordDeclarationSyntax)typeDeclaration).WithMembers(newMembers);
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return ((StructDeclarationSyntax)typeDeclaration).WithMembers(newMembers);
                 case SyntaxKind.InterfaceDeclaration:
                     return ((InterfaceDeclarationSyntax)typeDeclaration).WithMembers(newMembers);

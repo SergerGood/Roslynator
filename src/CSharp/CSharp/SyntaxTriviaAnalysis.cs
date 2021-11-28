@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -409,6 +409,10 @@ namespace Roslynator.CSharp
 
                                         break;
                                     }
+                                case GlobalStatementSyntax:
+                                    {
+                                        break;
+                                    }
                                 default:
                                     {
                                         return 0;
@@ -431,9 +435,7 @@ namespace Roslynator.CSharp
 
             int DetermineIndentationSize(CompilationUnitSyntax compilationUnit)
             {
-                MemberDeclarationSyntax member = compilationUnit.Members.FirstOrDefault();
-
-                if (member != null)
+                foreach (MemberDeclarationSyntax member in compilationUnit.Members)
                 {
                     if (member is NamespaceDeclarationSyntax namespaceDeclaration)
                     {

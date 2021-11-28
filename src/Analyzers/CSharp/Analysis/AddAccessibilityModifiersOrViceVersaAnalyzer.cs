@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeOperatorDeclaration(f), SyntaxKind.OperatorDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzePropertyDeclaration(f), SyntaxKind.PropertyDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeStructDeclaration(f), SyntaxKind.StructDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeStructDeclaration(f), SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration);
         }
 
         private static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
@@ -194,8 +194,7 @@ namespace Roslynator.CSharp.Analysis
                     context,
                     DiagnosticRules.AddAccessibilityModifiersOrViceVersa,
                     location,
-                    Properties[accessibility],
-                    AnalyzerOptions.RemoveAccessibilityModifiers);
+                    Properties[accessibility]);
             }
             else if (AnalyzerOptions.RemoveAccessibilityModifiers.IsEnabled(context)
                 && !declaration.IsKind(SyntaxKind.OperatorDeclaration, SyntaxKind.ConversionOperatorDeclaration))
@@ -211,8 +210,7 @@ namespace Roslynator.CSharp.Analysis
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
                     DiagnosticRules.ReportOnly.RemoveAccessibilityModifiers,
-                    Location.Create(declaration.SyntaxTree, TextSpan.FromBounds(first.SpanStart, last.Span.End)),
-                    AnalyzerOptions.RemoveAccessibilityModifiers);
+                    Location.Create(declaration.SyntaxTree, TextSpan.FromBounds(first.SpanStart, last.Span.End)));
             }
         }
 

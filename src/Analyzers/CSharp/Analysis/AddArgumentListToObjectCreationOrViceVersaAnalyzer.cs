@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
@@ -53,8 +53,7 @@ namespace Roslynator.CSharp.Analysis
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
                         DiagnosticRules.AddArgumentListToObjectCreationOrViceVersa,
-                        Location.Create(objectCreationExpression.SyntaxTree, span),
-                        AnalyzerOptions.RemoveArgumentListFromObjectCreation);
+                        Location.Create(objectCreationExpression.SyntaxTree, span));
                 }
             }
             else if (!argumentList.Arguments.Any()
@@ -71,8 +70,7 @@ namespace Roslynator.CSharp.Analysis
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
                         DiagnosticRules.ReportOnly.RemoveArgumentListFromObjectCreation,
-                        argumentList,
-                        AnalyzerOptions.RemoveArgumentListFromObjectCreation);
+                        argumentList);
                 }
             }
         }

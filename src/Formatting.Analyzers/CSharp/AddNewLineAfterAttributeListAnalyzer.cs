@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
@@ -30,22 +30,26 @@ namespace Roslynator.Formatting.CSharp
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeBaseTypeDeclaration(f), SyntaxKind.ClassDeclaration);
+            context.RegisterSyntaxNodeAction(
+                f => AnalyzeBaseTypeDeclaration(f),
+                SyntaxKind.ClassDeclaration,
+                SyntaxKind.EnumDeclaration,
+                SyntaxKind.InterfaceDeclaration,
+                SyntaxKind.StructDeclaration,
+                SyntaxKind.RecordStructDeclaration);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeBaseMethodDeclaration(f), SyntaxKind.ConstructorDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeBaseMethodDeclaration(f), SyntaxKind.ConversionOperatorDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeDelegateDeclaration(f), SyntaxKind.DelegateDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeBaseMethodDeclaration(f), SyntaxKind.DestructorDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeBaseTypeDeclaration(f), SyntaxKind.EnumDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeEnumMemberDeclaration(f), SyntaxKind.EnumMemberDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeBasePropertyDeclaration(f), SyntaxKind.EventDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeBaseFieldDeclaration(f), SyntaxKind.EventFieldDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeBaseFieldDeclaration(f), SyntaxKind.FieldDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeBasePropertyDeclaration(f), SyntaxKind.IndexerDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeBaseTypeDeclaration(f), SyntaxKind.InterfaceDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeBaseMethodDeclaration(f), SyntaxKind.MethodDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeBaseMethodDeclaration(f), SyntaxKind.OperatorDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeBasePropertyDeclaration(f), SyntaxKind.PropertyDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeBaseTypeDeclaration(f), SyntaxKind.StructDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeAccessorDeclaration(f), SyntaxKind.GetAccessorDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeAccessorDeclaration(f), SyntaxKind.SetAccessorDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeAccessorDeclaration(f), SyntaxKind.InitAccessorDeclaration);

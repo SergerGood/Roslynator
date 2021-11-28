@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 namespace Roslynator.CommandLine
 {
@@ -28,6 +28,7 @@ namespace Roslynator.CommandLine
         public const string MSBuildPath = "msbuild-path";
         public const string NewName = "new-name";
         public const string NewNameFrom = "new-name-from";
+        public const string NoAutofix = "no-autofix";
         public const string OmitMemberParts = "omit-member-parts";
         public const string OnError = "on-error";
         public const string Projects = "projects";

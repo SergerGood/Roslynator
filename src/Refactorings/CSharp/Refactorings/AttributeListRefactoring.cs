@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsAnyRefactoringEnabled(
                 RefactoringIdentifiers.SplitAttributes,
                 RefactoringIdentifiers.MergeAttributes)
-                && !member.IsKind(SyntaxKind.NamespaceDeclaration)
+                && !member.IsKind(SyntaxKind.NamespaceDeclaration, SyntaxKind.FileScopedNamespaceDeclaration)
                 && SyntaxListSelection<AttributeListSyntax>.TryCreate(member.GetAttributeLists(), context.Span, out SyntaxListSelection<AttributeListSyntax> selectedAttributeLists))
             {
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitAttributes)
@@ -112,6 +112,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.RecordDeclaration:
                     return ((RecordDeclarationSyntax)node).AttributeLists;
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return ((StructDeclarationSyntax)node).AttributeLists;
                 case SyntaxKind.PropertyDeclaration:
                     return ((PropertyDeclarationSyntax)node).AttributeLists;
@@ -172,6 +173,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.RecordDeclaration:
                     return ((RecordDeclarationSyntax)node).WithAttributeLists(attributeLists);
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return ((StructDeclarationSyntax)node).WithAttributeLists(attributeLists);
                 case SyntaxKind.PropertyDeclaration:
                     return ((PropertyDeclarationSyntax)node).WithAttributeLists(attributeLists);

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
@@ -115,6 +115,53 @@ class C
                 }
 
             case null:
+                {
+                    break;
+                }
+        }
+
+        return 0;
+    }
+}
+", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToSwitch)]
+        public async Task Test_NotPattern()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    int M()
+    {
+        object x = null;
+
+        [||]if (x is string s)
+        {
+            return 1;
+        }
+        else if (x is not null)
+        {
+        }
+
+        return 0;
+    }
+}
+", @"
+class C
+{
+    int M()
+    {
+        object x = null;
+
+        switch (x)
+        {
+            case string s:
+                {
+                    return 1;
+                }
+
+            case not null:
                 {
                     break;
                 }

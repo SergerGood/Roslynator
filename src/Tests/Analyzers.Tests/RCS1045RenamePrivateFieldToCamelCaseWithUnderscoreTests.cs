@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -104,7 +104,7 @@ class C
 {
     private static readonly string f;
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.DoNotRenamePrivateStaticFieldToCamelCaseWithUnderscore));
+", options: Options.EnableConfigOption(AnalyzerOptions.DoNotRenamePrivateStaticFieldToCamelCaseWithUnderscore.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RenamePrivateFieldToCamelCaseWithUnderscore)]

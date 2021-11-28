@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -33,6 +33,7 @@ namespace Roslynator.CSharp.Documentation
                 case SyntaxKind.ClassDeclaration:
                     return Generate((ClassDeclarationSyntax)memberDeclaration, settings);
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return Generate((StructDeclarationSyntax)memberDeclaration, settings);
                 case SyntaxKind.InterfaceDeclaration:
                     return Generate((InterfaceDeclarationSyntax)memberDeclaration, settings);
@@ -634,6 +635,7 @@ namespace Roslynator.CSharp.Documentation
                 case SyntaxKind.RecordDeclaration:
                     return ((RecordDeclarationSyntax)parent).BaseList?.Types.Any() == true;
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return ((StructDeclarationSyntax)parent).BaseList?.Types.Any() == true;
             }
 

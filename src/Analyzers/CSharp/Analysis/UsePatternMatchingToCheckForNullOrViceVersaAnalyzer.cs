@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
@@ -73,7 +73,6 @@ namespace Roslynator.CSharp.Analysis
                     context,
                     DiagnosticRules.UsePatternMatchingToCheckForNullOrViceVersa,
                     binaryExpression,
-                    AnalyzerOptions.UseComparisonInsteadPatternMatchingToCheckForNull,
                     "==");
             }
         }
@@ -93,7 +92,6 @@ namespace Roslynator.CSharp.Analysis
                     context,
                     DiagnosticRules.UsePatternMatchingToCheckForNullOrViceVersa,
                     binaryExpression,
-                    AnalyzerOptions.UseComparisonInsteadPatternMatchingToCheckForNull,
                     "!=");
             }
         }
@@ -111,8 +109,7 @@ namespace Roslynator.CSharp.Analysis
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
                     DiagnosticRules.ReportOnly.UseComparisonInsteadPatternMatchingToCheckForNull,
-                    isPatternExpression,
-                    AnalyzerOptions.UseComparisonInsteadPatternMatchingToCheckForNull);
+                    isPatternExpression);
             }
         }
     }

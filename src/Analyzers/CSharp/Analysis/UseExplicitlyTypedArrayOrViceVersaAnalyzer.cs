@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
@@ -101,9 +101,6 @@ namespace Roslynator.CSharp.Analysis
                 context,
                 DiagnosticRules.UseExplicitlyTypedArrayOrViceVersa,
                 location);
-
-            DiagnosticHelpers.ReportObsolete(context, location, AnalyzerOptions.UseImplicitlyTypedArray);
-            DiagnosticHelpers.ReportObsolete(context, location, AnalyzerOptions.UseImplicitlyTypedArrayWhenTypeIsObvious);
         }
 
         private static void AnalyzeArrayCreationExpression(SyntaxNodeAnalysisContext context)
@@ -145,9 +142,6 @@ namespace Roslynator.CSharp.Analysis
                 context,
                 DiagnosticRules.ReportOnly.UseImplicitlyTypedArray,
                 location);
-
-            DiagnosticHelpers.ReportObsolete(context, location, AnalyzerOptions.UseImplicitlyTypedArray);
-            DiagnosticHelpers.ReportObsolete(context, location, AnalyzerOptions.UseImplicitlyTypedArrayWhenTypeIsObvious);
         }
     }
 }

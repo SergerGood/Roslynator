@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Diagnostics;
@@ -188,7 +188,7 @@ namespace Roslynator.CSharp
                 if (declaration == null)
                     throw new ArgumentNullException(nameof(declaration));
 
-                return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
+                return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
                     ? Accessibility.Private
                     : Accessibility.Internal;
             }
@@ -198,7 +198,7 @@ namespace Roslynator.CSharp
                 if (declaration == null)
                     throw new ArgumentNullException(nameof(declaration));
 
-                return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
+                return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
                     ? Accessibility.Private
                     : Accessibility.Internal;
             }
@@ -327,7 +327,7 @@ namespace Roslynator.CSharp
                 if (declaration == null)
                     throw new ArgumentNullException(nameof(declaration));
 
-                return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
+                return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
                     ? Accessibility.Private
                     : Accessibility.Internal;
             }
@@ -337,7 +337,7 @@ namespace Roslynator.CSharp
                 if (declaration == null)
                     throw new ArgumentNullException(nameof(declaration));
 
-                return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
+                return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
                     ? Accessibility.Private
                     : Accessibility.Internal;
             }

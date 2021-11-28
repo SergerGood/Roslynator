@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -489,6 +489,36 @@ class C
         const double x = 1;
 
         if (x < 1d) { }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLogicalNegation)]
+        public async Task Test_IsNotNullPattern()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        string x = null;
+
+        if (
+            [|!(x is null)|] //x
+        ) { }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        string x = null;
+
+        if (
+            x is not null //x
+        ) { }
     }
 }
 ");

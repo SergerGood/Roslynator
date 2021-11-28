@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -396,6 +396,35 @@ class C
     void M()
     {
         string[] x = { null };
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        public async Task Test_ImplicitObjectCreationInitializer()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    string P { get; set; }
+
+    C M()
+    {
+        return new()
+        [|{
+            P = null
+        }|];
+    }
+}
+", @"
+class C
+{
+    string P { get; set; }
+
+    C M()
+    {
+        return new() { P = null };
     }
 }
 ");

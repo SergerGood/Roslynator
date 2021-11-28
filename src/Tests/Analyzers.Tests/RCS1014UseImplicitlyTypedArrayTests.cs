@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CSharpTestOptions Options
         {
-            get { return base.Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.UseImplicitlyTypedArray); }
+            get { return base.Options.EnableConfigOption(AnalyzerOptions.UseImplicitlyTypedArray.OptionKey); }
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa)]
@@ -84,7 +84,7 @@ class C
         var x = new[] { """" };
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.UseImplicitlyTypedArrayWhenTypeIsObvious));
+", options: Options.EnableConfigOption(AnalyzerOptions.UseImplicitlyTypedArrayWhenTypeIsObvious.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa)]
@@ -130,7 +130,7 @@ class A
 class B : A
 {
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.UseImplicitlyTypedArrayWhenTypeIsObvious));
+", options: Options.EnableConfigOption(AnalyzerOptions.UseImplicitlyTypedArrayWhenTypeIsObvious.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa)]
@@ -172,7 +172,7 @@ class C
 
     string M2() => null;
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.UseImplicitlyTypedArrayWhenTypeIsObvious));
+", options: Options.EnableConfigOption(AnalyzerOptions.UseImplicitlyTypedArrayWhenTypeIsObvious.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa)]

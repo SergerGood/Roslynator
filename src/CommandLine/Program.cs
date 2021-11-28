@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -638,8 +638,14 @@ namespace Roslynator.CommandLine
 
         private static async Task<int> SpellcheckAsync(SpellcheckCommandLineOptions options)
         {
-            if (!TryParseOptionValueAsEnumFlags(options.Scope, OptionNames.Scope, out SpellingScopeFilter scopeFilter, SpellingScopeFilter.All))
+            if (!TryParseOptionValueAsEnumFlags(
+                options.Scope,
+                OptionNames.Scope,
+                out SpellingScopeFilter scopeFilter,
+                SpellingScopeFilter.Comment | SpellingScopeFilter.Region | SpellingScopeFilter.Symbol))
+            {
                 return ExitCodes.Error;
+            }
 
             if (!TryParseOptionValueAsEnumFlags(options.IgnoredScope, OptionNames.IgnoredScope, out SpellingScopeFilter ignoredScopeFilter, SpellingScopeFilter.None))
                 return ExitCodes.Error;

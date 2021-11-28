@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Concurrent;
@@ -47,7 +47,7 @@ namespace Roslynator.CommandLine
                 formattedDocuments = await FormatSolutionAsync(solution, options, cancellationToken);
             }
 
-            return new FormatCommandResult((formattedDocuments.Length > 0) ? CommandStatus.Success : CommandStatus.NotSuccess, formattedDocuments.Length);
+            return new FormatCommandResult((formattedDocuments.Length > 0) ? CommandStatus.NotSuccess : CommandStatus.Success, formattedDocuments.Length);
         }
 
         private async Task<ImmutableArray<DocumentId>> FormatSolutionAsync(Solution solution, CodeFormatterOptions options, CancellationToken cancellationToken)

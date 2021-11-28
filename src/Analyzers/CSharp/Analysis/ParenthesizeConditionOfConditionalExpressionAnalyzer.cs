@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
@@ -56,14 +56,14 @@ namespace Roslynator.CSharp.Analysis
                     if (!expression.IsMissing
                         && CSharpFacts.IsSingleTokenExpression(expression.Kind()))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken, condition, AnalyzerOptions.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken, condition);
                     }
                 }
             }
             else if (!CSharpFacts.IsSingleTokenExpression(kind)
                 || !AnalyzerOptions.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken.IsEnabled(context))
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ParenthesizeConditionOfConditionalExpression, condition, AnalyzerOptions.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ParenthesizeConditionOfConditionalExpression, condition);
             }
         }
     }

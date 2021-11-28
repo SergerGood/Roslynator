@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 
@@ -11,8 +11,7 @@ namespace Roslynator.Spelling
         DocumentationComment = 1,
         NonDocumentationComment = 1 << 1,
         Comment = DocumentationComment | NonDocumentationComment,
-        RegionDirective = 1 << 2,
-        NonSymbol = Comment | RegionDirective,
+        Region = 1 << 2,
         Namespace = 1 << 3,
         Class = 1 << 4,
         Struct = 1 << 5,
@@ -36,6 +35,8 @@ namespace Roslynator.Spelling
         UsingAlias = 1 << 20,
         ReturnType = 1 << 21,
         Symbol = Namespace | Type | Member | Local | Parameter | TypeParameter | UsingAlias | ReturnType,
+        Literal = 1 << 22,
+        NonSymbol = Comment | Region | Literal,
         All = Symbol | NonSymbol,
     }
 }

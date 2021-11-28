@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -83,8 +83,7 @@ namespace Roslynator.Formatting.CSharp
                                 context,
                                 DiagnosticRules.ReportOnly.RemoveEmptyLineBetweenSingleLineAccessors,
                                 Location.Create(context.Node.SyntaxTree, leadingTrivia[0].Span.WithLength(0)),
-                                properties: DiagnosticProperties.AnalyzerOption_Invert,
-                                AnalyzerOptions.RemoveEmptyLineBetweenSingleLineAccessors);
+                                properties: DiagnosticProperties.AnalyzerOption_Invert);
                         }
                     }
                     else if (!AnalyzerOptions.RemoveEmptyLineBetweenSingleLineAccessors.IsEnabled(context))
@@ -92,8 +91,7 @@ namespace Roslynator.Formatting.CSharp
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
                             DiagnosticRules.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa,
-                            Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)),
-                            AnalyzerOptions.RemoveEmptyLineBetweenSingleLineAccessors);
+                            Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)));
                     }
                 }
             }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -211,7 +211,7 @@ namespace Roslynator.CommandLine
                 WriteSummary(assemblies, SymbolFilterOptions, Verbosity.Normal);
 #endif
 
-            return (assemblies.Any()) ? CommandResults.Success : CommandResults.NotSuccess;
+            return CommandResults.Success;
         }
 
 #if DEBUG

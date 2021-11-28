@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -59,6 +59,9 @@ namespace Roslynator.CommandLine
                 minWordLength: Options.MinWordLength,
                 maxWordLength: Options.MaxWordLength,
                 includeGeneratedCode: Options.IncludeGeneratedCode,
+#if DEBUG
+                autofix: !Options.NoAutofix,
+#endif
                 interactive: Options.Interactive,
                 dryRun: Options.DryRun);
 
@@ -203,11 +206,18 @@ namespace Roslynator.CommandLine
                     WriteMatchingLines(grouping, comparer, ConsoleColors.Green);
             }
 
-            WriteResults(results, SpellingFixKind.Predefined, "Auto fixes:", comparer, isDetailed);
-            WriteResults(results, SpellingFixKind.User, "User-applied fixes:", comparer, isDetailed);
+            bool any1 = WriteResults(results, SpellingFixKind.Predefined, "Auto fixes:", comparer, isDetailed);
+            bool any2 = WriteResults(results, SpellingFixKind.User, "User-applied fixes:", comparer, isDetailed);
+
+            if (!isFirst
+                && !any1
+                && !any2)
+            {
+                WriteLine(Verbosity.Normal);
+            }
         }
 
-        private static void WriteResults(
+        private static bool WriteResults(
             ImmutableArray<SpellingFixResult> results,
             SpellingFixKind kind,
             string heading,
@@ -234,6 +244,8 @@ namespace Roslynator.CommandLine
                 if (isDetailed)
                     WriteMatchingLines(grouping, comparer, ConsoleColors.Cyan);
             }
+
+            return !isFirst;
         }
 
         private static void WriteMatchingLines(

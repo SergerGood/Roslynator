@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -695,6 +695,81 @@ class C
     int I() => 0;
 }
 ", options: WellKnownCSharpTestOptions.Default_CSharp7_3);
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
+        public async Task Test_OverrideEqualsOperator()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    C _m;
+
+    C M()
+    {
+        [|if (_m == null)
+            _m = I();
+
+        return _m;|]
+    }
+
+    C I() => new C();
+
+    public static bool operator ==(C x, C y)
+    {
+        return true;
+    }
+
+    public static bool operator !=(C x, C y) => !(x == y);
+}
+", @"
+class C
+{
+    C _m;
+
+    C M()
+    {
+        return _m ??= I();
+    }
+
+    C I() => new C();
+
+    public static bool operator ==(C x, C y)
+    {
+        return true;
+    }
+
+    public static bool operator !=(C x, C y) => !(x == y);
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
+        public async Task TestNoDiagnostic_OverrideEqualsOperator()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    C _m;
+
+    C M()
+    {
+        if (_m == null)
+            _m = I();
+
+        return _m;
+    }
+
+    C I() => new C();
+
+    public static bool operator ==(C x, string y)
+    {
+        return true;
+    }
+
+    public static bool operator !=(C x, string y) => !(x == y);
+}
+");
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]

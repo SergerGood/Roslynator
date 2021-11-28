@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -52,9 +52,7 @@ namespace Roslynator.CommandLine
                 codeMetrics = CodeMetricsInfo.Create(codeMetricsByProject.Values);
             }
 
-            return new LinesOfCodeCommandResult(
-                (codeMetrics.TotalLineCount > 0) ? CommandStatus.Success : CommandStatus.NotSuccess,
-                codeMetrics);
+            return new LinesOfCodeCommandResult(CommandStatus.Success, codeMetrics);
         }
 
         private static async Task<CodeMetricsInfo> CountLogicalLinesAsync(Project project, ICodeMetricsService service, CodeMetricsOptions options, CancellationToken cancellationToken)

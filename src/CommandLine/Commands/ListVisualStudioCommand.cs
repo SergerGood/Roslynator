@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using Microsoft.Build.Locator;
@@ -30,7 +30,7 @@ namespace Roslynator.CommandLine
             WriteLine(Verbosity.Minimal);
             WriteLine($"{count} Visual Studio {((count == 1) ? "installation" : "installations")} found", ConsoleColors.Green, Verbosity.Minimal);
 
-            return (count > 0) ? CommandStatus.Success : CommandStatus.NotSuccess;
+            return CommandStatus.Success;
         }
     }
 }

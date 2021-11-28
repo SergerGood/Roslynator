@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
@@ -105,6 +105,21 @@ namespace Roslynator.CSharp.Analysis
 
             if (!nullCheck.Success)
                 return;
+
+            if (nullCheck.Style == NullCheckStyles.EqualsToNull)
+            {
+                ISymbol equalsOperatorSymbol = semanticModel.GetSymbol(nullCheck.NullCheckExpression, cancellationToken);
+
+                if (!equalsOperatorSymbol.IsErrorType()
+                    && equalsOperatorSymbol.ContainingType.SpecialType != SpecialType.System_Object
+                    && equalsOperatorSymbol is IMethodSymbol methodSymbol)
+                {
+                    ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+
+                    if (!SymbolEqualityComparer.IncludeNullability.Equals(parameters[0].Type, parameters[1].Type))
+                        return;
+                }
+            }
 
             ExpressionSyntax expression = nullCheck.Expression;
 

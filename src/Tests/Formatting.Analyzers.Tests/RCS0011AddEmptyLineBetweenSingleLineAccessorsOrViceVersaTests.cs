@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -67,7 +67,7 @@ class C
         set { _p = value; }
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.RemoveEmptyLineBetweenSingleLineAccessors));
+", options: Options.EnableConfigOption(AnalyzerOptions.RemoveEmptyLineBetweenSingleLineAccessors.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa)]
@@ -97,7 +97,7 @@ class C
         set { _p = value; }
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.RemoveEmptyLineBetweenSingleLineAccessors));
+", options: Options.EnableConfigOption(AnalyzerOptions.RemoveEmptyLineBetweenSingleLineAccessors.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa)]
@@ -126,7 +126,7 @@ class C
         remove { }
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.RemoveEmptyLineBetweenSingleLineAccessors));
+", options: Options.EnableConfigOption(AnalyzerOptions.RemoveEmptyLineBetweenSingleLineAccessors.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa)]

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -120,8 +120,6 @@ namespace Roslynator.CommandLine
 
             WriteLine($"Generate documentation to '{Options.Output}'", Verbosity.Minimal);
 
-            var success = false;
-
             foreach (DocumentationGeneratorResult documentationFile in generator.Generate(heading: Options.Heading, cancellationToken))
             {
                 string path = Path.Combine(directoryPath, documentationFile.FilePath);
@@ -131,13 +129,11 @@ namespace Roslynator.CommandLine
                 WriteLine($"  Save '{path}'", ConsoleColors.DarkGray, Verbosity.Detailed);
 
                 File.WriteAllText(path, documentationFile.Content, _defaultEncoding);
-
-                success = true;
             }
 
             WriteLine($"Documentation successfully generated to '{Options.Output}'.", Verbosity.Minimal);
 
-            return (success) ? CommandResults.Success : CommandResults.NotSuccess;
+            return CommandResults.Success;
         }
     }
 }

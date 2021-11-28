@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -81,9 +81,11 @@ namespace Roslynator.CSharp.Spelling
 
             if (token.IsKind(
                 SyntaxKind.IdentifierToken,
-                SyntaxKind.XmlTextLiteralToken))
+                SyntaxKind.XmlTextLiteralToken,
+                SyntaxKind.StringLiteralToken,
+                SyntaxKind.InterpolatedStringTextToken))
             {
-                Debug.Assert(value == token.ToString().Substring(span.Start - token.SpanStart, span.Length), value);
+                Debug.Assert(value == token.Text.Substring(span.Start - token.SpanStart, span.Length), value);
 
                 return new CSharpSpellingDiagnostic(
                     diagnostic,

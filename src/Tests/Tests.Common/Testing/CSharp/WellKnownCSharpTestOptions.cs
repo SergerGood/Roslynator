@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -13,6 +13,7 @@ namespace Roslynator.Testing.CSharp
         private static CSharpTestOptions _default_CSharp7;
         private static CSharpTestOptions _default_CSharp7_3;
         private static CSharpTestOptions _default_CSharp8;
+        private static CSharpTestOptions _default_CSharp9;
         private static CSharpTestOptions _default_NullableReferenceTypes;
 
         public static CSharpTestOptions Default_CSharp5
@@ -77,6 +78,19 @@ namespace Roslynator.Testing.CSharp
                 return _default_CSharp8;
 
                 static CSharpTestOptions Create() => DefaultCSharpTestOptions.Value.WithParseOptions(DefaultCSharpTestOptions.Value.ParseOptions.WithLanguageVersion(LanguageVersion.CSharp8));
+            }
+        }
+
+        public static CSharpTestOptions Default_CSharp9
+        {
+            get
+            {
+                if (_default_CSharp9 == null)
+                    Interlocked.CompareExchange(ref _default_CSharp9, Create(), null);
+
+                return _default_CSharp9;
+
+                static CSharpTestOptions Create() => DefaultCSharpTestOptions.Value.WithParseOptions(DefaultCSharpTestOptions.Value.ParseOptions.WithLanguageVersion(LanguageVersion.CSharp9));
             }
         }
 
