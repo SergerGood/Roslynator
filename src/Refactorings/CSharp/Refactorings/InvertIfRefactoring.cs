@@ -87,7 +87,7 @@ namespace Roslynator.CSharp.Refactorings
             IfStatementSyntax newIfStatement = ifStatement.Update(
                 ifKeyword: ifStatement.IfKeyword,
                 openParenToken: ifStatement.OpenParenToken,
-                condition: SyntaxInverter.LogicallyInvert(ifStatement.Condition, semanticModel, cancellationToken),
+                condition: SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(ifStatement.Condition, semanticModel, cancellationToken),
                 closeParenToken: ifStatement.CloseParenToken,
                 statement: whenFalse.WithTriviaFrom(whenTrue),
                 @else: elseClause.WithStatement(whenTrue.WithTriviaFrom(whenFalse)));
@@ -204,7 +204,7 @@ namespace Roslynator.CSharp.Refactorings
                 IfStatementSyntax newIfStatement = ifStatement.Update(
                     ifKeyword: ifStatement.IfKeyword,
                     openParenToken: ifStatement.OpenParenToken,
-                    condition: SyntaxInverter.LogicallyInvert(ifStatement.Condition, semanticModel, cancellationToken),
+                    condition: SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(ifStatement.Condition, semanticModel, cancellationToken),
                     closeParenToken: ifStatement.CloseParenToken,
                     statement: newStatement,
                     @else: elseClause);
@@ -343,7 +343,7 @@ namespace Roslynator.CSharp.Refactorings
 
             public InvertIfAnalysis AnalyzeNextStatement()
             {
-                if (!(NextStatement is IfStatementSyntax ifStatement))
+                if (NextStatement is not IfStatementSyntax ifStatement)
                     return default;
 
                 SimpleIfStatementInfo simpleIf = SyntaxInfo.SimpleIfStatementInfo(ifStatement);

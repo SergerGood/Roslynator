@@ -34,6 +34,8 @@ namespace Roslynator.CSharp
                     return SupportsLanguageVersion(document, LanguageVersion.CSharp7_1);
                 case CSharpLanguageFeature.NullCoalescingAssignmentOperator:
                     return SupportsLanguageVersion(document, LanguageVersion.CSharp8);
+                case CSharpLanguageFeature.NotPattern:
+                    return SupportsLanguageVersion(document, LanguageVersion.CSharp9);
             }
 
             throw new ArgumentException($"Unknown enum value '{feature}'.", nameof(feature));
@@ -105,7 +107,6 @@ namespace Roslynator.CSharp
                         return document.ReplaceNodeAsync(classDeclaration, SyntaxRefactorings.RemoveMember(classDeclaration, member), cancellationToken);
                     }
                 case SyntaxKind.StructDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
                     {
                         var structDeclaration = (StructDeclarationSyntax)parent;
 
@@ -118,6 +119,7 @@ namespace Roslynator.CSharp
                         return document.ReplaceNodeAsync(interfaceDeclaration, SyntaxRefactorings.RemoveMember(interfaceDeclaration, member), cancellationToken);
                     }
                 case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     {
                         var recordDeclaration = (RecordDeclarationSyntax)parent;
 

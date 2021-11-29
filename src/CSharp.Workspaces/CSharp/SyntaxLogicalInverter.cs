@@ -9,20 +9,39 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
+#pragma warning disable RCS1223
+
 namespace Roslynator.CSharp
 {
-    [Obsolete("SyntaxInverter is obsolete, use SyntaxLogicalInverter instead.")]
     /// <summary>
     /// Provides static methods for syntax inversion.
     /// </summary>
-    public static class SyntaxInverter
+    public class SyntaxLogicalInverter
     {
+        public static SyntaxLogicalInverter Default { get; } = new SyntaxLogicalInverter(SyntaxLogicalInverterOptions.Default);
+
+        internal static SyntaxLogicalInverter CSharp8 { get; } = new SyntaxLogicalInverter(SyntaxLogicalInverterOptions.CSharp8);
+
+        public SyntaxLogicalInverter(SyntaxLogicalInverterOptions options)
+        {
+            Options = options ?? throw new ArgumentNullException(nameof(options));
+        }
+
+        public SyntaxLogicalInverterOptions Options { get; }
+
+        public static SyntaxLogicalInverter GetInstance(Document document)
+        {
+            return (document.SupportsLanguageFeature(CSharpLanguageFeature.NotPattern))
+                ? Default
+                : CSharp8;
+        }
+
         /// <summary>
         /// Returns new expression that represents logical inversion of the specified expression.
         /// </summary>
         /// <param name="expression"></param>
         /// <param name="cancellationToken"></param>
-        public static ExpressionSyntax LogicallyInvert(
+        public ExpressionSyntax LogicallyInvert(
             ExpressionSyntax expression,
             CancellationToken cancellationToken = default)
         {
@@ -35,7 +54,7 @@ namespace Roslynator.CSharp
         /// <param name="expression"></param>
         /// <param name="semanticModel"></param>
         /// <param name="cancellationToken"></param>
-        public static ExpressionSyntax LogicallyInvert(
+        public ExpressionSyntax LogicallyInvert(
             ExpressionSyntax expression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default)
@@ -48,7 +67,7 @@ namespace Roslynator.CSharp
             return newExpression.WithTriviaFrom(expression);
         }
 
-        private static ParenthesizedExpressionSyntax LogicallyInvertAndParenthesize(
+        private ParenthesizedExpressionSyntax LogicallyInvertAndParenthesize(
             ExpressionSyntax expression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -59,7 +78,7 @@ namespace Roslynator.CSharp
             return LogicallyInvertImpl(expression, semanticModel, cancellationToken).Parenthesize();
         }
 
-        private static ExpressionSyntax LogicallyInvertImpl(
+        private ExpressionSyntax LogicallyInvertImpl(
             ExpressionSyntax expression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -103,9 +122,14 @@ namespace Roslynator.CSharp
                     }
                 case SyntaxKind.IsExpression:
                 case SyntaxKind.AsExpression:
-                case SyntaxKind.IsPatternExpression:
                     {
                         return DefaultInvert(expression);
+                    }
+                case SyntaxKind.IsPatternExpression:
+                    {
+                        return (Options.UseNotPattern)
+                            ? InvertIsPattern((IsPatternExpressionSyntax)expression)
+                            : DefaultInvert(expression);
                     }
                 case SyntaxKind.EqualsExpression:
                 case SyntaxKind.NotEqualsExpression:
@@ -181,7 +205,7 @@ namespace Roslynator.CSharp
             return DefaultInvert(expression);
         }
 
-        private static ExpressionSyntax InvertLessThanOrGreaterThan(
+        private ExpressionSyntax InvertLessThanOrGreaterThan(
             BinaryExpressionSyntax binaryExpression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -224,7 +248,7 @@ namespace Roslynator.CSharp
             }
         }
 
-        private static ExpressionSyntax InvertLessThanGreaterThan(
+        private ExpressionSyntax InvertLessThanGreaterThan(
             BinaryExpressionSyntax binaryExpression,
             ExpressionSyntax expression,
             ExpressionSyntax otherExpression,
@@ -280,7 +304,7 @@ namespace Roslynator.CSharp
             return null;
         }
 
-        internal static BinaryExpressionSyntax InvertBinaryExpression(BinaryExpressionSyntax binaryExpression)
+        internal BinaryExpressionSyntax InvertBinaryExpression(BinaryExpressionSyntax binaryExpression)
         {
             SyntaxToken operatorToken = InvertBinaryOperatorToken(binaryExpression.OperatorToken);
 
@@ -325,7 +349,7 @@ namespace Roslynator.CSharp
             }
         }
 
-        private static BinaryExpressionSyntax InvertBinaryExpression(
+        private BinaryExpressionSyntax InvertBinaryExpression(
             BinaryExpressionSyntax binaryExpression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -379,7 +403,7 @@ namespace Roslynator.CSharp
             return kind;
         }
 
-        private static ConditionalExpressionSyntax InvertConditionalExpression(
+        private ConditionalExpressionSyntax InvertConditionalExpression(
             ConditionalExpressionSyntax conditionalExpression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -405,6 +429,51 @@ namespace Roslynator.CSharp
                 whenFalse);
 
             return newConditionalExpression.WithTriviaFrom(conditionalExpression);
+        }
+
+        private ExpressionSyntax InvertIsPattern(IsPatternExpressionSyntax isPattern)
+        {
+            PatternSyntax pattern = isPattern.Pattern;
+
+            if (pattern.IsKind(SyntaxKind.NotPattern))
+            {
+                var notPattern = (UnaryPatternSyntax)pattern;
+
+                pattern = notPattern.Pattern;
+
+                return isPattern.WithPattern(pattern.PrependToLeadingTrivia(notPattern.GetLeadingTrivia()));
+            }
+            else if (pattern is ConstantPatternSyntax constantPattern)
+            {
+                ExpressionSyntax constantExpression = constantPattern.Expression;
+
+                if (constantExpression.IsKind(SyntaxKind.TrueLiteralExpression))
+                {
+                    ConstantPatternSyntax newConstantPattern = ConstantPattern(FalseLiteralExpression()
+                        .WithTriviaFrom(constantExpression));
+
+                    return isPattern.WithPattern(newConstantPattern);
+                }
+                else if (constantExpression.IsKind(SyntaxKind.FalseLiteralExpression))
+                {
+                    ConstantPatternSyntax newConstantPattern = ConstantPattern(TrueLiteralExpression()
+                        .WithTriviaFrom(constantExpression));
+
+                    return isPattern.WithPattern(newConstantPattern);
+                }
+                else if (constantExpression.IsKind(SyntaxKind.NullLiteralExpression))
+                {
+                    UnaryPatternSyntax notPattern = NotPattern(constantPattern.WithoutTrivia()).WithTriviaFrom(constantPattern);
+
+                    return isPattern.WithPattern(notPattern);
+                }
+                else
+                {
+                    SyntaxDebug.Fail(constantExpression);
+                }
+            }
+
+            return DefaultInvert(isPattern);
         }
 
         private static PrefixUnaryExpressionSyntax DefaultInvert(ExpressionSyntax expression)
