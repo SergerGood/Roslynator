@@ -169,6 +169,7 @@ namespace Roslynator.CSharp.Analysis
                         AnalyzeExpression(context, objectCreation, coalesceExpression.Left);
                         break;
                     }
+#if DEBUG
                 case SyntaxKind.AnonymousObjectMemberDeclarator:
                 case SyntaxKind.Argument:
                 case SyntaxKind.AsExpression:
@@ -190,6 +191,7 @@ namespace Roslynator.CSharp.Analysis
                         Debug.Fail(parent.ToDebugString());
                         break;
                     }
+#endif
             }
         }
 
