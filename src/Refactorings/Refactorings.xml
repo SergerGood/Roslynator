@@ -864,10 +864,10 @@ return true;]]></After>
     </Syntaxes>
     <Span>else keyword</Span>
   </Refactoring>
-  <Refactoring Id="RR0100" Identifier="RemoveDirectiveAndRelatedDirectives" Title="Remove directive and related directives">
+  <Refactoring Id="RR0100" Identifier="RemovePreprocessorDirective" Title="Remove preprocessor directive">
     <Syntaxes>
-      <Syntax>preprocessor directive</Syntax>
-      <Syntax>region directive</Syntax>
+      <Syntax>#if directive</Syntax>
+      <Syntax>#region directive</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0101" Identifier="RemoveEmptyLines" Title="Remove empty lines">
@@ -1480,7 +1480,7 @@ i--;]]></After>
       <Syntax>selected lines</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0175" Identifier="WrapInRegion" Title="Wrap in region">
+  <Refactoring Id="RR0175" Identifier="WrapInRegion" Title="Wrap in #region directive">
     <Syntaxes>
       <Syntax>selected lines</Syntax>
     </Syntaxes>

@@ -108,10 +108,10 @@ namespace Roslynator.CodeAnalysis.CSharp
             if (parameters.Length != 2)
                 return;
 
-            if (!parameters[0].Type.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_SyntaxNode))
+            if (!parameters[0].Type.HasMetadataName(MetadataNames.Microsoft_CodeAnalysis_SyntaxNode))
                 return;
 
-            if (!parameters[1].Type.HasMetadataName(CSharpMetadataNames.Microsoft_CodeAnalysis_CSharp_SyntaxKind))
+            if (!parameters[1].Type.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_CSharp_SyntaxKind))
                 return;
 
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryConditionalAccess, conditionalAccess.OperatorToken);
