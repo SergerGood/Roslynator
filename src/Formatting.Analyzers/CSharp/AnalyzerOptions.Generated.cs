@@ -6,6 +6,7 @@ namespace Roslynator.Formatting.CSharp
 {
     public static partial class AnalyzerOptions
     {
+        internal static readonly AnalyzerOptionDescriptor PreferNewlineAtEndOfFile = new AnalyzerOptionDescriptor("roslynator.prefer_newline_at_end_of_file", DiagnosticRules.NormalizeEndOfFile);
         internal static readonly AnalyzerOptionDescriptor MaxLineLength = new AnalyzerOptionDescriptor("roslynator.max_line_length", DiagnosticRules.LineIsTooLong);
         internal static readonly AnalyzerOptionDescriptor RemoveEmptyLineBetweenSingleLineAccessors = new AnalyzerOptionDescriptor("roslynator.RCS0011.invert", DiagnosticRules.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa);
         internal static readonly AnalyzerOptionDescriptor RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace = new AnalyzerOptionDescriptor("roslynator.RCS0015.invert", DiagnosticRules.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa);
