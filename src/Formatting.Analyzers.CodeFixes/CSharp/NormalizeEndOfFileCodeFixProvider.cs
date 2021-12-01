@@ -12,9 +12,9 @@ using Roslynator.Formatting.CSharp;
 
 namespace Roslynator.Formatting.CodeFixes.CSharp
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(CompilationUnitCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(NormalizeEndOfFileCodeFixProvider))]
     [Shared]
-    public sealed class CompilationUnitCodeFixProvider : BaseCodeFixProvider
+    public sealed class NormalizeEndOfFileCodeFixProvider : BaseCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -36,7 +36,9 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                 case DiagnosticIdentifiers.NormalizeEndOfFile:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            "Normalize end of file",
+                            (AnalyzerOptions.PreferNewlineAtEndOfFile.IsEnabled(document, compilationUnit))
+                                ? CodeFixTitles.AddNewLine
+                                : CodeFixTitles.RemoveNewLine,
                             ct =>
                             {
                                 SyntaxToken endOfFile = compilationUnit.EndOfFileToken;
