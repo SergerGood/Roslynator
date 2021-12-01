@@ -2460,7 +2460,7 @@ namespace Roslynator.CSharp
             messageFormat:      "Use target-typed new expression.", 
             category:           DiagnosticCategories.Style, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
+            isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.UseTargetTypedNewExpression, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
