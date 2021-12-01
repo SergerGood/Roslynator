@@ -183,6 +183,7 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.SimpleLambdaExpression:
                 case SyntaxKind.SimpleMemberAccessExpression:
                 case SyntaxKind.ExpressionStatement:
+                case SyntaxKind.SwitchExpressionArm:
                     {
                         break;
                     }
