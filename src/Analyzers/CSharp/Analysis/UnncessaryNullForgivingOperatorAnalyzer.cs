@@ -33,50 +33,72 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeSuppressNullableWarningExpression(SyntaxNodeAnalysisContext context)
         {
-            var expression = (PostfixUnaryExpressionSyntax)context.Node;
+            var suppressExpression = (PostfixUnaryExpressionSyntax)context.Node;
 
-            ExpressionSyntax operand = expression.Operand.WalkDownParentheses();
+            SyntaxNode node = suppressExpression.WalkUpParentheses().Parent;
 
-            if (!operand.IsKind(
-                SyntaxKind.NullLiteralExpression,
-                SyntaxKind.DefaultLiteralExpression,
-                SyntaxKind.DefaultExpression))
+            SyntaxDebug.Assert(node.IsKind(SyntaxKind.Argument, SyntaxKind.EqualsValueClause), node);
+
+            if (node is ArgumentSyntax argument)
             {
-                return;
+                IParameterSymbol parameterSymbol = context.SemanticModel.DetermineParameter(
+                    argument,
+                    cancellationToken: context.CancellationToken);
+
+                if (parameterSymbol?.Type.IsErrorType() == false
+                    && parameterSymbol.Type.IsReferenceType)
+                {
+                    context.ReportDiagnostic(DiagnosticRules.UnnecessaryNullForgivingOperator, suppressExpression.OperatorToken);
+                }
             }
-
-            SyntaxNode parent = expression.Parent;
-
-            SyntaxDebug.Assert(parent.IsKind(SyntaxKind.EqualsValueClause), expression.Parent);
-
-            if (!parent.IsKind(SyntaxKind.EqualsValueClause))
-                return;
-
-            parent = parent.Parent;
-
-            if (parent.IsKind(SyntaxKind.PropertyDeclaration))
-            {
-                var property = (PropertyDeclarationSyntax)expression.Parent.Parent;
-
-                if (IsNullableReferenceType(context, property.Type))
-                    ReportDiagnostic(context, expression);
-            }
-            else
+            else if (node.IsKind(SyntaxKind.EqualsValueClause))
             {
                 SyntaxDebug.Assert(
-                    parent.IsKind(SyntaxKind.VariableDeclarator)
-                        && parent.IsParentKind(SyntaxKind.VariableDeclaration)
-                        && parent.Parent.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.LocalDeclarationStatement),
-                    parent);
+                    suppressExpression.Operand.WalkDownParentheses().IsKind(
+                        SyntaxKind.NullLiteralExpression,
+                        SyntaxKind.DefaultLiteralExpression,
+                        SyntaxKind.DefaultExpression),
+                    suppressExpression);
 
-                if (parent.IsKind(SyntaxKind.VariableDeclarator)
-                    && parent.IsParentKind(SyntaxKind.VariableDeclaration)
-                    && parent.Parent.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.LocalDeclarationStatement))
+                if (suppressExpression.Operand.WalkDownParentheses().IsKind(
+                    SyntaxKind.NullLiteralExpression,
+                    SyntaxKind.DefaultLiteralExpression,
+                    SyntaxKind.DefaultExpression))
                 {
-                    var variableDeclaration = (VariableDeclarationSyntax)parent.Parent;
+                    SyntaxNode parent = node.Parent;
 
-                    if (IsNullableReferenceType(context, variableDeclaration.Type))
-                        ReportDiagnostic(context, expression);
+                    if (parent.IsKind(SyntaxKind.PropertyDeclaration))
+                    {
+                        var property = (PropertyDeclarationSyntax)node.Parent;
+
+                        if (IsNullableReferenceType(context, property.Type))
+                            context.ReportDiagnostic(DiagnosticRules.UnnecessaryNullForgivingOperator, node);
+                    }
+                    else if (parent.IsKind(SyntaxKind.VariableDeclarator))
+                    {
+                        SyntaxDebug.Assert(
+                            parent.IsParentKind(SyntaxKind.VariableDeclaration)
+                                && parent.Parent.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.LocalDeclarationStatement),
+                            parent);
+
+                        if (parent.IsParentKind(SyntaxKind.VariableDeclaration)
+                            && parent.Parent.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.LocalDeclarationStatement))
+                        {
+                            var variableDeclaration = (VariableDeclarationSyntax)parent.Parent;
+
+                            if (IsNullableReferenceType(context, variableDeclaration.Type))
+                            {
+                                if (parent.Parent.IsParentKind(SyntaxKind.FieldDeclaration))
+                                {
+                                    context.ReportDiagnostic(DiagnosticRules.UnnecessaryNullForgivingOperator, node);
+                                }
+                                else
+                                {
+                                    context.ReportDiagnostic(DiagnosticRules.UnnecessaryNullForgivingOperator, suppressExpression.OperatorToken);
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
@@ -89,11 +111,6 @@ namespace Roslynator.CSharp.Analysis
 
                 return !typeSymbol.IsErrorType()
                     && typeSymbol.IsReferenceType;
-            }
-
-            static void ReportDiagnostic(SyntaxNodeAnalysisContext context, PostfixUnaryExpressionSyntax expression)
-            {
-                context.ReportDiagnostic(DiagnosticRules.UnnecessaryNullForgivingOperator, expression.OperatorToken);
             }
         }
     }

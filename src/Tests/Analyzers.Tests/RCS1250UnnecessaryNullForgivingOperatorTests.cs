@@ -20,14 +20,14 @@ namespace Roslynator.CSharp.Analysis.Tests
 
 class C
 {
-    string? P { get; set; } = null[|!|];
+    string? P { get; set; } [|= null!|]; //x
 }
 ", @"
 #nullable enable
 
 class C
 {
-    string? P { get; set; } = null;
+    string? P { get; set; } //x
 }
 ");
         }
@@ -40,14 +40,14 @@ class C
 
 class C
 {
-    string? P { get; set; } = default[|!|];
+    string? P { get; set; } [|= default!|];
 }
 ", @"
 #nullable enable
 
 class C
 {
-    string? P { get; set; } = default;
+    string? P { get; set; }
 }
 ");
         }
@@ -60,14 +60,14 @@ class C
 
 class C
 {
-    string? P { get; set; } = default(string)[|!|];
+    string? P { get; set; } [|= default(string)!|];
 }
 ", @"
 #nullable enable
 
 class C
 {
-    string? P { get; set; } = default(string);
+    string? P { get; set; }
 }
 ");
         }
@@ -80,14 +80,14 @@ class C
 
 class C
 {
-    private string? F = null[|!|];
+    private string? F [|= null!|]; //x
 }
 ", @"
 #nullable enable
 
 class C
 {
-    private string? F = null;
+    private string? F; //x
 }
 ");
         }
@@ -102,7 +102,7 @@ class C
 {
     void M()
     {
-        string? s = null[|!|];
+        string? s = null[|!|]; //x
     }
 }
 ", @"
@@ -112,7 +112,37 @@ class C
 {
     void M()
     {
+        string? s = null; //x
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
+        public async Task Test_Argument()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+#nullable enable
+
+class C
+{
+    void M(string? p)
+    {
         string? s = null;
+
+        M(s[|!|]);
+    }
+}
+", @"
+#nullable enable
+
+class C
+{
+    void M(string? p)
+    {
+        string? s = null;
+
+        M(s);
     }
 }
 ");
