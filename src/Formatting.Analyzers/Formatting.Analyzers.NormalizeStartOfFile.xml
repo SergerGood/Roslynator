@@ -5,7 +5,7 @@
     <Title>Normalize start of file.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
     <Summary>This analyzer enforces no newline at the start of file.</Summary>
   </Analyzer>
 </Analyzers>
