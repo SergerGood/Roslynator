@@ -37,8 +37,6 @@ namespace Roslynator.CSharp.Analysis
 
             ExpressionSyntax operand = expression.Operand.WalkDownParentheses();
 
-            SyntaxDebug.Assert(operand.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression, SyntaxKind.DefaultExpression), expression.Operand);
-
             if (!operand.IsKind(
                 SyntaxKind.NullLiteralExpression,
                 SyntaxKind.DefaultLiteralExpression,
