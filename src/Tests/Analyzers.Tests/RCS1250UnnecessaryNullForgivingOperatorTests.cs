@@ -147,5 +147,23 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
+        public async Task TestNoDiagnostic_Argument()
+        {
+            await VerifyNoDiagnosticAsync(@"
+#nullable enable
+
+class C
+{
+    void M(string p)
+    {
+        string? s = null;
+
+        M(s!);
+    }
+}
+");
+        }
     }
 }

@@ -37,8 +37,6 @@ namespace Roslynator.CSharp.Analysis
 
             SyntaxNode node = suppressExpression.WalkUpParentheses().Parent;
 
-            SyntaxDebug.Assert(node.IsKind(SyntaxKind.Argument, SyntaxKind.EqualsValueClause), node);
-
             if (node is ArgumentSyntax argument)
             {
                 IParameterSymbol parameterSymbol = context.SemanticModel.DetermineParameter(
@@ -46,7 +44,8 @@ namespace Roslynator.CSharp.Analysis
                     cancellationToken: context.CancellationToken);
 
                 if (parameterSymbol?.Type.IsErrorType() == false
-                    && parameterSymbol.Type.IsReferenceType)
+                    && parameterSymbol.Type.IsReferenceType
+                    && parameterSymbol.Type.NullableAnnotation == NullableAnnotation.Annotated)
                 {
                     context.ReportDiagnostic(DiagnosticRules.UnnecessaryNullForgivingOperator, suppressExpression.OperatorToken);
                 }
