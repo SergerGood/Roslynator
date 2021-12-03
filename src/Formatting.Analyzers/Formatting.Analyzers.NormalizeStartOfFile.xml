@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Analyzers>
+  <Analyzer Identifier="NormalizeStartOfFile">
+    <Id>RCS0057</Id>
+    <Title>Normalize start of file.</Title>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Summary>This analyzer enforces no newline at the start of file.</Summary>
+  </Analyzer>
+</Analyzers>

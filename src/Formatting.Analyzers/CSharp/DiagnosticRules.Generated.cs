@@ -597,6 +597,18 @@ namespace Roslynator.Formatting.CSharp
             helpLinkUri:        DiagnosticIdentifiers.LineIsTooLong, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS0057</summary>
+        public static readonly DiagnosticDescriptor NormalizeStartOfFile = DiagnosticDescriptorFactory.Default.Create(
+            id:                 DiagnosticIdentifiers.NormalizeStartOfFile, 
+            title:              "Normalize start of file.", 
+            messageFormat:      "Normalize start of file.", 
+            category:           DiagnosticCategories.Formatting, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.NormalizeStartOfFile, 
+            customTags:         Array.Empty<string>());
+
         public static partial class ReportOnly
         {
             /// <summary>RCS0011i</summary>
