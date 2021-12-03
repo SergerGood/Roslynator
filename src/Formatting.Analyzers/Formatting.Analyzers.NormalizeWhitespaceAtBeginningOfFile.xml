@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Analyzers>
-  <Analyzer Identifier="NormalizeStartOfFile">
+  <Analyzer Identifier="NormalizeWhitespaceAtBeginningOfFile">
     <Id>RCS0057</Id>
-    <Title>Normalize start of file.</Title>
+    <Title>Normalize whitespace at the beginning of a file.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
-    <Summary>This analyzer enforces no newline at the start of file.</Summary>
+    <Summary>This analyzer enforces no newline at the beginning of a file.</Summary>
   </Analyzer>
 </Analyzers>

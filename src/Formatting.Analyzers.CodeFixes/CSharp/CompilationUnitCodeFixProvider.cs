@@ -19,7 +19,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.NormalizeStartOfFile); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -34,10 +34,10 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.NormalizeStartOfFile:
+                case DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            "Normalize start of file",
+                            CodeFixTitles.RemoveNewLine,
                             ct =>
                             {
                                 SyntaxToken token = compilationUnit.EndOfFileToken;

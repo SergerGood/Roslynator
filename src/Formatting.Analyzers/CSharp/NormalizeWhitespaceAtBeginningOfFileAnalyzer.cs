@@ -13,7 +13,7 @@ namespace Roslynator.Formatting.CSharp
     //TODO: prefer_newline_before_using_directive,  prefer_newline_between_start_of_file_and_using_directive
     //TODO: prefer_newline_before_declaration, prefer_newline_between_start_of_file_and_declaration
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class NormalizeStartOfFileAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class NormalizeWhitespaceAtBeginningOfFileAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -22,7 +22,7 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.NormalizeStartOfFile);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.NormalizeWhitespaceAtBeginningOfFile);
 
                 return _supportedDiagnostics;
             }
@@ -66,7 +66,7 @@ namespace Roslynator.Formatting.CSharp
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticRules.NormalizeStartOfFile,
+                    DiagnosticRules.NormalizeWhitespaceAtBeginningOfFile,
                     Location.Create(token.SyntaxTree, new TextSpan(0, 0)));
             }
         }
