@@ -52,13 +52,6 @@ namespace Roslynator.CSharp.Analysis
             }
             else if (node.IsKind(SyntaxKind.EqualsValueClause))
             {
-                SyntaxDebug.Assert(
-                    suppressExpression.Operand.WalkDownParentheses().IsKind(
-                        SyntaxKind.NullLiteralExpression,
-                        SyntaxKind.DefaultLiteralExpression,
-                        SyntaxKind.DefaultExpression),
-                    suppressExpression);
-
                 if (suppressExpression.Operand.WalkDownParentheses().IsKind(
                     SyntaxKind.NullLiteralExpression,
                     SyntaxKind.DefaultLiteralExpression,
