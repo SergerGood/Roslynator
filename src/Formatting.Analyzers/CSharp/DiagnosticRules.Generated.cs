@@ -597,7 +597,7 @@ namespace Roslynator.Formatting.CSharp
             helpLinkUri:        DiagnosticIdentifiers.LineIsTooLong, 
             customTags:         Array.Empty<string>());
 
-        /// <summary>RCS0057</summary>
+        /// <summary>RCS0058</summary>
         public static readonly DiagnosticDescriptor NormalizeEndOfFile = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.NormalizeEndOfFile, 
             title:              "Normalize end of file.", 

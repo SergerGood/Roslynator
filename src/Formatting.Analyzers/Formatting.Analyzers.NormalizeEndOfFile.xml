@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Analyzers>
   <Analyzer Identifier="NormalizeEndOfFile">
-    <Id>RCS0057</Id>
+    <Id>RCS0058</Id>
     <Title>Normalize end of file.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>

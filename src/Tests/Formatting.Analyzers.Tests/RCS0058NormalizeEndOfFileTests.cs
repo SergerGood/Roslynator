@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RCS0057NormalizeEndOfFileTests : AbstractCSharpDiagnosticVerifier<NormalizeEndOfFileAnalyzer, NormalizeEndOfFileCodeFixProvider>
+    public class RCS0058NormalizeEndOfFileTests : AbstractCSharpDiagnosticVerifier<NormalizeEndOfFileAnalyzer, NormalizeEndOfFileCodeFixProvider>
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.NormalizeEndOfFile;
 
