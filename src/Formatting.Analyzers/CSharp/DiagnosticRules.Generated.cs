@@ -598,15 +598,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0058</summary>
-        public static readonly DiagnosticDescriptor NormalizeEndOfFile = DiagnosticDescriptorFactory.Default.Create(
-            id:                 DiagnosticIdentifiers.NormalizeEndOfFile, 
-            title:              "Normalize end of file.", 
-            messageFormat:      "Normalize end of file.", 
+        public static readonly DiagnosticDescriptor NormalizeWhitespaceAtEndOfFile = DiagnosticDescriptorFactory.Default.Create(
+            id:                 DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile, 
+            title:              "Normalize whitespace at the end of a file.", 
+            messageFormat:      "Normalize whitespace at the end of a file.", 
             category:           DiagnosticCategories.Formatting, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.NormalizeEndOfFile, 
+            helpLinkUri:        DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile, 
             customTags:         Array.Empty<string>());
 
         public static partial class ReportOnly

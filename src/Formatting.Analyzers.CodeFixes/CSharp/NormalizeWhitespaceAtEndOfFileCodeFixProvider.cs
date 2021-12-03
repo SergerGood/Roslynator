@@ -12,13 +12,13 @@ using Roslynator.Formatting.CSharp;
 
 namespace Roslynator.Formatting.CodeFixes.CSharp
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(NormalizeEndOfFileCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(NormalizeWhitespaceAtEndOfFileCodeFixProvider))]
     [Shared]
-    public sealed class NormalizeEndOfFileCodeFixProvider : BaseCodeFixProvider
+    public sealed class NormalizeWhitespaceAtEndOfFileCodeFixProvider : BaseCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.NormalizeEndOfFile); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -33,12 +33,12 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.NormalizeEndOfFile:
+                case DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            (AnalyzerOptions.PreferNewlineAtEndOfFile.IsEnabled(document, compilationUnit))
-                                ? CodeFixTitles.AddNewLine
-                                : CodeFixTitles.RemoveNewLine,
+                            (AnalyzerOptions.PreferNoNewlineAtEndOfFile.IsEnabled(document, compilationUnit))
+                                ? CodeFixTitles.RemoveNewLine
+                                : CodeFixTitles.AddNewLine,
                             ct =>
                             {
                                 SyntaxToken endOfFile = compilationUnit.EndOfFileToken;
@@ -46,59 +46,59 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                                 SyntaxToken oldToken;
                                 SyntaxToken newToken;
 
-                                if (AnalyzerOptions.PreferNewlineAtEndOfFile.IsEnabled(document, compilationUnit))
+                                if (AnalyzerOptions.PreferNoNewlineAtEndOfFile.IsEnabled(document, compilationUnit))
                                 {
                                     if (leading.Any())
                                     {
-                                        oldToken = endOfFile;
+                                        SyntaxTrivia last = leading.Last();
 
-                                        if (leading.Span.Start == 0
-                                            && leading.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                                        if (last.GetStructure() is DirectiveTriviaSyntax directive)
                                         {
-                                            newToken = oldToken.WithoutLeadingTrivia();
+                                            SyntaxTriviaList trailing = directive.GetTrailingTrivia();
+
+                                            DirectiveTriviaSyntax newDirective = directive.WithTrailingTrivia(trailing.RemoveAt(trailing.Count - 1));
+
+                                            return document.ReplaceNodeAsync(directive, newDirective, ct);
                                         }
                                         else
                                         {
-                                            newToken = oldToken.AppendEndOfLineToLeadingTrivia();
+                                            oldToken = endOfFile;
+                                            int index = leading.Count - 1;
+
+                                            for (int i = leading.Count - 2; i >= 0; i--)
+                                            {
+                                                if (leading[i].IsWhitespaceOrEndOfLineTrivia())
+                                                    index--;
+                                            }
+
+                                            newToken = oldToken.WithLeadingTrivia(leading.RemoveRange(index, leading.Count - index));
                                         }
                                     }
                                     else
                                     {
                                         oldToken = endOfFile.GetPreviousToken();
-                                        newToken = oldToken.AppendEndOfLineToTrailingTrivia();
+                                        SyntaxTriviaList trailing = oldToken.TrailingTrivia;
+                                        newToken = oldToken.WithTrailingTrivia(trailing.RemoveAt(trailing.Count - 1));
                                     }
                                 }
                                 else if (leading.Any())
                                 {
-                                    SyntaxTrivia last = leading.Last();
+                                    oldToken = endOfFile;
 
-                                    if (last.GetStructure() is DirectiveTriviaSyntax directive)
+                                    if (leading.Span.Start == 0
+                                        && leading.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                                     {
-                                        SyntaxTriviaList trailing = directive.GetTrailingTrivia();
-
-                                        DirectiveTriviaSyntax newDirective = directive.WithTrailingTrivia(trailing.RemoveAt(trailing.Count - 1));
-
-                                        return document.ReplaceNodeAsync(directive, newDirective, ct);
+                                        newToken = oldToken.WithoutLeadingTrivia();
                                     }
                                     else
                                     {
-                                        oldToken = endOfFile;
-                                        int index = leading.Count - 1;
-
-                                        for (int i = leading.Count - 2; i >= 0; i--)
-                                        {
-                                            if (leading[i].IsWhitespaceOrEndOfLineTrivia())
-                                                index--;
-                                        }
-
-                                        newToken = oldToken.WithLeadingTrivia(leading.RemoveRange(index, leading.Count - index));
+                                        newToken = oldToken.AppendEndOfLineToLeadingTrivia();
                                     }
                                 }
                                 else
                                 {
                                     oldToken = endOfFile.GetPreviousToken();
-                                    SyntaxTriviaList trailing = oldToken.TrailingTrivia;
-                                    newToken = oldToken.WithTrailingTrivia(trailing.RemoveAt(trailing.Count - 1));
+                                    newToken = oldToken.AppendEndOfLineToTrailingTrivia();
                                 }
 
                                 return document.ReplaceTokenAsync(oldToken, newToken, ct);

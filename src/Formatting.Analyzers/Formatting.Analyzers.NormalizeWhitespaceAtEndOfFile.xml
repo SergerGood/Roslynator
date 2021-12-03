@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Analyzers>
+  <Analyzer Identifier="NormalizeWhitespaceAtEndOfFile">
+    <Id>RCS0058</Id>
+    <Title>Normalize whitespace at the end of a file.</Title>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Summary>This analyzer enforces:
+* newline at the end of a file
+* no newline at the end of a file if the option `roslynator.prefer_no_newline_at_end_of_file` is set to `true`.</Summary>
+    <Options>
+      <Option Identifier="PreferNoNewlineAtEndOfFile">
+        <Title>Prefer no newline at end of file.</Title>
+        <OptionKey>roslynator.prefer_no_newline_at_end_of_file</OptionKey>
+        <Kind>None</Kind>
+      </Option>
+    </Options>
+  </Analyzer>
+</Analyzers>

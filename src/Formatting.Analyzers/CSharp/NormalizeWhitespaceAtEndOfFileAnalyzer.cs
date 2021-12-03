@@ -12,7 +12,7 @@ using Roslynator.CSharp;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class NormalizeEndOfFileAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class NormalizeWhitespaceAtEndOfFileAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -21,7 +21,7 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.NormalizeEndOfFile);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.NormalizeWhitespaceAtEndOfFile);
 
                 return _supportedDiagnostics;
             }
@@ -41,72 +41,72 @@ namespace Roslynator.Formatting.CSharp
             SyntaxToken endOfFile = compilationUnit.EndOfFileToken;
             SyntaxTriviaList.Reversed.Enumerator en = endOfFile.LeadingTrivia.Reverse().GetEnumerator();
 
-            if (AnalyzerOptions.PreferNewlineAtEndOfFile.IsEnabled(context))
+            if (AnalyzerOptions.PreferNoNewlineAtEndOfFile.IsEnabled(context))
             {
-                if (en.MoveNext())
+                if (en.MoveNext()
+                    && (!en.Current.IsWhitespaceTrivia()
+                        || en.MoveNext()))
                 {
-                    if (CSharpFacts.IsCommentTrivia(en.Current.Kind())
-                        || SyntaxFacts.IsPreprocessorDirective(en.Current.Kind()))
+                    if (en.Current.IsEndOfLineTrivia())
                     {
                         ReportDiagnostic(context, endOfFile);
                     }
-                    else if (en.Current.IsWhitespaceOrEndOfLineTrivia()
-                        && endOfFile.LeadingTrivia.Span.Start == 0)
+                    else if (SyntaxFacts.IsPreprocessorDirective(en.Current.Kind())
+                        && en.Current.GetStructure() is DirectiveTriviaSyntax directiveTrivia
+                        && directiveTrivia.GetTrailingTrivia().LastOrDefault().IsEndOfLineTrivia())
                     {
-                        while (en.MoveNext())
-                        {
-                            if (!en.Current.IsWhitespaceOrEndOfLineTrivia())
-                                return;
-                        }
-
                         ReportDiagnostic(context, endOfFile);
                     }
                 }
-                else if (endOfFile.SpanStart > 0)
+                else
                 {
                     SyntaxTriviaList trailing = endOfFile.GetPreviousToken().TrailingTrivia;
 
-                    if (!trailing.Any())
-                    {
-                        ReportDiagnostic(context, endOfFile);
-                    }
-                    else
+                    if (trailing.Any())
                     {
                         Debug.Assert(endOfFile.FullSpan.Start == trailing.Span.End);
 
                         if (endOfFile.FullSpan.Start == trailing.Span.End
-                            && !trailing.Last().IsEndOfLineTrivia())
+                            && trailing.LastOrDefault().IsEndOfLineTrivia())
                         {
                             ReportDiagnostic(context, endOfFile);
                         }
                     }
                 }
             }
-            else if (en.MoveNext()
-                && (!en.Current.IsWhitespaceTrivia()
-                    || en.MoveNext()))
+            else if (en.MoveNext())
             {
-                if (en.Current.IsEndOfLineTrivia())
+                if (CSharpFacts.IsCommentTrivia(en.Current.Kind())
+                    || SyntaxFacts.IsPreprocessorDirective(en.Current.Kind()))
                 {
                     ReportDiagnostic(context, endOfFile);
                 }
-                else if (SyntaxFacts.IsPreprocessorDirective(en.Current.Kind())
-                    && en.Current.GetStructure() is DirectiveTriviaSyntax directiveTrivia
-                    && directiveTrivia.GetTrailingTrivia().LastOrDefault().IsEndOfLineTrivia())
+                else if (en.Current.IsWhitespaceOrEndOfLineTrivia()
+                    && endOfFile.LeadingTrivia.Span.Start == 0)
                 {
+                    while (en.MoveNext())
+                    {
+                        if (!en.Current.IsWhitespaceOrEndOfLineTrivia())
+                            return;
+                    }
+
                     ReportDiagnostic(context, endOfFile);
                 }
             }
-            else
+            else if (endOfFile.SpanStart > 0)
             {
                 SyntaxTriviaList trailing = endOfFile.GetPreviousToken().TrailingTrivia;
 
-                if (trailing.Any())
+                if (!trailing.Any())
+                {
+                    ReportDiagnostic(context, endOfFile);
+                }
+                else
                 {
                     Debug.Assert(endOfFile.FullSpan.Start == trailing.Span.End);
 
                     if (endOfFile.FullSpan.Start == trailing.Span.End
-                        && trailing.LastOrDefault().IsEndOfLineTrivia())
+                        && !trailing.Last().IsEndOfLineTrivia())
                     {
                         ReportDiagnostic(context, endOfFile);
                     }
@@ -115,7 +115,7 @@ namespace Roslynator.Formatting.CSharp
 
             static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxToken eof)
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.NormalizeEndOfFile, eof);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.NormalizeWhitespaceAtEndOfFile, eof);
             }
         }
     }
