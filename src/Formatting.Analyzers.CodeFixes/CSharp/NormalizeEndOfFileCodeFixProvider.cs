@@ -51,7 +51,16 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                                     if (leading.Any())
                                     {
                                         oldToken = endOfFile;
-                                        newToken = oldToken.AppendEndOfLineToLeadingTrivia();
+
+                                        if (leading.Span.Start == 0
+                                            && leading.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                                        {
+                                            newToken = oldToken.WithoutLeadingTrivia();
+                                        }
+                                        else
+                                        {
+                                            newToken = oldToken.AppendEndOfLineToLeadingTrivia();
+                                        }
                                     }
                                     else
                                     {

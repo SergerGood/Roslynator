@@ -26,6 +26,14 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeEndOfFile)]
+        public async Task Test_NewlineAtEndOfFile_EmptyFile()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+[||]",
+"", options: Options.EnableConfigOption(AnalyzerOptions.PreferNewlineAtEndOfFile.OptionKey));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeEndOfFile)]
         public async Task Test_NewlineAtEndOfFile_TrailingWhitespace()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -109,6 +117,14 @@ class C
 class C
 {
 }");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeEndOfFile)]
+        public async Task Test_NoNewlineAtEndOfFile_EmptyFile()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+[||]",
+"");
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeEndOfFile)]

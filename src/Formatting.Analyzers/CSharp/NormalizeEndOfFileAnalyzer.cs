@@ -50,8 +50,19 @@ namespace Roslynator.Formatting.CSharp
                     {
                         ReportDiagnostic(context, endOfFile);
                     }
+                    else if (en.Current.IsWhitespaceOrEndOfLineTrivia()
+                        && endOfFile.LeadingTrivia.Span.Start == 0)
+                    {
+                        while (en.MoveNext())
+                        {
+                            if (!en.Current.IsWhitespaceOrEndOfLineTrivia())
+                                return;
+                        }
+
+                        ReportDiagnostic(context, endOfFile);
+                    }
                 }
-                else
+                else if (endOfFile.SpanStart > 0)
                 {
                     SyntaxTriviaList trailing = endOfFile.GetPreviousToken().TrailingTrivia;
 
