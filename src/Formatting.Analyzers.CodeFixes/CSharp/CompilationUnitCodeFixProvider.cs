@@ -36,8 +36,27 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             {
                 case DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile:
                     {
+                        SyntaxToken token = compilationUnit.EndOfFileToken;
+
+                        if (token.FullSpan.Start > 0)
+                            token = compilationUnit.GetFirstToken();
+
+                        SyntaxTriviaList leading = token.LeadingTrivia;
+
+                        string title;
+                        if (leading.First().IsWhitespaceTrivia()
+                            && (leading.Count == 1
+                                || leading[1].IsEndOfLineTrivia()))
+                        {
+                            title = "Remove whitespace";
+                        }
+                        else
+                        {
+                            title = CodeFixTitles.RemoveNewLine;
+                        }
+
                         CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.RemoveNewLine,
+                            title,
                             ct =>
                             {
                                 SyntaxToken token = compilationUnit.EndOfFileToken;

@@ -87,5 +87,15 @@ class C
 }
 #endregion");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile)]
+        public async Task Test_WhitespaceOnly()
+        {
+            await VerifyDiagnosticAndFixAsync(@"[||] class C
+{
+}", @"class C
+{
+}");
+        }
     }
 }
