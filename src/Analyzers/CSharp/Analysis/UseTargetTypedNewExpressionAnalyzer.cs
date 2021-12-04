@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Analysis
                     {
                         parent = parent.Parent;
 
-                        Debug.Assert(parent.IsKind(SyntaxKind.VariableDeclarator, SyntaxKind.PropertyDeclaration), parent.ToDebugString());
+                        SyntaxDebug.Assert(parent.IsKind(SyntaxKind.VariableDeclarator, SyntaxKind.PropertyDeclaration), parent);
 
                         if (parent.IsKind(SyntaxKind.VariableDeclarator))
                         {
@@ -120,14 +120,14 @@ namespace Roslynator.CSharp.Analysis
                             }
                         }
 
-                        Debug.Fail(parent.ToDebugString());
+                        SyntaxDebug.Fail(parent);
                         break;
                     }
                 case SyntaxKind.ArrowExpressionClause:
                     {
                         TypeSyntax type = DetermineReturnType(parent.Parent);
 
-                        Debug.Assert(type != null, parent.ToDebugString());
+                        SyntaxDebug.Assert(type != null, parent);
 
                         if (type != null)
                             AnalyzeType(context, objectCreation, type);
@@ -144,12 +144,12 @@ namespace Roslynator.CSharp.Analysis
                             return;
                         }
 
-                        Debug.Assert(parent.IsParentKind(SyntaxKind.ImplicitArrayCreationExpression), parent.Parent.ToDebugString());
+                        SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.ImplicitArrayCreationExpression), parent.Parent);
                         break;
                     }
                 case SyntaxKind.CollectionInitializerExpression:
                     {
-                        Debug.Assert(parent.IsParentKind(SyntaxKind.ObjectCreationExpression, SyntaxKind.SimpleAssignmentExpression), parent.Parent.ToDebugString());
+                        SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.ObjectCreationExpression, SyntaxKind.SimpleAssignmentExpression), parent.Parent);
                         break;
                     }
                 case SyntaxKind.SimpleAssignmentExpression:
@@ -169,30 +169,6 @@ namespace Roslynator.CSharp.Analysis
                         AnalyzeExpression(context, objectCreation, coalesceExpression.Left);
                         break;
                     }
-#if DEBUG
-                case SyntaxKind.AnonymousObjectMemberDeclarator:
-                case SyntaxKind.Argument:
-                case SyntaxKind.AsExpression:
-                case SyntaxKind.CastExpression:
-                case SyntaxKind.ComplexElementInitializerExpression:
-                case SyntaxKind.ConditionalExpression:
-                case SyntaxKind.ForEachStatement:
-                case SyntaxKind.ForEachVariableStatement:
-                case SyntaxKind.Interpolation:
-                case SyntaxKind.ParenthesizedLambdaExpression:
-                case SyntaxKind.SimpleLambdaExpression:
-                case SyntaxKind.SimpleMemberAccessExpression:
-                case SyntaxKind.ExpressionStatement:
-                case SyntaxKind.SwitchExpressionArm:
-                    {
-                        break;
-                    }
-                default:
-                    {
-                        Debug.Fail(parent.ToDebugString());
-                        break;
-                    }
-#endif
             }
         }
 
@@ -264,7 +240,7 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.UnknownAccessorDeclaration:
                 case SyntaxKind.InitAccessorDeclaration:
                     {
-                        Debug.Assert(node.IsParentKind(SyntaxKind.AccessorList), node.Parent.ToDebugString());
+                        SyntaxDebug.Assert(node.IsParentKind(SyntaxKind.AccessorList), node.Parent);
 
                         if (node.IsParentKind(SyntaxKind.AccessorList))
                             return DetermineReturnType(node.Parent.Parent);
