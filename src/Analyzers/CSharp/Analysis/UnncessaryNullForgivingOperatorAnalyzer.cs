@@ -11,6 +11,10 @@ namespace Roslynator.CSharp.Analysis
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class UnncessaryNullForgivingOperatorAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static readonly MetadataName System_Diagnostics_CodeAnalysis_MaybeNullWhenAttribute = MetadataName.Parse("System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute");
+        private static readonly MetadataName System_Diagnostics_CodeAnalysis_NotNullIfNotNullAttribute = MetadataName.Parse("System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute");
+        private static readonly MetadataName System_Diagnostics_CodeAnalysis_NotNullWhenAttribute = MetadataName.Parse("System.Diagnostics.CodeAnalysis.NotNullWhenAttribute");
+
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
@@ -47,6 +51,18 @@ namespace Roslynator.CSharp.Analysis
                     && parameterSymbol.Type.IsReferenceType
                     && parameterSymbol.Type.NullableAnnotation == NullableAnnotation.Annotated)
                 {
+                    foreach (AttributeData attribute in parameterSymbol.GetAttributes())
+                    {
+                        INamedTypeSymbol attributeClass = attribute.AttributeClass;
+
+                        if (attributeClass.HasMetadataName(System_Diagnostics_CodeAnalysis_MaybeNullWhenAttribute)
+                            || attributeClass.HasMetadataName(System_Diagnostics_CodeAnalysis_NotNullIfNotNullAttribute)
+                            || attributeClass.HasMetadataName(System_Diagnostics_CodeAnalysis_NotNullWhenAttribute))
+                        {
+                            return;
+                        }
+                    }
+
                     context.ReportDiagnostic(DiagnosticRules.UnnecessaryNullForgivingOperator, suppressExpression.OperatorToken);
                 }
             }
