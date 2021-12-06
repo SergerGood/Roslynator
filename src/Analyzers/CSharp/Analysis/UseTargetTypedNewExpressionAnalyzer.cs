@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -10,6 +9,19 @@ using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Roslynator.CSharp.Analysis
 {
+    // prefer_target_typed_new_expression_when_type_is_obvious
+    //  throw
+    //  property initialization
+    //  field initialization
+    //  local initialization
+    //  return (single statement)
+    //  expression body
+    //  array initializer
+    //
+    // return
+    // yield return
+    // assignment
+    // coalesce ?
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class UseTargetTypedNewExpressionAnalyzer : BaseDiagnosticAnalyzer
     {
@@ -237,8 +249,8 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.SetAccessorDeclaration:
                 case SyntaxKind.AddAccessorDeclaration:
                 case SyntaxKind.RemoveAccessorDeclaration:
-                case SyntaxKind.UnknownAccessorDeclaration:
                 case SyntaxKind.InitAccessorDeclaration:
+                case SyntaxKind.UnknownAccessorDeclaration:
                     {
                         SyntaxDebug.Assert(node.IsParentKind(SyntaxKind.AccessorList), node.Parent);
 
