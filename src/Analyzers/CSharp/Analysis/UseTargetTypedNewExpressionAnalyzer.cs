@@ -132,7 +132,6 @@ namespace Roslynator.CSharp.Analysis
                             }
                         }
 
-                        SyntaxDebug.Fail(parent);
                         break;
                     }
                 case SyntaxKind.ArrowExpressionClause:
