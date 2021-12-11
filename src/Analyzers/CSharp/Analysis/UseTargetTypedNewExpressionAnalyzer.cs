@@ -158,11 +158,6 @@ namespace Roslynator.CSharp.Analysis
                         SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.ImplicitArrayCreationExpression), parent.Parent);
                         break;
                     }
-                case SyntaxKind.CollectionInitializerExpression:
-                    {
-                        SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.ObjectCreationExpression, SyntaxKind.SimpleAssignmentExpression), parent.Parent);
-                        break;
-                    }
                 case SyntaxKind.SimpleAssignmentExpression:
                 case SyntaxKind.CoalesceAssignmentExpression:
                 case SyntaxKind.AddAssignmentExpression:
@@ -180,6 +175,17 @@ namespace Roslynator.CSharp.Analysis
                         AnalyzeExpression(context, objectCreation, coalesceExpression.Left);
                         break;
                     }
+#if DEBUG
+                case SyntaxKind.CollectionInitializerExpression:
+                    {
+                        SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.ObjectCreationExpression, SyntaxKind.SimpleAssignmentExpression), parent.Parent);
+                        break;
+                    }
+                case SyntaxKind.ComplexElementInitializerExpression:
+                    {
+                        break;
+                    }
+#endif
             }
         }
 
