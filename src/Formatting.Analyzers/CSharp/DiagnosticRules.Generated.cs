@@ -598,7 +598,7 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0058</summary>
-        public static readonly DiagnosticDescriptor NormalizeWhitespaceAtEndOfFile = DiagnosticDescriptorFactory.Default.Create(
+        public static readonly DiagnosticDescriptor NormalizeWhitespaceAtEndOfFile = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile, 
             title:              "Normalize whitespace at the end of a file.", 
             messageFormat:      "Normalize whitespace at the end of a file.", 
