@@ -19,9 +19,9 @@ namespace Roslynator.CSharp.Refactorings
                     if (body.OpenBraceToken.Span.Contains(context.Span)
                         || body.CloseBraceToken.Span.Contains(context.Span))
                     {
-                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMember))
+                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMemberDeclaration))
                         {
-                            context.RegisterRefactoring(CodeActionFactory.RemoveStatement(context.Document, localFunctionStatement, equivalenceKey: RefactoringIdentifiers.RemoveMember));
+                            context.RegisterRefactoring(CodeActionFactory.RemoveStatement(context.Document, localFunctionStatement, equivalenceKey: RefactoringIdentifiers.RemoveMemberDeclaration));
                         }
 
                         if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateMember))
@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
                                 RefactoringIdentifiers.DuplicateMember);
                         }
 
-                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutMember))
+                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutMemberDeclaration))
                             CommentOutRefactoring.RegisterRefactoring(context, localFunctionStatement);
                     }
                 }
@@ -44,8 +44,8 @@ namespace Roslynator.CSharp.Refactorings
                 await ChangeMethodReturnTypeToVoidRefactoring.ComputeRefactoringAsync(context, localFunctionStatement).ConfigureAwait(false);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddTypeParameter))
-                AddTypeParameterRefactoring.ComputeRefactoring(context, localFunctionStatement);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddGenericParameterToDeclaration))
+                AddGenericParameterToDeclarationRefactoring.ComputeRefactoring(context, localFunctionStatement);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)
                 && ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(localFunctionStatement, context.Span))

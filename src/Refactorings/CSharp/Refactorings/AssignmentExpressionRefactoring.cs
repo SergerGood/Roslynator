@@ -12,18 +12,18 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, AssignmentExpressionSyntax assignmentExpression)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandCompoundAssignmentOperator)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandCompoundAssignment)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(assignmentExpression.OperatorToken)
                 && CSharpFacts.IsCompoundAssignmentExpression(assignmentExpression.Kind())
                 && SyntaxInfo.AssignmentExpressionInfo(assignmentExpression).Success)
             {
                 context.RegisterRefactoring(
                     $"Expand {assignmentExpression.OperatorToken}",
-                    ct => ExpandCompoundAssignmentOperatorRefactoring.RefactorAsync(context.Document, assignmentExpression, ct),
-                    RefactoringIdentifiers.ExpandCompoundAssignmentOperator);
+                    ct => ExpandCompoundAssignmentRefactoring.RefactorAsync(context.Document, assignmentExpression, ct),
+                    RefactoringIdentifiers.ExpandCompoundAssignment);
             }
 
-            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.CallToMethod)
+            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddExplicitCast, RefactoringIdentifiers.CallToMethod)
                 && assignmentExpression.IsKind(SyntaxKind.SimpleAssignmentExpression))
             {
                 SimpleAssignmentExpressionInfo simpleAssignment = SyntaxInfo.SimpleAssignmentExpressionInfo(assignmentExpression);

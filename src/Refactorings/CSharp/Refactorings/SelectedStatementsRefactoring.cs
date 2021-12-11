@@ -11,15 +11,15 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static bool IsAnyRefactoringEnabled(RefactoringContext context)
         {
-            return context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInUsingStatement)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.CollapseToInitializer)
+            return context.IsRefactoringEnabled(RefactoringIdentifiers.WrapStatementsInUsingStatement)
+                || context.IsRefactoringEnabled(RefactoringIdentifiers.InitializePropertiesInInitializer)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.MergeIfStatements)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertStatementsToIfElse)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.MergeLocalDeclarations)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInCondition)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInTryCatch)
+                || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapStatementsInCondition)
+                || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapLinesInTryCatch)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertIfToConditionalOperator)
+                || context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertIfToConditionalExpression)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.SimplifyIf)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.CheckExpressionForNull)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertWhileToFor);
@@ -27,14 +27,14 @@ namespace Roslynator.CSharp.Refactorings
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, StatementListSelection selectedStatements)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInUsingStatement))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapStatementsInUsingStatement))
             {
-                var refactoring = new WrapStatements.WrapInUsingStatementRefactoring();
+                var refactoring = new WrapStatementsInUsingStatementRefactoring();
                 await refactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CollapseToInitializer))
-                await CollapseToInitializerRefactoring.ComputeRefactoringsAsync(context, selectedStatements).ConfigureAwait(false);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InitializePropertiesInInitializer))
+                await InitializePropertiesInInitializerRefactoring.ComputeRefactoringsAsync(context, selectedStatements).ConfigureAwait(false);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeIfStatements))
                 MergeIfStatementsRefactoring.ComputeRefactorings(context, selectedStatements);
@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (context.IsAnyRefactoringEnabled(
                 RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf,
-                RefactoringIdentifiers.ConvertIfToConditionalOperator,
+                RefactoringIdentifiers.ConvertIfToConditionalExpression,
                 RefactoringIdentifiers.SimplifyIf))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -68,8 +68,8 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeLocalDeclarations))
                 await MergeLocalDeclarationsRefactoring.ComputeRefactoringsAsync(context, selectedStatements).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement))
-                MergeAssignmentExpressionWithReturnStatementRefactoring.ComputeRefactorings(context, selectedStatements);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveUnnecessaryAssignment))
+                RemoveUnnecessaryAssignmentRefactoring.ComputeRefactorings(context, selectedStatements);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckExpressionForNull))
                 await CheckExpressionForNullRefactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);
@@ -77,20 +77,20 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertWhileToFor))
                 await ConvertWhileToForRefactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInCondition))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapStatementsInCondition))
             {
                 context.RegisterRefactoring(
                     WrapInIfStatementRefactoring.Title,
                     ct => WrapInIfStatementRefactoring.Instance.RefactorAsync(context.Document, selectedStatements, ct),
-                    RefactoringIdentifiers.WrapInCondition);
+                    RefactoringIdentifiers.WrapStatementsInCondition);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInTryCatch))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapLinesInTryCatch))
             {
                 context.RegisterRefactoring(
-                    WrapInTryCatchRefactoring.Title,
-                    ct => WrapInTryCatchRefactoring.Instance.RefactorAsync(context.Document, selectedStatements, ct),
-                    RefactoringIdentifiers.WrapInTryCatch);
+                    WrapLinesInTryCatchRefactoring.Title,
+                    ct => WrapLinesInTryCatchRefactoring.Instance.RefactorAsync(context.Document, selectedStatements, ct),
+                    RefactoringIdentifiers.WrapLinesInTryCatch);
             }
         }
     }

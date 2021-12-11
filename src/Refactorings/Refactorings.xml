@@ -32,7 +32,7 @@
     </Syntaxes>
     <Span>case or default keyword</Span>
   </Refactoring>
-  <Refactoring Id="RR0006" Identifier="AddCastExpression" Title="Add cast expression">
+  <Refactoring Id="RR0006" Identifier="AddExplicitCast" Title="Add explicit cast">
     <Syntaxes>
       <Syntax>argument</Syntax>
       <Syntax>assignment expression</Syntax>
@@ -101,7 +101,7 @@
       <Syntax>method invocation</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0017" Identifier="CallToMethod" Title="Call 'To...' method (ToString, ToArray, ToList)">
+  <Refactoring Id="RR0017" Identifier="CallToMethod" Title="Call 'To...' method (ToString, ToArray, ToList)" IsObsolete="true">
     <Syntaxes>
       <Syntax>argument</Syntax>
       <Syntax>assignment expression</Syntax>
@@ -109,7 +109,7 @@
       <Syntax>variable declaration</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0018" Identifier="ChangeExplicitTypeToVar" Title="Change explicit type to 'var'">
+  <Refactoring Id="RR0018" Identifier="UseImplicitType" Title="Use implicit type">
     <Syntaxes>
       <Syntax>variable declaration</Syntax>
       <Syntax>foreach statement</Syntax>
@@ -145,7 +145,7 @@
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0023" Identifier="ChangeVarToExplicitType" Title="Change 'var' to explicit type">
+  <Refactoring Id="RR0023" Identifier="UseExplicitType" Title="Use explicit type">
     <Syntaxes>
       <Syntax>variable declaration</Syntax>
       <Syntax>foreach statement</Syntax>
@@ -164,12 +164,12 @@
     </Syntaxes>
     <Span>parameter identifier</Span>
   </Refactoring>
-  <Refactoring Id="RR0026" Identifier="CollapseToInitializer" Title="Collapse to initializer">
+  <Refactoring Id="RR0026" Identifier="InitializePropertiesInInitializer" Title="Initialize properties in a initializer">
     <Syntaxes>
-      <Syntax>object creation followed with assignment(s)</Syntax>
+      <Syntax>selected statements (object creation followed with assignment(s))</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0027" Identifier="CommentOutMember" Title="Comment out member">
+  <Refactoring Id="RR0027" Identifier="CommentOutMemberDeclaration" Title="Comment out member declaration">
     <Syntaxes>
       <Syntax>method</Syntax>
       <Syntax>constructor</Syntax>
@@ -258,7 +258,7 @@
     </Syntaxes>
     <Span>opening or closing brace</Span>
   </Refactoring>
-  <Refactoring Id="RR0034" Identifier="ExpandCompoundAssignmentOperator" Title="Expand compound assignment operator">
+  <Refactoring Id="RR0034" Identifier="ExpandCompoundAssignment" Title="Expand compound assignment">
     <Syntaxes>
       <Syntax>compound assignment expression</Syntax>
     </Syntaxes>
@@ -270,7 +270,7 @@
     </Syntaxes>
     <Span>?? operator</Span>
   </Refactoring>
-  <Refactoring Id="RR0036" Identifier="ExpandEvent" Title="Expand event">
+  <Refactoring Id="RR0036" Identifier="ExpandEventDeclaration" Title="Expand event declaration">
     <Syntaxes>
       <Syntax>event field declaration</Syntax>
     </Syntaxes>
@@ -291,12 +291,12 @@
     </Syntaxes>
     <Span>body</Span>
   </Refactoring>
-  <Refactoring Id="RR0040" Identifier="ExpandProperty" Title="Expand property">
+  <Refactoring Id="RR0040" Identifier="ConvertAutoPropertyToFullPropertyWithoutBackingField" Title="Convert auto-property to full property (without backing field)">
     <Syntaxes>
       <Syntax>auto-property</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0041" Identifier="ExpandPropertyAndAddBackingField" Title="Expand property and add backing field">
+  <Refactoring Id="RR0041" Identifier="ConvertAutoPropertyToFullProperty" Title="Convert auto-property to full property">
     <Syntaxes>
       <Syntax>auto-property</Syntax>
     </Syntaxes>
@@ -333,13 +333,13 @@ if (y)
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0044" Identifier="ExtractGenericType" Title="Extract generic type">
+  <Refactoring Id="RR0044" Identifier="ExtractGenericType" Title="Extract generic type" IsObsolete="true">
     <Syntaxes>
       <Syntax>generic name with single type argument</Syntax>
     </Syntaxes>
     <Span>type argument</Span>
   </Refactoring>
-  <Refactoring Id="RR0045" Identifier="ExtractStatement" Title="Extract statement(s)">
+  <Refactoring Id="RR0045" Identifier="RemoveContainingStatement" Title="Remove containing statement">
     <Syntaxes>
       <Syntax>else clause</Syntax>
       <Syntax>fixed statement</Syntax>
@@ -563,7 +563,7 @@ if (y)
     </Syntaxes>
     <Span>identifier</Span>
   </Refactoring>
-  <Refactoring Id="RR0059" Identifier="AddMissingCases" Title="Add missing cases to switch statement">
+  <Refactoring Id="RR0059" Identifier="AddMissingCasesToSwitchStatement" Title="Add missing cases to switch statement">
     <Syntaxes>
       <Syntax>switch statement</Syntax>
     </Syntaxes>
@@ -603,7 +603,7 @@ if (y)
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0060" Identifier="InitializeLocalWithDefaultValue" Title="Initialize local with default value">
+  <Refactoring Id="RR0060" Identifier="InitializeLocalVariableWithDefaultValue" Title="Initialize local variable with default value">
     <Syntaxes>
       <Syntax>local declaration without initializer</Syntax>
     </Syntaxes>
@@ -671,7 +671,7 @@ if (y)
       <Syntax>indexer declaration</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0073" Identifier="MergeAssignmentExpressionWithReturnStatement" Title="Merge assignment expression with return statement">
+  <Refactoring Id="RR0073" Identifier="RemoveUnnecessaryAssignment" Title="Remove unnecessary assignment">
     <Syntaxes>
       <Syntax>assignment expression followed with return statement</Syntax>
     </Syntaxes>
@@ -755,7 +755,7 @@ return true;]]></After>
       <Syntax>&gt;=</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0083" Identifier="NotifyWhenPropertyChange" Title="Notify when property change">
+  <Refactoring Id="RR0083" Identifier="NotifyWhenPropertyChanges" Title="Notify when property changes">
     <Syntaxes>
       <Syntax>property in class/struct that implements System.ComponentModel.INotifyPropertyChanged</Syntax>
     </Syntaxes>
@@ -766,7 +766,7 @@ return true;]]></After>
       <Syntax>selected expression</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0085" Identifier="PromoteLocalToParameter" Title="Promote local to parameter">
+  <Refactoring Id="RR0085" Identifier="PromoteLocalVariableToParameter" Title="Promote local variable to parameter">
     <Syntaxes>
       <Syntax>local declaration in method</Syntax>
     </Syntaxes>
@@ -881,7 +881,7 @@ return true;]]></After>
     </Syntaxes>
     <Span>opening or closing brace</Span>
   </Refactoring>
-  <Refactoring Id="RR0103" Identifier="RemoveMember" Title="Remove member">
+  <Refactoring Id="RR0103" Identifier="RemoveMemberDeclaration" Title="Remove member declaration">
     <Syntaxes>
       <Syntax>method</Syntax>
       <Syntax>constructor</Syntax>
@@ -940,12 +940,12 @@ return true;]]></After>
     </Syntaxes>
     <Span>open/close brace</Span>
   </Refactoring>
-  <Refactoring Id="RR0110" Identifier="RemoveStatementsFromSwitchSections" Title="Remove statements from switch sections">
+  <Refactoring Id="RR0110" Identifier="MergeSwitchSections" Title="Merge switch sections">
     <Syntaxes>
       <Syntax>selected switch sections</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0111" Identifier="RenameBackingFieldAccordingToPropertyName" Title="Rename backing field according to property name">
+  <Refactoring Id="RR0111" Identifier="SyncPropertyNameAndBackingFieldName" Title="Synchronize property name and backing field name">
     <Syntaxes>
       <Syntax>field identifier inside property declaration</Syntax>
     </Syntaxes>
@@ -1001,23 +1001,23 @@ return true;]]></After>
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0117" Identifier="ReplaceAsWithCast" Title="Replace as expression with cast expression">
+  <Refactoring Id="RR0117" Identifier="ReplaceAsExpressionWithExplicitCast" Title="Replace 'as' expression with explicit cast">
     <Syntaxes>
       <Syntax>as expression</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0118" Identifier="ReplaceCastWithAs" Title="Replace cast expression with as expression">
+  <Refactoring Id="RR0118" Identifier="ReplaceExplicitCastWithAsExpression" Title="Replace explicit cast expression 'as' expression">
     <Syntaxes>
       <Syntax>cast expression</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0119" Identifier="ReplaceConditionalExpressionWithExpression" Title="Replace conditional expression with expression">
+  <Refactoring Id="RR0119" Identifier="ReplaceConditionalExpressionWithTrueOrFalseBranch" Title="Replace conditional expression with true/false branch">
     <Syntaxes>
       <Syntax>conditional expression</Syntax>
     </Syntaxes>
     <Span>selected true/false expression</Span>
   </Refactoring>
-  <Refactoring Id="RR0120" Identifier="ConvertConditionalOperatorToIfElse" Title="Convert ?: to if-else">
+  <Refactoring Id="RR0120" Identifier="ConvertConditionalExpressionToIfElse" Title="Convert ?: to if-else">
     <Syntaxes>
       <Syntax>?: operator that is part of local declaration, assignment or (yield) return statement</Syntax>
     </Syntaxes>
@@ -1052,7 +1052,7 @@ else
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0121" Identifier="ReplaceConstantWithField" Title="Replace constant with field">
+  <Refactoring Id="RR0121" Identifier="UseReadOnlyFieldInsteadOfConstant" Title="Use read-only field instead of constant">
     <Syntaxes>
       <Syntax>constant declaration</Syntax>
     </Syntaxes>
@@ -1115,7 +1115,7 @@ void Foo()
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0128" Identifier="UseConstantInsteadOfField" Title="Use constant instead of field">
+  <Refactoring Id="RR0128" Identifier="UseConstantInsteadOfReadOnlyField" Title="Use constant instead of read-only field">
     <Syntaxes>
       <Syntax>read-only field</Syntax>
     </Syntaxes>
@@ -1333,7 +1333,7 @@ i--;]]></After>
     </Syntaxes>
     <Span>top if keyword or selected if statement</Span>
   </Refactoring>
-  <Refactoring Id="RR0154" Identifier="ConvertLambdaExpressionBodyToExpressionBody" Title="Convert lambda expression body to expression-body">
+  <Refactoring Id="RR0154" Identifier="ConvertLambdaBlockBodyToExpressionBody" Title="Convert lambda block body to expression body">
     <Syntaxes>
       <Syntax>lambda expression with block body with single single-line statement</Syntax>
     </Syntaxes>
@@ -1428,13 +1428,13 @@ i--;]]></After>
     </Syntaxes>
     <Span>top if keyword or selected if statement</Span>
   </Refactoring>
-  <Refactoring Id="RR0166" Identifier="ConvertIfToConditionalOperator" Title="Convert 'if' to ?:">
+  <Refactoring Id="RR0166" Identifier="ConvertIfToConditionalExpression" Title="Convert 'if' to ?:">
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
     <Span>top if keyword or selected if statement</Span>
   </Refactoring>
-  <Refactoring Id="RR0167" Identifier="UseElementAccessInsteadOfEnumerableMethod" Title="Use element access instead of 'First/Last'ElementAt' method">
+  <Refactoring Id="RR0167" Identifier="UseElementAccessInsteadOfLinqMethod" Title="Use element access instead of LINQ method">
     <Syntaxes>
       <Syntax>First/Last/ElementAt method invocation</Syntax>
     </Syntaxes>
@@ -1460,12 +1460,12 @@ i--;]]></After>
     </Syntaxes>
     <Span>delegate keyword</Span>
   </Refactoring>
-  <Refactoring Id="RR0171" Identifier="ConvertEmptyStringToStringEmpty" Title="Convert &quot;&quot; to string.Empty" IsEnabledByDefault="false">
+  <Refactoring Id="RR0171" Identifier="UseStringEmptyInsteadOfEmptyStringLiteral" Title="Convert &quot;&quot; to string.Empty" IsEnabledByDefault="false">
     <Syntaxes>
       <Syntax>empty string literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0172" Identifier="WrapInCondition" Title="Wrap in condition">
+  <Refactoring Id="RR0172" Identifier="WrapStatementsInCondition" Title="Wrap statements in condition">
     <Syntaxes>
       <Syntax>selected statements</Syntax>
     </Syntaxes>
@@ -1475,27 +1475,27 @@ i--;]]></After>
       <Syntax>statement</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0174" Identifier="WrapInIfDirective" Title="Wrap in #if directive">
+  <Refactoring Id="RR0174" Identifier="WrapLinesInPreprocessorDirective" Title="Wrap lines in preprocessor directive">
     <Syntaxes>
       <Syntax>selected lines</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0175" Identifier="WrapInRegion" Title="Wrap in #region directive">
+  <Refactoring Id="RR0175" Identifier="WrapLinesInRegion" Title="Wrap lines in #region directive">
     <Syntaxes>
       <Syntax>selected lines</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0176" Identifier="WrapInTryCatch" Title="Wrap in try-catch">
+  <Refactoring Id="RR0176" Identifier="WrapLinesInTryCatch" Title="Wrap lines in try-catch">
     <Syntaxes>
       <Syntax>selected statements</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0177" Identifier="WrapInUsingStatement" Title="Wrap in using statement">
-    <Syntaxes>
-      <Syntax>local declaration of type that implements IDisposable</Syntax>
+  <Refactoring Id="RR0177" Identifier="WrapStatementsInUsingStatement" Title="Wrap statements in 'using' statement">
+	  <Syntaxes>
+      <Syntax>selected statements where first is local declaration of type that implements IDisposable</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0178" Identifier="AddTypeParameter" Title="Add type parameter">
+  <Refactoring Id="RR0178" Identifier="AddGenericParameterToDeclaration" Title="Add generic parameter to a declaration">
     <Syntaxes>
       <Syntax>class declaration</Syntax>
       <Syntax>struct declaration</Syntax>
@@ -1513,12 +1513,12 @@ i--;]]></After>
     </Syntaxes>
     <Span>base list</Span>
   </Refactoring>
-  <Refactoring Id="RR0180" Identifier="InlineUsingStatic" Title="Inline using static">
+  <Refactoring Id="RR0180" Identifier="InlineUsingStaticDirective" Title="Inline using static directive">
     <Syntaxes>
       <Syntax>using static directive</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0181" Identifier="InlineConstant" Title="Inline constant">
+  <Refactoring Id="RR0181" Identifier="InlineConstantDeclaration" Title="Inline constant declaration">
     <Syntaxes>
       <Syntax>constant declaration</Syntax>
     </Syntaxes>
@@ -1534,15 +1534,15 @@ i--;]]></After>
       <Syntax>yield break</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0184" Identifier="SplitIfStatement" Title="Split if statement">
+  <Refactoring Id="RR0184" Identifier="SplitIf" Title="Split if">
     <Syntaxes>
-      <Syntax>if statement that has logical or expression as a condition</Syntax>
+      <Syntax>if statement that has 'logical or' expression as a condition</Syntax>
     </Syntaxes>
     <Span>top if keyword or selected if statement</Span>
   </Refactoring>
-  <Refactoring Id="RR0185" Identifier="ReplaceObjectCreationWithDefaultValue" Title="Replace object creation with default value">
+  <Refactoring Id="RR0185" Identifier="RemoveInstantiationOfLocalVariable" Title="Remove instantiation of a local variable">
     <Syntaxes>
-      <Syntax>object creation expression</Syntax>
+      <Syntax>local variable with a new object creation</Syntax>
     </Syntaxes>
     <Samples>
       <Sample>
@@ -1674,7 +1674,7 @@ return false;]]></After>
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0191" Identifier="UseCSharp6DictionaryInitializer" Title="Use C# 6.0 dictionary initializer">
+  <Refactoring Id="RR0191" Identifier="UseIndexInitializer" Title="Use index initializer">
     <Syntaxes>
       <Syntax>collection initializer</Syntax>
     </Syntaxes>
@@ -1715,7 +1715,7 @@ public class Foo
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0194" Identifier="SplitDeclarationAndInitialization" Title="Split declaration and initialization">
+  <Refactoring Id="RR0194" Identifier="SplitDeclarationAndInitialization" Title="Split declaration and initialization" IsObsolete="true">
     <Syntaxes>
       <Syntax>local variable declaration</Syntax>
     </Syntaxes>
@@ -2369,6 +2369,61 @@ class Foo : IFoo
         throw new Exception();
 }
 ]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
+  <Refactoring Id="RR0215" Identifier="ExpandPositionalConstructor" Title="Expand positional constructor">
+    <Syntaxes>
+      <Syntax>positional record</Syntax>
+    </Syntaxes>
+    <Span>parameter list</Span>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[public record Foo([property: Obsolete] string Value1, string Value2);]]></Before>
+        <After><![CDATA[public record Foo
+{
+    public Foo(string value1, string value2)
+    {
+        Value1 = value1;
+        Value2 = value2;
+    }
+
+    [Obsolete]
+    public string Value1 { get; init; }
+    public string Value2 { get; init; }
+}
+]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
+  <Refactoring Id="RR0216" Identifier="AddAllPropertiesToInitializer" Title="Add all properties to initializer">
+    <Syntaxes>
+      <Syntax>object/record initializer</Syntax>
+    </Syntaxes>
+    <Span></Span>
+    <Summary></Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[class C
+{
+  public string P1 { get; set; }
+  public string P2 { get; set; }
+
+  void M()
+  {
+      var x = new C() { };
+  }
+}]]></Before>
+        <After><![CDATA[class C
+{
+  public string P1 { get; set; }
+  public string P2 { get; set; }
+
+  void M()
+  {
+      var x = new C() { P1 = , P2 = };
+  }
+}]]></After>
       </Sample>
     </Samples>
   </Refactoring>

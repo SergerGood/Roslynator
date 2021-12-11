@@ -13,8 +13,8 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, RecordDeclarationSyntax recordDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddTypeParameter))
-                AddTypeParameterRefactoring.ComputeRefactoring(context, recordDeclaration);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddGenericParameterToDeclaration))
+                AddGenericParameterToDeclarationRefactoring.ComputeRefactoring(context, recordDeclaration);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractTypeDeclarationToNewFile))
                 ExtractTypeDeclarationToNewFileRefactoring.ComputeRefactorings(context, recordDeclaration);
@@ -41,6 +41,13 @@ namespace Roslynator.CSharp.Refactorings
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                 ImplementCustomEnumeratorRefactoring.ComputeRefactoring(context, recordDeclaration, semanticModel);
+            }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandPositionalConstructor)
+                && recordDeclaration.ParameterList != null
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(recordDeclaration.ParameterList.Parameters))
+            {
+                ExpandPositionalConstructorRefactoring.ComputeRefactoring(context, recordDeclaration);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SortMemberDeclarations)

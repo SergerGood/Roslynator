@@ -13,17 +13,17 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddIdentifierToVariableDeclaration))
                 await AddIdentifierToLocalDeclarationRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InitializeLocalWithDefaultValue))
-                await InitializeLocalWithDefaultValueRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InitializeLocalVariableWithDefaultValue))
+                await InitializeLocalVariableWithDefaultValueRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.PromoteLocalToParameter))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.PromoteLocalVariableToParameter))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
                 PromoteLocalToParameterRefactoring.ComputeRefactoring(context, localDeclaration, semanticModel);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceObjectCreationWithDefaultValue))
-                await ReplaceObjectCreationWithDefaultValueRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveInstantiationOfLocalVariable))
+                await RemoveInstantiationOfLocalVariableRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitDeclarationAndInitialization))
                 await SplitDeclarationAndInitializationRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);

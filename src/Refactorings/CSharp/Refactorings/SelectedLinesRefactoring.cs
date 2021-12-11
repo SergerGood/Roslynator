@@ -33,8 +33,8 @@ namespace Roslynator.CSharp.Refactorings
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, SyntaxNode node)
         {
             if (context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.WrapInRegion,
-                RefactoringIdentifiers.WrapInIfDirective,
+                RefactoringIdentifiers.WrapLinesInRegion,
+                RefactoringIdentifiers.WrapLinesInPreprocessorDirective,
                 RefactoringIdentifiers.RemoveEmptyLines))
             {
                 SyntaxNode root = context.Root;
@@ -52,20 +52,20 @@ namespace Roslynator.CSharp.Refactorings
                 if (!IsInMultiLineDocumentationComment(root, span.Start)
                     && !IsInMultiLineDocumentationComment(root, span.End))
                 {
-                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInRegion))
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapLinesInRegion))
                     {
                         context.RegisterRefactoring(
                             "Wrap in #region",
-                            ct => WrapInRegionRefactoring.Instance.RefactorAsync(document, selectedLines, ct),
-                            RefactoringIdentifiers.WrapInRegion);
+                            ct => WrapLinesInRegionRefactoring.Instance.RefactorAsync(document, selectedLines, ct),
+                            RefactoringIdentifiers.WrapLinesInRegion);
                     }
 
-                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInIfDirective))
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapLinesInPreprocessorDirective))
                     {
                         context.RegisterRefactoring(
                             "Wrap in #if",
-                            ct => WrapInIfDirectiveRefactoring.Instance.RefactorAsync(document, selectedLines, ct),
-                            RefactoringIdentifiers.WrapInIfDirective);
+                            ct => WrapLinesInPreprocessorDirectiveRefactoring.Instance.RefactorAsync(document, selectedLines, ct),
+                            RefactoringIdentifiers.WrapLinesInPreprocessorDirective);
                     }
                 }
 
