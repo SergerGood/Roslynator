@@ -2442,7 +2442,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1249</summary>
-        public static readonly DiagnosticDescriptor UseTargetTypedNewExpression = DiagnosticDescriptorFactory.Default.Create(
+        public static readonly DiagnosticDescriptor UseTargetTypedNewExpression = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseTargetTypedNewExpression, 
             title:              "Use target-typed new expression.", 
             messageFormat:      "Use target-typed new expression.", 
