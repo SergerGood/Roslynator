@@ -598,7 +598,7 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0057</summary>
-        public static readonly DiagnosticDescriptor NormalizeWhitespaceAtBeginningOfFile = DiagnosticDescriptorFactory.Default.Create(
+        public static readonly DiagnosticDescriptor NormalizeWhitespaceAtBeginningOfFile = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile, 
             title:              "Normalize whitespace at the beginning of a file.", 
             messageFormat:      "Normalize whitespace at the beginning of a file.", 
