@@ -2442,7 +2442,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1250</summary>
-        public static readonly DiagnosticDescriptor UnnecessaryNullForgivingOperator = DiagnosticDescriptorFactory.Default.Create(
+        public static readonly DiagnosticDescriptor UnnecessaryNullForgivingOperator = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UnnecessaryNullForgivingOperator, 
             title:              "Unnecessary null-forgiving operator.", 
             messageFormat:      "Unnecessary null-forgiving operator.", 
