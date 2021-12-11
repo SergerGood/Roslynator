@@ -12,8 +12,6 @@ namespace Roslynator.VisualStudio
         protected override string MaxId { get; } = RefactoringIdentifiers.AddAllPropertiesToInitializer;
         internal static void SetRefactoringsDisabledByDefault(RefactoringSettings settings)
         {
-            settings.Disable(RefactoringIdentifiers.AddIdentifierToParameter);
-            settings.Disable(RefactoringIdentifiers.AddIdentifierToVariableDeclaration);
             settings.Disable(RefactoringIdentifiers.ConvertForEachToForAndReverseLoop);
             settings.Disable(RefactoringIdentifiers.ExpandInitializer);
             settings.Disable(RefactoringIdentifiers.IntroduceConstructor);
@@ -31,10 +29,8 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddBracesToSwitchSections, "Add braces to switch sections", IsEnabled(RefactoringIdentifiers.AddBracesToSwitchSections)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddExplicitCast, "Add explicit cast", IsEnabled(RefactoringIdentifiers.AddExplicitCast)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddDefaultValueToParameter, "Add default value to parameter", IsEnabled(RefactoringIdentifiers.AddDefaultValueToParameter)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.AddExceptionToDocumentationComment, "Add exception to documentation comment", IsEnabled(RefactoringIdentifiers.AddExceptionToDocumentationComment)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.AddIdentifierToVariableDeclaration, "Add identifier to variable declaration", IsEnabled(RefactoringIdentifiers.AddIdentifierToVariableDeclaration)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.AddParameterNameToArgument, "Add parameter name to argument", IsEnabled(RefactoringIdentifiers.AddParameterNameToArgument)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.AddIdentifierToParameter, "Add identifier to parameter", IsEnabled(RefactoringIdentifiers.AddIdentifierToParameter)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.AddExceptionElementToDocumentationComment, "Add 'exception' element to documentation comment", IsEnabled(RefactoringIdentifiers.AddExceptionElementToDocumentationComment)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.AddArgumentName, "Add argument name", IsEnabled(RefactoringIdentifiers.AddArgumentName)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddUsingDirective, "Add using directive", IsEnabled(RefactoringIdentifiers.AddUsingDirective)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddUsingStaticDirective, "Add using static directive", IsEnabled(RefactoringIdentifiers.AddUsingStaticDirective)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.CallExtensionMethodAsInstanceMethod, "Call extension method as instance method", IsEnabled(RefactoringIdentifiers.CallExtensionMethodAsInstanceMethod)));
@@ -44,7 +40,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseExplicitType, "Use explicit type", IsEnabled(RefactoringIdentifiers.UseExplicitType)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.CheckExpressionForNull, "Check expression for null", IsEnabled(RefactoringIdentifiers.CheckExpressionForNull)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.CheckParameterForNull, "Check parameter for null", IsEnabled(RefactoringIdentifiers.CheckParameterForNull)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.InitializePropertiesInInitializer, "Initialize properties in a initializer", IsEnabled(RefactoringIdentifiers.InitializePropertiesInInitializer)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.UseObjectInitializer, "Use object initializer", IsEnabled(RefactoringIdentifiers.UseObjectInitializer)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.CommentOutMemberDeclaration, "Comment out member declaration", IsEnabled(RefactoringIdentifiers.CommentOutMemberDeclaration)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.CommentOutStatement, "Comment out statement", IsEnabled(RefactoringIdentifiers.CommentOutStatement)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.CopyDocumentationCommentFromBaseMember, "Copy documentation comment from base member", IsEnabled(RefactoringIdentifiers.CopyDocumentationCommentFromBaseMember)));
@@ -55,7 +51,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandCompoundAssignment, "Expand compound assignment", IsEnabled(RefactoringIdentifiers.ExpandCompoundAssignment)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandCoalesceExpression, "Expand coalesce expression", IsEnabled(RefactoringIdentifiers.ExpandCoalesceExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandEventDeclaration, "Expand event declaration", IsEnabled(RefactoringIdentifiers.ExpandEventDeclaration)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertExpressionBodyToBlockBody, "Convert expression-body to block body", IsEnabled(RefactoringIdentifiers.ConvertExpressionBodyToBlockBody)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertExpressionBodyToBlockBody, "Convert expression body to block body", IsEnabled(RefactoringIdentifiers.ConvertExpressionBodyToBlockBody)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandInitializer, "Expand initializer", IsEnabled(RefactoringIdentifiers.ExpandInitializer)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertLambdaExpressionBodyToBlockBody, "Convert lambda expression body to block body", IsEnabled(RefactoringIdentifiers.ConvertLambdaExpressionBodyToBlockBody)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertAutoPropertyToFullPropertyWithoutBackingField, "Convert auto-property to full property (without backing field)", IsEnabled(RefactoringIdentifiers.ConvertAutoPropertyToFullPropertyWithoutBackingField)));
@@ -117,7 +113,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveInterpolation, "Remove interpolation", IsEnabled(RefactoringIdentifiers.RemoveInterpolation)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveMemberDeclaration, "Remove member declaration", IsEnabled(RefactoringIdentifiers.RemoveMemberDeclaration)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveMemberDeclarations, "Remove member declarations above/below", IsEnabled(RefactoringIdentifiers.RemoveMemberDeclarations)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveParameterNameFromArgument, "Remove parameter name from argument", IsEnabled(RefactoringIdentifiers.RemoveParameterNameFromArgument)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveArgumentName, "Remove argument name", IsEnabled(RefactoringIdentifiers.RemoveArgumentName)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveParentheses, "Remove parentheses", IsEnabled(RefactoringIdentifiers.RemoveParentheses)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemovePropertyInitializer, "Remove property initializer", IsEnabled(RefactoringIdentifiers.RemovePropertyInitializer)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveRegion, "Remove region", IsEnabled(RefactoringIdentifiers.RemoveRegion)));
@@ -135,9 +131,9 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertConditionalExpressionToIfElse, "Convert ?: to if-else", IsEnabled(RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseReadOnlyFieldInsteadOfConstant, "Use read-only field instead of constant", IsEnabled(RefactoringIdentifiers.UseReadOnlyFieldInsteadOfConstant)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertDoToWhile, "Convert 'do' to 'while'", IsEnabled(RefactoringIdentifiers.ConvertDoToWhile)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringEquals, "Replace equals expression with string.Equals", IsEnabled(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringEquals)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringIsNullOrEmpty, "Replace equals expression with string.IsNullOrEmpty", IsEnabled(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringIsNullOrEmpty)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace, "Replace equals expression with string.IsNullOrWhiteSpace", IsEnabled(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceEqualityOperatorWithStringEquals, "Replace equality operator with string.Equals", IsEnabled(RefactoringIdentifiers.ReplaceEqualityOperatorWithStringEquals)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceEqualityOperatorWithStringIsNullOrEmpty, "Replace equality operator with string.IsNullOrEmpty", IsEnabled(RefactoringIdentifiers.ReplaceEqualityOperatorWithStringIsNullOrEmpty)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceEqualityOperatorWithStringIsNullOrWhiteSpace, "Replace equality operator with string.IsNullOrWhiteSpace", IsEnabled(RefactoringIdentifiers.ReplaceEqualityOperatorWithStringIsNullOrWhiteSpace)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.InlineConstantValue, "Inline constant value", IsEnabled(RefactoringIdentifiers.InlineConstantValue)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseConstantInsteadOfReadOnlyField, "Use constant instead of read-only field", IsEnabled(RefactoringIdentifiers.UseConstantInsteadOfReadOnlyField)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertForEachToFor, "Convert 'foreach' to 'for'", IsEnabled(RefactoringIdentifiers.ConvertForEachToFor)));
@@ -154,7 +150,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator, "Replace prefix operator to postfix operator", IsEnabled(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplacePropertyWithMethod, "Replace property with method", IsEnabled(RefactoringIdentifiers.ReplacePropertyWithMethod)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertRegularStringLiteralToVerbatimStringLiteral, "Convert regular string literal to verbatim string literal", IsEnabled(RefactoringIdentifiers.ConvertRegularStringLiteralToVerbatimStringLiteral)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertReturnToIf, "Convert '(yield) return' to 'if'", IsEnabled(RefactoringIdentifiers.ConvertReturnToIf)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertReturnStatementToIf, "Convert 'return' statement to 'if'", IsEnabled(RefactoringIdentifiers.ConvertReturnStatementToIf)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.CallIndexOfInsteadOfContains, "Call string.IndexOf instead of string.Contains", IsEnabled(RefactoringIdentifiers.CallIndexOfInsteadOfContains)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertStringFormatToInterpolatedString, "Convert 'string.Format' to interpolated string", IsEnabled(RefactoringIdentifiers.ConvertStringFormatToInterpolatedString)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertSwitchToIf, "Convert 'switch' to 'if'", IsEnabled(RefactoringIdentifiers.ConvertSwitchToIf)));
@@ -179,7 +175,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertIfToConditionalExpression, "Convert 'if' to ?:", IsEnabled(RefactoringIdentifiers.ConvertIfToConditionalExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseElementAccessInsteadOfLinqMethod, "Use element access instead of LINQ method", IsEnabled(RefactoringIdentifiers.UseElementAccessInsteadOfLinqMethod)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertBlockBodyToExpressionBody, "Convert block body to expression-body", IsEnabled(RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod, "Use lambda expression instead of anonymous method", IsEnabled(RefactoringIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.UseLambdaInsteadOfAnonymousMethod, "Use lambda instead of anonymous method", IsEnabled(RefactoringIdentifiers.UseLambdaInsteadOfAnonymousMethod)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral, "Convert \"\" to string.Empty", IsEnabled(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapStatementsInCondition, "Wrap statements in condition", IsEnabled(RefactoringIdentifiers.WrapStatementsInCondition)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapLinesInPreprocessorDirective, "Wrap lines in preprocessor directive", IsEnabled(RefactoringIdentifiers.WrapLinesInPreprocessorDirective)));
