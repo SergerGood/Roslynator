@@ -602,7 +602,7 @@ namespace Roslynator.Formatting.CSharp
             id:                 DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile, 
             title:              "Normalize whitespace at the end of a file.", 
             messageFormat:      "Normalize whitespace at the end of a file.", 
-            category:           DiagnosticCategories.Formatting, 
+            category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 

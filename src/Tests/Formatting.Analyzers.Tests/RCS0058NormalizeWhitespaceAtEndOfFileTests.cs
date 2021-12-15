@@ -116,7 +116,7 @@ class C
 [||]", @"
 class C
 {
-}", options: Options.EnableConfigOption(AnalyzerOptions.PreferNoNewlineAtEndOfFile.OptionKey));
+}", options: Options.EnableConfigOption(GlobalOptions.PreferNoNewlineAtEndOfFile.Key));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
@@ -124,7 +124,7 @@ class C
         {
             await VerifyDiagnosticAndFixAsync(@"
 [||]",
-"", options: Options.EnableConfigOption(AnalyzerOptions.PreferNoNewlineAtEndOfFile.OptionKey));
+"", options: Options.EnableConfigOption(GlobalOptions.PreferNoNewlineAtEndOfFile.Key));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
@@ -137,7 +137,7 @@ class C
  [||]", @"
 class C
 {
-}", options: Options.EnableConfigOption(AnalyzerOptions.PreferNoNewlineAtEndOfFile.OptionKey));
+}", options: Options.EnableConfigOption(GlobalOptions.PreferNoNewlineAtEndOfFile.Key));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
@@ -152,7 +152,7 @@ class C
   [||]", @"
 class C
 {
-}", options: Options.EnableConfigOption(AnalyzerOptions.PreferNoNewlineAtEndOfFile.OptionKey));
+}", options: Options.EnableConfigOption(GlobalOptions.PreferNoNewlineAtEndOfFile.Key));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
@@ -167,7 +167,7 @@ class C
 class C
 {
 }
-//x", options: Options.EnableConfigOption(AnalyzerOptions.PreferNoNewlineAtEndOfFile.OptionKey));
+//x", options: Options.EnableConfigOption(GlobalOptions.PreferNoNewlineAtEndOfFile.Key));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
@@ -182,7 +182,7 @@ class C
 class C
 {
 }
-/** x **/", options: Options.EnableConfigOption(AnalyzerOptions.PreferNoNewlineAtEndOfFile.OptionKey));
+/** x **/", options: Options.EnableConfigOption(GlobalOptions.PreferNoNewlineAtEndOfFile.Key));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
@@ -199,7 +199,7 @@ class C
 {
 }
 #if DEBUG
-#endif", options: Options.EnableConfigOption(AnalyzerOptions.PreferNoNewlineAtEndOfFile.OptionKey));
+#endif", options: Options.EnableConfigOption(GlobalOptions.PreferNoNewlineAtEndOfFile.Key));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
@@ -218,7 +218,7 @@ class C
             await VerifyNoDiagnosticAsync(@"
 class C
 {
-}", options: Options.EnableConfigOption(AnalyzerOptions.PreferNoNewlineAtEndOfFile.OptionKey));
+}", options: Options.EnableConfigOption(GlobalOptions.PreferNoNewlineAtEndOfFile.Key));
         }
     }
 }

@@ -4,6 +4,8 @@ namespace Roslynator.Configuration
 {
     internal static class OptionKeys
     {
+        public const string PreferNoNewlineAtEndOfFile = "roslynator.prefer_no_newline_at_end_of_file";
+
         public const string CompilerDiagnosticFixEnabled = "roslynator.compiler_diagnostic_fix.enabled";
         public const string CompilerDiagnosticFixPrefix = "roslynator.compiler_diagnostic_fix.";
         public const string MaxLineLength = "roslynator.max_line_length";
