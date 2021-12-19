@@ -4,7 +4,7 @@ namespace Roslynator.Configuration
 {
     internal static class OptionKeys
     {
-        public const string PreferTargetTypedNewExpressionWhenTypeIsObvious = "prefer_target_typed_new_expression_when_type_is_obvious";
+        public const string PreferTargetTypedNewExpressionWhenTypeIsObvious = "roslynator.prefer_target_typed_new_expression_when_type_is_obvious";
 
         public const string CompilerDiagnosticFixEnabled = "roslynator.compiler_diagnostic_fix.enabled";
         public const string CompilerDiagnosticFixPrefix = "roslynator.compiler_diagnostic_fix.";
