@@ -72,6 +72,43 @@ namespace Roslynator
             return false;
         }
 
+        public static bool IsEnabled(
+            this OptionDescriptor analyzerOption,
+            SyntaxNodeAnalysisContext context)
+        {
+            return IsEnabled(
+                analyzerOption,
+                context.Node.SyntaxTree,
+                context.Options);
+        }
+
+        public static bool IsEnabled(
+            this OptionDescriptor analyzerOption,
+            SymbolAnalysisContext context)
+        {
+            return IsEnabled(
+                analyzerOption,
+                context.Symbol.Locations[0].SourceTree,
+                context.Options);
+        }
+
+        public static bool IsEnabled(
+            this OptionDescriptor analyzerOption,
+            SyntaxTree syntaxTree,
+            AnalyzerOptions analyzerOptions)
+        {
+            if (analyzerOptions
+                .AnalyzerConfigOptionsProvider
+                .GetOptions(syntaxTree)
+                .TryGetValue(analyzerOption.Key, out string value)
+                && bool.TryParse(value, out bool result))
+            {
+                return result;
+            }
+
+            return false;
+        }
+
         public static bool TryGetInt32Value(
             this OptionDescriptor option,
             SyntaxTree syntaxTree,

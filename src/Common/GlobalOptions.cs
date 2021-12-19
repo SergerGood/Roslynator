@@ -17,5 +17,11 @@ namespace Roslynator
             defaultValue: OptionDefaultValues.PrefixFieldIdentifierWithUnderscore.ToString().ToLowerInvariant(),
             description: "Prefix field identifier with underscore",
             valuePlaceholder: "true|false");
+
+        public static readonly OptionDescriptor PreferTargetTypedNewExpressionWhenTypeIsObvious = new OptionDescriptor(
+            OptionKeys.PreferTargetTypedNewExpressionWhenTypeIsObvious,
+            defaultValue: "false",
+            description: "Prefer target-typed new expression when type is obvious",
+            valuePlaceholder: "true|false");
     }
 }

@@ -9,19 +9,8 @@ using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Roslynator.CSharp.Analysis
 {
-    // prefer_target_typed_new_expression_when_type_is_obvious
-    //  throw
-    //  property initialization
-    //  field initialization
-    //  local initialization
-    //  return (single statement)
-    //  expression body
-    //  array initializer
-    //
-    // return
-    // yield return
-    // assignment
-    // coalesce ?
+    //TODO: prefer_target_typed_new_expression_when_type_is_obvious
+    //TODO: Use implicit/explicit type when creating a new object
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class UseTargetTypedNewExpressionAnalyzer : BaseDiagnosticAnalyzer
     {
@@ -42,7 +31,13 @@ namespace Roslynator.CSharp.Analysis
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeObjectCreationExpression(f), SyntaxKind.ObjectCreationExpression);
+            context.RegisterCompilationStartAction(startContext =>
+            {
+                if (((CSharpCompilation)startContext.Compilation).LanguageVersion >= LanguageVersion.CSharp9)
+                {
+                    startContext.RegisterSyntaxNodeAction(f => AnalyzeObjectCreationExpression(f), SyntaxKind.ObjectCreationExpression);
+                }
+            });
         }
 
         private static void AnalyzeObjectCreationExpression(SyntaxNodeAnalysisContext context)
@@ -50,17 +45,6 @@ namespace Roslynator.CSharp.Analysis
             var objectCreation = (ObjectCreationExpressionSyntax)context.Node;
 
             SyntaxNode parent = objectCreation.Parent;
-
-            InitializerExpressionSyntax initializer = objectCreation.Initializer;
-
-            if (initializer != null)
-            {
-                foreach (ExpressionSyntax expression in initializer.Expressions)
-                {
-                    if (expression.IsKind(SyntaxKind.ObjectCreationExpression))
-                        return;
-                }
-            }
 
             switch (parent.Kind())
             {
@@ -87,8 +71,13 @@ namespace Roslynator.CSharp.Analysis
 
                             if (parent.IsKind(SyntaxKind.VariableDeclaration))
                             {
-                                AnalyzeType(context, objectCreation, ((VariableDeclarationSyntax)parent).Type);
-                                return;
+                                SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.LocalDeclarationStatement, SyntaxKind.UsingStatement), parent.Parent);
+
+                                if (parent.IsParentKind(SyntaxKind.FieldDeclaration))
+                                {
+                                    AnalyzeType(context, objectCreation, ((VariableDeclarationSyntax)parent).Type);
+                                    return;
+                                }
                             }
                         }
                         else if (parent.IsKind(SyntaxKind.PropertyDeclaration))
@@ -99,17 +88,44 @@ namespace Roslynator.CSharp.Analysis
 
                         break;
                     }
+                case SyntaxKind.ArrowExpressionClause:
+                    {
+                        TypeSyntax type = DetermineReturnType(parent.Parent);
+
+                        SyntaxDebug.Assert(type is not null, parent);
+
+                        if (type is not null)
+                            AnalyzeType(context, objectCreation, type);
+
+                        break;
+                    }
+                case SyntaxKind.ArrayInitializerExpression:
+                    {
+                        if (parent.IsParentKind(SyntaxKind.ArrayCreationExpression))
+                        {
+                            var arrayCreationExpression = (ArrayCreationExpressionSyntax)parent.Parent;
+
+                            AnalyzeType(context, objectCreation, arrayCreationExpression.Type.ElementType);
+                            return;
+                        }
+
+                        SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.ImplicitArrayCreationExpression), parent.Parent);
+                        break;
+                    }
                 case SyntaxKind.ReturnStatement:
                 case SyntaxKind.YieldReturnStatement:
                     {
-                        for (SyntaxNode node = parent.Parent; node != null; node = node.Parent)
+                        if (PreferTargetTypedNewExpressionWhenTypeIsObvious(context))
+                            return;
+
+                        for (SyntaxNode node = parent.Parent; node is not null; node = node.Parent)
                         {
                             if (CSharpFacts.IsAnonymousFunctionExpression(node.Kind()))
                                 return;
 
                             TypeSyntax type = DetermineReturnType(node);
 
-                            if (type != null)
+                            if (type is not null)
                             {
                                 if (parent.IsKind(SyntaxKind.YieldReturnStatement))
                                 {
@@ -134,44 +150,24 @@ namespace Roslynator.CSharp.Analysis
 
                         break;
                     }
-                case SyntaxKind.ArrowExpressionClause:
-                    {
-                        TypeSyntax type = DetermineReturnType(parent.Parent);
-
-                        SyntaxDebug.Assert(type != null, parent);
-
-                        if (type != null)
-                            AnalyzeType(context, objectCreation, type);
-
-                        break;
-                    }
-                case SyntaxKind.ArrayInitializerExpression:
-                    {
-                        if (parent.IsParentKind(SyntaxKind.ArrayCreationExpression))
-                        {
-                            var arrayCreationExpression = (ArrayCreationExpressionSyntax)parent.Parent;
-
-                            AnalyzeType(context, objectCreation, arrayCreationExpression.Type.ElementType);
-                            return;
-                        }
-
-                        SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.ImplicitArrayCreationExpression), parent.Parent);
-                        break;
-                    }
                 case SyntaxKind.SimpleAssignmentExpression:
                 case SyntaxKind.CoalesceAssignmentExpression:
                 case SyntaxKind.AddAssignmentExpression:
                 case SyntaxKind.SubtractAssignmentExpression:
                     {
-                        var assignment = (AssignmentExpressionSyntax)parent;
+                        if (PreferTargetTypedNewExpressionWhenTypeIsObvious(context))
+                            return;
 
+                        var assignment = (AssignmentExpressionSyntax)parent;
                         AnalyzeExpression(context, objectCreation, assignment.Left);
                         break;
                     }
                 case SyntaxKind.CoalesceExpression:
                     {
-                        var coalesceExpression = (BinaryExpressionSyntax)parent;
+                        if (PreferTargetTypedNewExpressionWhenTypeIsObvious(context))
+                            return;
 
+                        var coalesceExpression = (BinaryExpressionSyntax)parent;
                         AnalyzeExpression(context, objectCreation, coalesceExpression.Left);
                         break;
                     }
@@ -187,6 +183,11 @@ namespace Roslynator.CSharp.Analysis
                     }
 #endif
             }
+        }
+
+        private static bool PreferTargetTypedNewExpressionWhenTypeIsObvious(SyntaxNodeAnalysisContext context)
+        {
+            return GlobalOptions.PreferTargetTypedNewExpressionWhenTypeIsObvious.IsEnabled(context);
         }
 
         private static void AnalyzeType(
@@ -227,43 +228,25 @@ namespace Roslynator.CSharp.Analysis
             switch (node.Kind())
             {
                 case SyntaxKind.LocalFunctionStatement:
-                    {
-                        return ((LocalFunctionStatementSyntax)node).ReturnType;
-                    }
+                    return ((LocalFunctionStatementSyntax)node).ReturnType;
                 case SyntaxKind.MethodDeclaration:
-                    {
-                        return ((MethodDeclarationSyntax)node).ReturnType;
-                    }
+                    return ((MethodDeclarationSyntax)node).ReturnType;
                 case SyntaxKind.OperatorDeclaration:
-                    {
-                        return ((OperatorDeclarationSyntax)node).ReturnType;
-                    }
+                    return ((OperatorDeclarationSyntax)node).ReturnType;
                 case SyntaxKind.ConversionOperatorDeclaration:
-                    {
-                        return ((ConversionOperatorDeclarationSyntax)node).Type;
-                    }
+                    return ((ConversionOperatorDeclarationSyntax)node).Type;
                 case SyntaxKind.PropertyDeclaration:
-                    {
-                        return ((PropertyDeclarationSyntax)node).Type;
-                    }
+                    return ((PropertyDeclarationSyntax)node).Type;
                 case SyntaxKind.IndexerDeclaration:
-                    {
-                        return ((IndexerDeclarationSyntax)node).Type;
-                    }
-                case SyntaxKind.GetAccessorDeclaration:
-                case SyntaxKind.SetAccessorDeclaration:
-                case SyntaxKind.AddAccessorDeclaration:
-                case SyntaxKind.RemoveAccessorDeclaration:
-                case SyntaxKind.InitAccessorDeclaration:
-                case SyntaxKind.UnknownAccessorDeclaration:
-                    {
-                        SyntaxDebug.Assert(node.IsParentKind(SyntaxKind.AccessorList), node.Parent);
+                    return ((IndexerDeclarationSyntax)node).Type;
+            }
 
-                        if (node.IsParentKind(SyntaxKind.AccessorList))
-                            return DetermineReturnType(node.Parent.Parent);
+            if (node is AccessorDeclarationSyntax)
+            {
+                SyntaxDebug.Assert(node.IsParentKind(SyntaxKind.AccessorList), node.Parent);
 
-                        return null;
-                    }
+                if (node.IsParentKind(SyntaxKind.AccessorList))
+                    return DetermineReturnType(node.Parent.Parent);
             }
 
             return null;

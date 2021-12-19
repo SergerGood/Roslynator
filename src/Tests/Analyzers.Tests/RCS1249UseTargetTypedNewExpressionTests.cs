@@ -13,28 +13,6 @@ namespace Roslynator.CSharp.Analysis.Tests
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseTargetTypedNewExpression;
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseTargetTypedNewExpression)]
-        public async Task Test_LocalDeclaration()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
-class C
-{
-    void M()
-    {
-        string s = new [|string|](' ', 1);
-    }
-}
-", @"
-class C
-{
-    void M()
-    {
-        string s = new(' ', 1);
-    }
-}
-");
-        }
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseTargetTypedNewExpression)]
         public async Task Test_ThrowStatement()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -219,6 +197,97 @@ class C
         string s = null;
         string s2 = null;
         s = s2 ?? new(' ', 1);
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseTargetTypedNewExpression)]
+        public async Task TestNoDiagnostic_ReturnStatement()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    string M()
+    {
+        return new string(' ', 1);
+    }
+}
+", options: Options.AddConfigOption(GlobalOptions.PreferTargetTypedNewExpressionWhenTypeIsObvious.Key, true));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseTargetTypedNewExpression)]
+        public async Task TestNoDiagnostic_YieldReturnStatement()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+
+class C
+{
+    IEnumerable<string> M()
+    {
+        yield return new string(' ', 1);
+    }
+}
+", options: Options.AddConfigOption(GlobalOptions.PreferTargetTypedNewExpressionWhenTypeIsObvious.Key, true));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseTargetTypedNewExpression)]
+        public async Task TestNoDiagnostic_Assignment()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        string s = null;
+        s = new string(' ', 1);
+    }
+}
+", options: Options.AddConfigOption(GlobalOptions.PreferTargetTypedNewExpressionWhenTypeIsObvious.Key, true));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseTargetTypedNewExpression)]
+        public async Task TestNoDiagnostic_CoalesceExpression()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        string s = null;
+        string s2 = null;
+        s = s2 ?? new string(' ', 1);
+    }
+}
+", options: Options.AddConfigOption(GlobalOptions.PreferTargetTypedNewExpressionWhenTypeIsObvious.Key, true));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseTargetTypedNewExpression)]
+        public async Task Test_LocalDeclaration()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        string s = new string(' ', 1);
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseTargetTypedNewExpression)]
+        public async Task Test_UsingStatement()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        using (var x = new System.IO.StringReader(""""))
+        {
+        }
     }
 }
 ");
