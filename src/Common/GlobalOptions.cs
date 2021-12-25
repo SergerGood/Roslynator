@@ -18,10 +18,10 @@ namespace Roslynator
             description: "Prefix field identifier with underscore",
             valuePlaceholder: "true|false");
 
-        public static readonly OptionDescriptor PreferNoNewlineAtEndOfFile = new OptionDescriptor(
+        public static readonly OptionDescriptor PreferNoNewlineAtEndOfFile = new(
             OptionKeys.PreferNoNewlineAtEndOfFile,
             defaultValue: "false",
-            description: "Prefer no newline at end of file",
+            description: "Prefer no new line at the end of a file",
             valuePlaceholder: "true|false");
     }
 }
