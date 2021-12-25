@@ -48,9 +48,6 @@ dotnet_diagnostic.RCS0002.severity = none
 # Add empty line after using directive list
 dotnet_diagnostic.RCS0003.severity = none
 
-# Add empty line before closing brace of 'do' statement
-dotnet_diagnostic.RCS0004.severity = none
-
 # Add empty line before #endregion
 dotnet_diagnostic.RCS0005.severity = none
 
@@ -1228,6 +1225,7 @@ roslynator.compiler_diagnostic_fix.CS8070.enabled = true
 roslynator.compiler_diagnostic_fix.CS8112.enabled = true
 roslynator.compiler_diagnostic_fix.CS8139.enabled = true
 roslynator.compiler_diagnostic_fix.CS8340.enabled = true
+roslynator.compiler_diagnostic_fix.CS8403.enabled = true
 roslynator.compiler_diagnostic_fix.CS8618.enabled = true
 roslynator.compiler_diagnostic_fix.CS8625.enabled = true
 roslynator.compiler_diagnostic_fix.CS8632.enabled = true
