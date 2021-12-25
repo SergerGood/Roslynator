@@ -6,6 +6,6 @@
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
-    <Summary>This analyzer enforces no newline at the beginning of a file.</Summary>
+    <Summary>This analyzer enforces no new line at the beginning of a file.</Summary>
   </Analyzer>
 </Analyzers>
