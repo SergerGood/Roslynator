@@ -2,7 +2,7 @@
 <Analyzers>
   <!-- Use implicit/explicit type when creating a new object -->
   <Analyzer Identifier="UseTargetTypedNewExpression" IsDevelopment="true">
-    <Id>RCS1249</Id>
+    <Id>RCS1250</Id>
     <Title>Use target-typed new expression.</Title>
     <Category>Roslynator</Category>
     <DefaultSeverity>Info</DefaultSeverity>

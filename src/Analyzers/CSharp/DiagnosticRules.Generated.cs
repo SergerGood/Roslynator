@@ -2429,7 +2429,7 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.UsePatternMatchingToCheckForNullOrViceVersa, 
             customTags:         Array.Empty<string>());
 
-        /// <summary>RCS1249</summary>
+        /// <summary>RCS1250</summary>
         public static readonly DiagnosticDescriptor UseTargetTypedNewExpression = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseTargetTypedNewExpression, 
             title:              "Use target-typed new expression.", 

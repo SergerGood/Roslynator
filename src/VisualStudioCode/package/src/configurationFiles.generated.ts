@@ -36,6 +36,7 @@ is_global = true
 
 roslynator.max_line_length = 140
 roslynator.prefer_no_new_line_at_end_of_file = false
+roslynator.prefer_target_typed_new_expression_when_type_is_obvious = false
 roslynator.prefix_field_identifier_with_underscore = false
 
 # Analyzers
@@ -828,6 +829,9 @@ dotnet_diagnostic.RCS1247.severity = suggestion
 dotnet_diagnostic.RCS1248.severity = none
 # Use comparison instead of pattern matching to check for null
 roslynator.RCS1248.invert = false
+
+# Use target-typed new expression
+dotnet_diagnostic.RCS1250.severity = suggestion
 
 # Use pattern matching
 dotnet_diagnostic.RCS9001.severity = silent
