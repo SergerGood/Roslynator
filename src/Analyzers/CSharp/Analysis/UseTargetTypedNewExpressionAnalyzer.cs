@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Roslynator.CSharp.Analysis
 {
-    //TODO: prefer_target_typed_new_expression_when_type_is_obvious
     //TODO: Use implicit/explicit type when creating a new object
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class UseTargetTypedNewExpressionAnalyzer : BaseDiagnosticAnalyzer
