@@ -2430,16 +2430,16 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1250</summary>
-        public static readonly DiagnosticDescriptor UseTargetTypedNewExpression = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UseTargetTypedNewExpression, 
-            title:              "Use target-typed new expression.", 
-            messageFormat:      "Use target-typed new expression.", 
+        public static readonly DiagnosticDescriptor UseImplicitExplicitObjectCreation = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.UseImplicitExplicitObjectCreation, 
+            title:              "Use implicit/explicit object creation.", 
+            messageFormat:      "Use {0} object creation.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseTargetTypedNewExpression, 
-            customTags:         WellKnownDiagnosticTags.Unnecessary);
+            helpLinkUri:        DiagnosticIdentifiers.UseImplicitExplicitObjectCreation, 
+            customTags:         Array.Empty<string>());
 
         public static partial class ReportOnly
         {

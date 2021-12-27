@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Analyzers>
-  <!-- Use implicit/explicit type when creating a new object -->
-  <Analyzer Identifier="UseTargetTypedNewExpression" IsDevelopment="true">
+  <Analyzer Identifier="UseImplicitExplicitObjectCreation" IsDevelopment="true">
     <Id>RCS1250</Id>
-    <Title>Use target-typed new expression.</Title>
+    <Title>Use implicit/explicit object creation.</Title>
+    <MessageFormat>Use {0} object creation.</MessageFormat>
     <Category>Roslynator</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>true</SupportsFadeOut>
     <MinLanguageVersion>9.0</MinLanguageVersion>
     <Samples>
       <Sample>

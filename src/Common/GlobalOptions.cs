@@ -24,10 +24,28 @@ namespace Roslynator
             description: "Prefer no new line at the end of a file",
             valuePlaceholder: "true|false");
 
-        public static readonly OptionDescriptor PreferTargetTypedNewExpressionWhenTypeIsObvious = new OptionDescriptor(
-            OptionKeys.PreferTargetTypedNewExpressionWhenTypeIsObvious,
+        public static readonly OptionDescriptor PreferImplicitObjectCreation = new(
+            OptionKeys.PreferImplicitObjectCreation,
             defaultValue: "false",
-            description: "Prefer target-typed new expression when type is obvious",
+            description: "Prefer implicit object creation",
+            valuePlaceholder: "true|false");
+
+        public static readonly OptionDescriptor PreferImplicitObjectCreationWhenTypeIsObvious = new(
+            OptionKeys.PreferImplicitObjectCreationWhenTypeIsObvious,
+            defaultValue: "false",
+            description: "Prefer implicit object creation when type is obvious",
+            valuePlaceholder: "true|false");
+
+        public static readonly OptionDescriptor PreferExplicitObjectCreation = new(
+            OptionKeys.PreferExplicitObjectCreation,
+            defaultValue: "false",
+            description: "Prefer explicit object creation",
+            valuePlaceholder: "true|false");
+
+        public static readonly OptionDescriptor PreferVarInsteadOfImplicitObjectCreation = new(
+            OptionKeys.PreferVarInsteadOfImplicitObjectCreation,
+            defaultValue: "false",
+            description: "Prefer 'var' instead of implicit object creation",
             valuePlaceholder: "true|false");
     }
 }

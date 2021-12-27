@@ -64,23 +64,26 @@ namespace Roslynator
 
         public static bool IsEnabled(
             this OptionDescriptor analyzerOption,
-            SyntaxNodeAnalysisContext context)
+            SyntaxNodeAnalysisContext context,
+            bool defaultValue = false)
         {
-            return IsEnabled(analyzerOption, context.Node.SyntaxTree, context.Options);
+            return IsEnabled(analyzerOption, context.Node.SyntaxTree, context.Options, defaultValue);
         }
 
         public static bool IsEnabled(
             this OptionDescriptor analyzerOption,
             SyntaxTree syntaxTree,
-            AnalyzerOptions analyzerOptions)
+            AnalyzerOptions analyzerOptions,
+            bool defaultValue = false)
         {
-            return IsEnabled(analyzerOption.Key, syntaxTree, analyzerOptions);
+            return IsEnabled(analyzerOption.Key, syntaxTree, analyzerOptions, defaultValue);
         }
 
         private static bool IsEnabled(
             string optionKey,
             SyntaxTree syntaxTree,
-            AnalyzerOptions analyzerOptions)
+            AnalyzerOptions analyzerOptions,
+            bool defaultValue = false)
         {
             if (analyzerOptions
                 .AnalyzerConfigOptionsProvider
@@ -91,7 +94,7 @@ namespace Roslynator
                 return result;
             }
 
-            return false;
+            return defaultValue;
         }
 
         public static bool TryGetInt32Value(
