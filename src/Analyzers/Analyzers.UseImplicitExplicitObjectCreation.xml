@@ -14,6 +14,12 @@
         <After><![CDATA[private string _value = new(' ', 1)]]></After>
       </Sample>
     </Samples>
+    <GlobalOptions>
+		<Option Key="roslynator.prefer_implicit_object_creation" />
+		<Option Key="roslynator.prefer_implicit_object_creation_when_type_is_obvious" />
+		<Option Key="roslynator.prefer_explicit_object_creation" />
+		<Option Key="roslynator.prefer_var_instead_of_implicit_object_creation" />
+    </GlobalOptions>
     <Links>
       <Link>
         <Url>https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-9.0/target-typed-new</Url>
