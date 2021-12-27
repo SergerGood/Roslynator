@@ -480,5 +480,13 @@ namespace Roslynator.CSharp.Analysis
         {
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseImplicitExplicitObjectCreation, implicitObjectCreation, "explicit");
         }
+
+        private enum ObjectCreationKind
+        {
+            None,
+            Explicit,
+            Implicit,
+            ImplicitWhenTypeIsObvious,
+        }
     }
 }
