@@ -34,12 +34,24 @@ is_global = true
 
 # Options
 
+# Applicable to: RCS0056
 roslynator.max_line_length = 140
+
+# Applicable to: RCS1250
 roslynator.prefer_explicit_object_creation = false
+
+# Applicable to: RCS1250
 roslynator.prefer_implicit_object_creation = false
+
+# Applicable to: RCS1250
 roslynator.prefer_implicit_object_creation_when_type_is_obvious = false
-roslynator.prefer_no_new_line_at_end_of_file = false
-roslynator.prefer_var_instead_of_implicit_object_creation = false
+
+# Applicable to: RCS0058
+roslynator.prefer_new_line_at_end_of_file = true
+
+# Applicable to: RCS1250
+roslynator.prefer_var_instead_of_implicit_object_creation = true
+
 roslynator.prefix_field_identifier_with_underscore = false
 
 # Analyzers

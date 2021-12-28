@@ -15,10 +15,10 @@
       </Sample>
     </Samples>
     <GlobalOptions>
-		<Option Key="roslynator.prefer_implicit_object_creation" />
-		<Option Key="roslynator.prefer_implicit_object_creation_when_type_is_obvious" />
-		<Option Key="roslynator.prefer_explicit_object_creation" />
-		<Option Key="roslynator.prefer_var_instead_of_implicit_object_creation" />
+      <Option Key="roslynator.prefer_implicit_object_creation" />
+      <Option Key="roslynator.prefer_implicit_object_creation_when_type_is_obvious" />
+      <Option Key="roslynator.prefer_explicit_object_creation" />
+      <Option Key="roslynator.prefer_var_instead_of_implicit_object_creation" />
     </GlobalOptions>
     <Links>
       <Link>

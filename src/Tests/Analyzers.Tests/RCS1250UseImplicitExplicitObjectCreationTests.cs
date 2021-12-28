@@ -31,7 +31,7 @@ class C
         throw new();
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -47,7 +47,7 @@ class C
 {
     string M() => throw new();
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -63,7 +63,7 @@ class C
 {
     string P { get; } = new(' ', 1);
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -79,7 +79,7 @@ class C
 {
     string F = new(' ', 1);
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -93,7 +93,7 @@ class C
         string s = new string(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -115,8 +115,8 @@ class C
         string s = new(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreation.Key, true)
-                .AddConfigOption(GlobalOptions.PreferVarInsteadOfImplicitObjectCreation.Key, false));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreation, true)
+                .AddConfigOption(ConfigOptionKeys.PreferVarInsteadOfImplicitObjectCreation, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -138,8 +138,8 @@ class C
         string s = new(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreation.Key, true)
-                .AddConfigOption(GlobalOptions.PreferVarInsteadOfImplicitObjectCreation.Key, false));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreation, true)
+                .AddConfigOption(ConfigOptionKeys.PreferVarInsteadOfImplicitObjectCreation, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -157,7 +157,7 @@ class C
         }
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -187,8 +187,8 @@ class C
         }
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreation.Key, true)
-                .AddConfigOption(GlobalOptions.PreferVarInsteadOfImplicitObjectCreation.Key, false));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreation, true)
+                .AddConfigOption(ConfigOptionKeys.PreferVarInsteadOfImplicitObjectCreation, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -218,8 +218,8 @@ class C
         }
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreation.Key, true)
-                .AddConfigOption(GlobalOptions.PreferVarInsteadOfImplicitObjectCreation.Key, false));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreation, true)
+                .AddConfigOption(ConfigOptionKeys.PreferVarInsteadOfImplicitObjectCreation, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -235,7 +235,7 @@ class C
 {
     string M() => new(' ', 1);
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -257,7 +257,7 @@ class C
         var arr = new string[] { new(' ', 1) };
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -279,7 +279,7 @@ class C
         return new(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -305,7 +305,7 @@ class C
         yield return new(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -329,7 +329,7 @@ class C
         s = new(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -355,7 +355,7 @@ class C
         s = s2 ?? new(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -377,7 +377,7 @@ class C
         throw new();
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreationWhenTypeIsObvious.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreationWhenTypeIsObvious, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -393,7 +393,7 @@ class C
 {
     string M() => throw new();
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreationWhenTypeIsObvious.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreationWhenTypeIsObvious, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -409,7 +409,7 @@ class C
 {
     string P { get; } = new(' ', 1);
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreationWhenTypeIsObvious.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreationWhenTypeIsObvious, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -425,7 +425,7 @@ class C
 {
     string F = new(' ', 1);
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreationWhenTypeIsObvious.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreationWhenTypeIsObvious, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -439,7 +439,7 @@ class C
         string s = new string(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreationWhenTypeIsObvious.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreationWhenTypeIsObvious, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -461,8 +461,8 @@ class C
         string s = new(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreationWhenTypeIsObvious.Key, true)
-                .AddConfigOption(GlobalOptions.PreferVarInsteadOfImplicitObjectCreation.Key, false));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreationWhenTypeIsObvious, true)
+                .AddConfigOption(ConfigOptionKeys.PreferVarInsteadOfImplicitObjectCreation, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -484,8 +484,8 @@ class C
         string s = new(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreationWhenTypeIsObvious.Key, true)
-                .AddConfigOption(GlobalOptions.PreferVarInsteadOfImplicitObjectCreation.Key, false));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreationWhenTypeIsObvious, true)
+                .AddConfigOption(ConfigOptionKeys.PreferVarInsteadOfImplicitObjectCreation, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -503,7 +503,7 @@ class C
         }
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreationWhenTypeIsObvious.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreationWhenTypeIsObvious, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -533,8 +533,8 @@ class C
         }
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreationWhenTypeIsObvious.Key, true)
-                .AddConfigOption(GlobalOptions.PreferVarInsteadOfImplicitObjectCreation.Key, false));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreationWhenTypeIsObvious, true)
+                .AddConfigOption(ConfigOptionKeys.PreferVarInsteadOfImplicitObjectCreation, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -564,8 +564,8 @@ class C
         }
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreationWhenTypeIsObvious.Key, true)
-                .AddConfigOption(GlobalOptions.PreferVarInsteadOfImplicitObjectCreation.Key, false));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreationWhenTypeIsObvious, true)
+                .AddConfigOption(ConfigOptionKeys.PreferVarInsteadOfImplicitObjectCreation, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -581,7 +581,7 @@ class C
 {
     string M() => new(' ', 1);
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreationWhenTypeIsObvious.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreationWhenTypeIsObvious, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -603,7 +603,7 @@ class C
         var arr = new string[] { new(' ', 1) };
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreationWhenTypeIsObvious.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreationWhenTypeIsObvious, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -617,7 +617,7 @@ class C
         return new string(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreationWhenTypeIsObvious.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreationWhenTypeIsObvious, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -633,7 +633,7 @@ class C
         yield return new string(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreationWhenTypeIsObvious.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreationWhenTypeIsObvious, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -648,7 +648,7 @@ class C
         s = new string(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreationWhenTypeIsObvious.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreationWhenTypeIsObvious, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -664,7 +664,7 @@ class C
         s = s2 ?? new string(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferImplicitObjectCreationWhenTypeIsObvious.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferImplicitObjectCreationWhenTypeIsObvious, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -686,7 +686,7 @@ class C
         throw new System.Exception();
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -702,7 +702,7 @@ class C
 {
     string M() => throw new System.Exception();
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -718,7 +718,7 @@ class C
 {
     string P { get; } = new string(' ', 1);
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -734,7 +734,7 @@ class C
 {
     string F = new string(' ', 1);
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -748,7 +748,7 @@ class C
         string s = new string(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -770,8 +770,8 @@ class C
         string s = new string(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true)
-                .AddConfigOption(GlobalOptions.PreferVarInsteadOfImplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true)
+                .AddConfigOption(ConfigOptionKeys.PreferVarInsteadOfImplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -793,8 +793,8 @@ class C
         string s = new string(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true)
-                .AddConfigOption(GlobalOptions.PreferVarInsteadOfImplicitObjectCreation.Key, false));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true)
+                .AddConfigOption(ConfigOptionKeys.PreferVarInsteadOfImplicitObjectCreation, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -812,7 +812,7 @@ class C
         }
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -842,8 +842,8 @@ class C
         }
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true)
-                .AddConfigOption(GlobalOptions.PreferVarInsteadOfImplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true)
+                .AddConfigOption(ConfigOptionKeys.PreferVarInsteadOfImplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -873,8 +873,8 @@ class C
         }
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true)
-                .AddConfigOption(GlobalOptions.PreferVarInsteadOfImplicitObjectCreation.Key, false));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true)
+                .AddConfigOption(ConfigOptionKeys.PreferVarInsteadOfImplicitObjectCreation, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -890,7 +890,7 @@ class C
 {
     string M() => new string(' ', 1);
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -912,7 +912,7 @@ class C
         var arr = new string[] { new string(' ', 1) };
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -926,7 +926,7 @@ class C
         return new string(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -942,7 +942,7 @@ class C
         yield return new string(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -957,7 +957,7 @@ class C
         s = new string(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -973,7 +973,7 @@ class C
         s = s2 ?? new string(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -987,7 +987,7 @@ class C
         throw new System.Exception();
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -998,7 +998,7 @@ class C
 {
     string M() => throw new System.Exception();
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -1009,7 +1009,7 @@ class C
 {
     string P { get; } = new string(' ', 1);
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -1020,7 +1020,7 @@ class C
 {
     string F = new string(' ', 1);
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -1034,7 +1034,7 @@ class C
         string s = new string(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -1048,8 +1048,8 @@ class C
         var s = new string(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true)
-                .AddConfigOption(GlobalOptions.PreferVarInsteadOfImplicitObjectCreation.Key, false));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true)
+                .AddConfigOption(ConfigOptionKeys.PreferVarInsteadOfImplicitObjectCreation, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -1063,8 +1063,8 @@ class C
         string s = new string(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true)
-                .AddConfigOption(GlobalOptions.PreferVarInsteadOfImplicitObjectCreation.Key, false));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true)
+                .AddConfigOption(ConfigOptionKeys.PreferVarInsteadOfImplicitObjectCreation, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -1082,7 +1082,7 @@ class C
         }
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -1100,8 +1100,8 @@ class C
         }
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true)
-                .AddConfigOption(GlobalOptions.PreferVarInsteadOfImplicitObjectCreation.Key, false));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true)
+                .AddConfigOption(ConfigOptionKeys.PreferVarInsteadOfImplicitObjectCreation, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -1119,8 +1119,8 @@ class C
         }
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true)
-                .AddConfigOption(GlobalOptions.PreferVarInsteadOfImplicitObjectCreation.Key, false));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true)
+                .AddConfigOption(ConfigOptionKeys.PreferVarInsteadOfImplicitObjectCreation, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -1131,7 +1131,7 @@ class C
 {
     string M() => new string(' ', 1);
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -1145,7 +1145,7 @@ class C
         var arr = new string[] { new string(' ', 1) };
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -1159,7 +1159,7 @@ class C
         return new string(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -1175,7 +1175,7 @@ class C
         yield return new string(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -1190,7 +1190,7 @@ class C
         s = new string(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -1206,7 +1206,7 @@ class C
         s = s2 ?? new string(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferExplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferExplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -1228,7 +1228,7 @@ class C
         var s = new string(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferVarInsteadOfImplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferVarInsteadOfImplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -1242,7 +1242,7 @@ class C
         string s = new(' ', 1);
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferVarInsteadOfImplicitObjectCreation.Key, false));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferVarInsteadOfImplicitObjectCreation, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -1272,7 +1272,7 @@ class C
         }
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferVarInsteadOfImplicitObjectCreation.Key, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferVarInsteadOfImplicitObjectCreation, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitExplicitObjectCreation)]
@@ -1290,7 +1290,7 @@ class C
         }
     }
 }
-", options: Options.AddConfigOption(GlobalOptions.PreferVarInsteadOfImplicitObjectCreation.Key, false));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferVarInsteadOfImplicitObjectCreation, false));
         }
     }
 }

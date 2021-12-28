@@ -357,18 +357,18 @@ namespace Roslynator.CSharp.Analysis
 
         private static bool PreferVarInsteadOfImplicitObjectCreation(SyntaxNodeAnalysisContext context)
         {
-            return GlobalOptions.PreferVarInsteadOfImplicitObjectCreation.IsEnabled(context, defaultValue: true);
+            return context.IsEnabled(ConfigOptions.PreferVarInsteadOfImplicitObjectCreation);
         }
 
         private static ObjectCreationKind GetObjectCreationKind(SyntaxNodeAnalysisContext context)
         {
-            if (GlobalOptions.PreferExplicitObjectCreation.IsEnabled(context))
+            if (context.IsEnabled(ConfigOptions.PreferExplicitObjectCreation))
                 return ObjectCreationKind.Explicit;
 
-            if (GlobalOptions.PreferImplicitObjectCreationWhenTypeIsObvious.IsEnabled(context))
+            if (context.IsEnabled(ConfigOptions.PreferImplicitObjectCreationWhenTypeIsObvious))
                 return ObjectCreationKind.ImplicitWhenTypeIsObvious;
 
-            if (GlobalOptions.PreferImplicitObjectCreation.IsEnabled(context))
+            if (context.IsEnabled(ConfigOptions.PreferImplicitObjectCreation))
                 return ObjectCreationKind.Implicit;
 
             return ObjectCreationKind.None;

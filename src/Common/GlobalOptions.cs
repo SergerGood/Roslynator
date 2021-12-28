@@ -1,51 +1,33 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿//// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using Roslynator.Configuration;
+//using Roslynator.Configuration;
 
-namespace Roslynator
-{
-    public static class GlobalOptions
-    {
-        public static readonly OptionDescriptor MaxLineLength = new(
-            OptionKeys.MaxLineLength,
-            defaultValue: OptionDefaultValues.MaxLineLength.ToString(),
-            description: "Max line length",
-            valuePlaceholder: "<MAX_LINE_LENGTH>");
+//namespace Roslynator
+//{
+//    public static class GlobalOptions
+//    {
+//        public static readonly ConfigOptionDescriptor PreferImplicitObjectCreation = new(
+//            ConfigOptionKeys.PreferImplicitObjectCreation,
+//            defaultValue: "false",
+//            description: "Prefer implicit object creation",
+//            valuePlaceholder: "true|false");
 
-        public static readonly OptionDescriptor PrefixFieldIdentifierWithUnderscore = new(
-            OptionKeys.PrefixFieldIdentifierWithUnderscore,
-            defaultValue: OptionDefaultValues.PrefixFieldIdentifierWithUnderscore.ToString().ToLowerInvariant(),
-            description: "Prefix field identifier with underscore",
-            valuePlaceholder: "true|false");
+//        public static readonly ConfigOptionDescriptor PreferImplicitObjectCreationWhenTypeIsObvious = new(
+//            ConfigOptionKeys.PreferImplicitObjectCreationWhenTypeIsObvious,
+//            defaultValue: "false",
+//            description: "Prefer implicit object creation when type is obvious",
+//            valuePlaceholder: "true|false");
 
-        public static readonly OptionDescriptor PreferNoNewLineAtEndOfFile = new(
-            OptionKeys.PreferNoNewLineAtEndOfFile,
-            defaultValue: "false",
-            description: "Prefer no new line at the end of a file",
-            valuePlaceholder: "true|false");
+//        public static readonly ConfigOptionDescriptor PreferExplicitObjectCreation = new(
+//            ConfigOptionKeys.PreferExplicitObjectCreation,
+//            defaultValue: "false",
+//            description: "Prefer explicit object creation",
+//            valuePlaceholder: "true|false");
 
-        public static readonly OptionDescriptor PreferImplicitObjectCreation = new(
-            OptionKeys.PreferImplicitObjectCreation,
-            defaultValue: "false",
-            description: "Prefer implicit object creation",
-            valuePlaceholder: "true|false");
-
-        public static readonly OptionDescriptor PreferImplicitObjectCreationWhenTypeIsObvious = new(
-            OptionKeys.PreferImplicitObjectCreationWhenTypeIsObvious,
-            defaultValue: "false",
-            description: "Prefer implicit object creation when type is obvious",
-            valuePlaceholder: "true|false");
-
-        public static readonly OptionDescriptor PreferExplicitObjectCreation = new(
-            OptionKeys.PreferExplicitObjectCreation,
-            defaultValue: "false",
-            description: "Prefer explicit object creation",
-            valuePlaceholder: "true|false");
-
-        public static readonly OptionDescriptor PreferVarInsteadOfImplicitObjectCreation = new(
-            OptionKeys.PreferVarInsteadOfImplicitObjectCreation,
-            defaultValue: "false",
-            description: "Prefer 'var' instead of implicit object creation",
-            valuePlaceholder: "true|false");
-    }
-}
+//        public static readonly ConfigOptionDescriptor PreferVarInsteadOfImplicitObjectCreation = new(
+//            ConfigOptionKeys.PreferVarInsteadOfImplicitObjectCreation,
+//            defaultValue: "false",
+//            description: "Prefer 'var' instead of implicit object creation",
+//            valuePlaceholder: "true|false");
+//    }
+//}
