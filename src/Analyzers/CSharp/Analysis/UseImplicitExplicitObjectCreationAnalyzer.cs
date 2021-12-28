@@ -437,7 +437,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 ITypeSymbol typeSymbol2 = context.SemanticModel.GetTypeSymbol(objectCreation);
 
-                if (SymbolEqualityComparer.IncludeNullability.Equals(typeSymbol1, typeSymbol2))
+                if (SymbolEqualityComparer.Default.Equals(typeSymbol1, typeSymbol2))
                     ReportDiagnostic(context, objectCreation);
             }
         }
