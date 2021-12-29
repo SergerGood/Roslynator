@@ -86,7 +86,8 @@ namespace Roslynator.CodeGeneration
 
             WriteCompilationUnit(
                 @"Common\ConfigOptions.Generated.cs",
-                CodeGenerator.GenerateConfigOptions(options, metadata.GetAllAnalyzers()));
+                CodeGenerator.GenerateConfigOptions(options, metadata.GetAllAnalyzers()),
+                normalizeWhitespace: false);
 
             WriteCompilationUnit(
                 @"Common\LegacyConfigOptions.Generated.cs",

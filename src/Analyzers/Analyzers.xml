@@ -271,7 +271,6 @@ foreach (var item in items) // [|Id|]
         <OptionKey>use_implicit_type_when_obvious</OptionKey>
         <Kind>Change</Kind>
         <SupportsFadeOut>true</SupportsFadeOut>
-        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[var items = new string[] { "a", "b" };]]></Before>
@@ -284,7 +283,6 @@ foreach (var item in items) // [|Id|]
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
-        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[var items = new string[] { A, B };]]></Before>
@@ -350,7 +348,6 @@ foreach (var item in items) // [|Id|]
         <Id>a</Id>
         <OptionKey>use_block_body_when_expression_is_multiline</OptionKey>
         <Kind>Change</Kind>
-        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[public string[] Foo() => new string[] // [|Id|]
@@ -376,7 +373,6 @@ foreach (var item in items) // [|Id|]
         <Id>b</Id>
         <OptionKey>use_block_body_when_declaration_is_multiline</OptionKey>
         <Kind>Change</Kind>
-        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[public string[] Foo(
@@ -398,7 +394,6 @@ foreach (var item in items) // [|Id|]
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
-        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[public string Foo() => null; // [|Id|]]]></Before>
@@ -474,7 +469,6 @@ foreach (var item in items) // [|Id|]
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
         <SupportsFadeOut>true</SupportsFadeOut>
-        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[internal class Foo // [|Id|]
@@ -864,7 +858,6 @@ if (f)
         <Title>Remove empty line between closing brace and switch section.</Title>
         <OptionKey>remove_empty_line_between_closing_brace_and_switch_section</OptionKey>
         <Kind>Enable</Kind>
-        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[switch (x)
@@ -1180,7 +1173,6 @@ if (!f)
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
-        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[var items = new List<string>() { "a", "b", "c" };]]></Before>
@@ -1214,7 +1206,6 @@ if (!f)
         <MessageFormat>Remove parentheses from condition of conditional expression.</MessageFormat>
         <OptionKey>do_not_parenthesize_single_token</OptionKey>
         <Kind>Change</Kind>
-        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[x = (condition) ? "true" : "false";]]></Before>
@@ -1911,7 +1902,6 @@ object x = items.Peek();]]></After>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
-        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[string s = "";]]></Before>
@@ -2106,7 +2096,6 @@ public string Foo // [|Id|]
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
         <SupportsFadeOut>true</SupportsFadeOut>
-        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[public async Task FooAsync()
@@ -2213,7 +2202,6 @@ namespace Foo
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
-        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[(options & RegexOptions.IgnoreCase) != 0]]></Before>
@@ -4325,7 +4313,6 @@ int i = (x != null) ? x.Value.GetHashCode() : 0; // [|Id|]]]></Before>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
-        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[var x = items.Select(Foo);]]></Before>
@@ -4512,7 +4499,6 @@ x = "";]]></Before>
         <Title>Suppress Unity script methods.</Title>
         <OptionKey>suppress_unity_script_methods</OptionKey>
         <Kind>Disable</Kind>
-        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Summary>Suppress diagnostic from [Unity script methods](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html).</Summary>
       </Option>
     </Options>
@@ -5641,7 +5627,6 @@ void M()
         <Title>Use comparison instead of pattern matching to check for null.</Title>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
-        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[x is null]]></Before>

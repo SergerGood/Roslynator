@@ -42,7 +42,7 @@ namespace Roslynator.CodeGeneration.CSharp
 
             compilationUnit = compilationUnit.NormalizeWhitespace();
 
-            return (CompilationUnitSyntax)Rewriter.Instance.Visit(compilationUnit);
+            return (CompilationUnitSyntax)WrapArgumentsRewriter.Instance.Visit(compilationUnit);
         }
 
         private IEnumerable<MemberDeclarationSyntax> CreateMembers(
@@ -168,44 +168,6 @@ namespace Roslynator.CodeGeneration.CSharp
             return expression;
         }
 
-        private class Rewriter : CSharpSyntaxRewriter
-        {
-            private int _classDeclarationDepth;
 
-            public static Rewriter Instance { get; } = new();
-
-            public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
-            {
-                _classDeclarationDepth++;
-                SyntaxNode result = base.VisitClassDeclaration(node);
-                _classDeclarationDepth--;
-
-                return result;
-            }
-
-            public override SyntaxNode VisitFieldDeclaration(FieldDeclarationSyntax node)
-            {
-                node = (FieldDeclarationSyntax)base.VisitFieldDeclaration(node);
-
-                return node.AppendToTrailingTrivia(NewLine());
-            }
-
-            public override SyntaxNode VisitArgument(ArgumentSyntax node)
-            {
-                if (node.NameColon != null)
-                {
-                    return node
-                        .WithNameColon(node.NameColon.AppendToLeadingTrivia(TriviaList(NewLine(), Whitespace(new string(' ', 4 * (2 + _classDeclarationDepth))))))
-                        .WithExpression(node.Expression.PrependToLeadingTrivia(Whitespace(new string(' ', 18 - node.NameColon.Name.Identifier.ValueText.Length))));
-                }
-
-                return node;
-            }
-
-            public override SyntaxNode VisitAttribute(AttributeSyntax node)
-            {
-                return node;
-            }
-        }
     }
 }

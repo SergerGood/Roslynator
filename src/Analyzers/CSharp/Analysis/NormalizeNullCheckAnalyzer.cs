@@ -91,7 +91,7 @@ namespace Roslynator.CSharp.Analysis
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
                     DiagnosticRules.NormalizeNullCheck,
-                    binaryExpression);
+                    binaryExpression,
                     "pattern matching");
             }
         }
