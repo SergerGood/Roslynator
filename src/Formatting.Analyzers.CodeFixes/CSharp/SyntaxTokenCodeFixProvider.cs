@@ -26,8 +26,8 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.AddEmptyLineBetweenBlockAndStatement,
                     DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeConditionalExpressionOperator,
-                    DiagnosticIdentifiers.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa,
-                    DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa,
+                    DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken,
+                    DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign,
                     DiagnosticIdentifiers.AddNewLineAfterAttributeList,
                     DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement);
             }
@@ -106,8 +106,8 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
                         break;
                     }
-                case DiagnosticIdentifiers.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa:
-                case DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa:
+                case DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken:
+                case DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign:
                     {
                         AddNewLineBeforeOrAfter();
                         break;
@@ -152,7 +152,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                 if (DiagnosticProperties.ContainsInvert(diagnostic.Properties))
                 {
                     CodeAction codeAction = CodeAction.Create(
-                        $"Add new line after '{token}' instead of before it",
+                        $"Place new line after '{token}'",
                         ct => CodeFixHelpers.AddNewLineAfterInsteadOfBeforeAsync(document, token, ct),
                         GetEquivalenceKey(diagnostic));
 
@@ -161,7 +161,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                 else
                 {
                     CodeAction codeAction = CodeAction.Create(
-                        $"Add new line before '{token}' instead of after it",
+                        $"Place new line before '{token}'",
                         ct => CodeFixHelpers.AddNewLineBeforeInsteadOfAfterAsync(document, token, ct),
                         GetEquivalenceKey(diagnostic));
 

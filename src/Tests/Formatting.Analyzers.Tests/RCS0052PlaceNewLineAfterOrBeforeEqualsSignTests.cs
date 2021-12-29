@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RCS0052AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersaTests : AbstractCSharpDiagnosticVerifier<AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersaAnalyzer, SyntaxTokenCodeFixProvider>
+    public class RCS0052PlaceNewLineAfterOrBeforeEqualsSignTests : AbstractCSharpDiagnosticVerifier<PlaceNewLineAfterOrBeforeEqualsSignAnalyzer, SyntaxTokenCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PlaceNewLineAfterOrBeforeEqualsSign;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
         public async Task Test_LocalDeclaration_BeforeInsteadOfAfter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -33,10 +33,10 @@ class C
             = null;
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "before"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
         public async Task Test_LocalDeclaration_AfterInsteadOfBefore()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -57,10 +57,10 @@ class C
             null;
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.AddNewLineAfterEqualsSignInsteadOfBeforeIt.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "after"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
         public async Task Test_Assignment_BeforeInsteadOfAfter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -85,10 +85,10 @@ class C
             = null;
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "before"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
         public async Task Test_Assignment_AfterInsteadOfBefore()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -113,10 +113,10 @@ class C
             null;
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.AddNewLineAfterEqualsSignInsteadOfBeforeIt.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "after"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
         public async Task Test_PropertyInitializer_BeforeInsteadOfAfter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -131,10 +131,10 @@ class C
     string P { get; }
         = null;
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "before"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
         public async Task Test_PropertyInitializer_AfterInsteadOfBefore()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -149,10 +149,10 @@ class C
     string P { get; } =
         null;
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.AddNewLineAfterEqualsSignInsteadOfBeforeIt.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "after"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
         public async Task Test_FieldValue_BeforeInsteadOfAfter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -167,10 +167,10 @@ class C
     string F
         = null;
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "before"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
         public async Task Test_FieldValue_AfterInsteadOfBefore()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -185,10 +185,10 @@ class C
     string F =
         null;
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.AddNewLineAfterEqualsSignInsteadOfBeforeIt.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "after"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
         public async Task Test_Parameter_BeforeInsteadOfAfter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -207,10 +207,10 @@ class C
     {
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "before"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
         public async Task Test_Parameter_AfterInsteadOfBefore()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -229,10 +229,10 @@ class C
     {
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.AddNewLineAfterEqualsSignInsteadOfBeforeIt.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "after"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
         public async Task Test_AnonymousType_BeforeInsteadOfAfter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -261,10 +261,10 @@ class C
             = """" });
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "before"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
         public async Task Test_AnonymousType_AfterInsteadOfBefore()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -293,10 +293,10 @@ class C
             """" });
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.AddNewLineAfterEqualsSignInsteadOfBeforeIt.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "after"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
         public async Task Test_AttributeArgument_BeforeInsteadOfAfter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -315,10 +315,10 @@ using System.Diagnostics;
 class C
 {
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "before"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
         public async Task Test_AttributeArgument_AfterInsteadOfBefore()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -337,10 +337,10 @@ using System.Diagnostics;
 class C
 {
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.AddNewLineAfterEqualsSignInsteadOfBeforeIt.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "after"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
         public async Task TestNoDiagnostic_BeforeInsteadOfAfter_Comment()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -355,7 +355,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
         public async Task TestNoDiagnostic_AfterInsteadOfBefore_Comment()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -367,7 +367,7 @@ class C
             = null;
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.AddNewLineAfterEqualsSignInsteadOfBeforeIt.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "after"));
         }
     }
 }

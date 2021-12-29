@@ -322,15 +322,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0032</summary>
-        public static readonly DiagnosticDescriptor AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa, 
-            title:              "Add new line before expression body arrow instead of after it (or vice versa).", 
-            messageFormat:      "Add new line before expression body arrow instead of after it.", 
+        public static readonly DiagnosticDescriptor PlaceNewLineAfterOrBeforeArrowToken = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken, 
+            title:              "Place new line after/before arrow token.", 
+            messageFormat:      "Place new line {0} arrow token.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa, 
+            helpLinkUri:        DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0033</summary>
@@ -526,15 +526,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0052</summary>
-        public static readonly DiagnosticDescriptor AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa, 
-            title:              "Add new line before equals sign instead of after it (or vice versa).", 
-            messageFormat:      "Add new line before equals sign instead of after it.", 
+        public static readonly DiagnosticDescriptor PlaceNewLineAfterOrBeforeEqualsSign = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign, 
+            title:              "Place new line after/before equals sign.", 
+            messageFormat:      "Place new line {0} equals sign.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa, 
+            helpLinkUri:        DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0053</summary>
@@ -609,32 +609,5 @@ namespace Roslynator.Formatting.CSharp
             helpLinkUri:        DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile, 
             customTags:         Array.Empty<string>());
 
-        public static partial class ReportOnly
-        {
-            /// <summary>RCS0032i</summary>
-            public static readonly DiagnosticDescriptor AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa, 
-                title:              "Add new line before expression body arrow instead of after it (or vice versa).", 
-                messageFormat:      "Add new line after expression body arrow instead of before it.", 
-                category:           DiagnosticCategories.Roslynator, 
-                defaultSeverity:    DiagnosticSeverity.Info, 
-                isEnabledByDefault: false, 
-                description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa, 
-                customTags:         Array.Empty<string>());
-
-            /// <summary>RCS0052i</summary>
-            public static readonly DiagnosticDescriptor AddNewLineAfterEqualsSignInsteadOfBeforeIt = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa, 
-                title:              "Add new line before equals sign instead of after it (or vice versa).", 
-                messageFormat:      "Add new line after equals sign instead of before it.", 
-                category:           DiagnosticCategories.Roslynator, 
-                defaultSeverity:    DiagnosticSeverity.Info, 
-                isEnabledByDefault: false, 
-                description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa, 
-                customTags:         Array.Empty<string>());
-
-        }
     }
 }

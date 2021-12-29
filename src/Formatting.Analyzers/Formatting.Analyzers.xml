@@ -809,10 +809,10 @@ namespace N
     </Samples>
     <Remarks>This rule was originally introduced as [RCS1025](RCS1025.md)</Remarks>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa">
+  <Analyzer Identifier="PlaceNewLineAfterOrBeforeArrowToken">
     <Id>RCS0032</Id>
-    <Title>Add new line before expression body arrow instead of after it (or vice versa).</Title>
-    <MessageFormat>Add new line before expression body arrow instead of after it.</MessageFormat>
+    <Title>Place new line after/before arrow token.</Title>
+    <MessageFormat>Place new line {0} arrow token.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -824,12 +824,16 @@ namespace N
     => null;]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="arrow_token_new_line" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt">
         <Title>Add new line after expression body arrow instead of before it.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
+        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[object Foo()
@@ -1243,10 +1247,10 @@ while (x);]]></Before>
       </Option>
     </Options>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa">
+  <Analyzer Identifier="PlaceNewLineAfterOrBeforeEqualsSign">
     <Id>RCS0052</Id>
-    <Title>Add new line before equals sign instead of after it (or vice versa).</Title>
-    <MessageFormat>Add new line before equals sign instead of after it.</MessageFormat>
+    <Title>Place new line after/before equals sign.</Title>
+    <MessageFormat>Place new line {0} equals sign.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1258,12 +1262,16 @@ while (x);]]></Before>
     = new string(' ', 4);]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="equals_sign_new_line" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="AddNewLineAfterEqualsSignInsteadOfBeforeIt">
         <Title>Add new line after equals sign instead of before it.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
+        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[string s // [|Id|]

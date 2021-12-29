@@ -6,8 +6,10 @@ namespace Roslynator
 {
     internal static partial class ConfigOptionKeys
     {
+        public const string ArrowTokenNewLine = "roslynator.arrow_token_new_line";
         public const string BinaryOperatorNewLine = "roslynator.binary_operator_new_line";
         public const string ConditionalExpressionNewLine = "roslynator.conditional_expression_new_line";
+        public const string EqualsSignTokenNewLine = "roslynator.equals_sign_token_new_line";
         public const string MaxLineLength = "roslynator.max_line_length";
         public const string PreferBlockBodyToExpressionBody = "roslynator.prefer_block_body_to_expression_body";
         public const string PreferBlockBodyWhenDeclarationSpansOverMultipleLines = "roslynator.prefer_block_body_when_declaration_spans_over_multiple_lines";

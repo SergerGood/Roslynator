@@ -6,7 +6,5 @@ namespace Roslynator.Formatting.CSharp
 {
     public static partial class AnalyzerOptions
     {
-        internal static readonly AnalyzerOptionDescriptor AddNewLineAfterEqualsSignInsteadOfBeforeIt = new AnalyzerOptionDescriptor("roslynator.RCS0052.invert", DiagnosticRules.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa);
-        internal static readonly AnalyzerOptionDescriptor AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt = new AnalyzerOptionDescriptor("roslynator.RCS0032.invert", DiagnosticRules.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa);
     }
 }

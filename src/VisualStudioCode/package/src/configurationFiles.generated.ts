@@ -34,8 +34,10 @@ is_global = true
 
 # Options
 
+roslynator.arrow_token_new_line = after|before
 roslynator.binary_operator_new_line = after|before
 roslynator.conditional_expression_new_line = after|before
+roslynator.equals_sign_token_new_line = after|before
 # Applicable to: RCS0056
 roslynator.max_line_length = 140
 
@@ -153,7 +155,7 @@ dotnet_diagnostic.RCS0030.severity = none
 # Add new line before enum member
 dotnet_diagnostic.RCS0031.severity = none
 
-# Add new line before expression body arrow instead of after it (or vice versa)
+# Place new line after/before arrow token
 dotnet_diagnostic.RCS0032.severity = none
 # Add new line after expression body arrow instead of before it
 roslynator.RCS0032.invert = false
@@ -208,7 +210,7 @@ dotnet_diagnostic.RCS0051.severity = none
 # Remove new line between closing brace and 'while' keyword
 roslynator.RCS0051.invert = false
 
-# Add new line before equals sign instead of after it (or vice versa)
+# Place new line after/before equals sign
 dotnet_diagnostic.RCS0052.severity = none
 # Add new line after equals sign instead of before it
 roslynator.RCS0052.invert = false

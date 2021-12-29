@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RCS0032AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersaTests : AbstractCSharpDiagnosticVerifier<AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersaAnalyzer, SyntaxTokenCodeFixProvider>
+    public class RCS0032PlaceNewLineAfterOrBeforeArrowTokenTests : AbstractCSharpDiagnosticVerifier<PlaceNewLineAfterOrBeforeArrowTokenAnalyzer, SyntaxTokenCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PlaceNewLineAfterOrBeforeArrowToken;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken)]
         public async Task Test_BeforeInsteadOfAfter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -27,10 +27,10 @@ class C
     string M()
         => null;
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrowTokenNewLine, "before"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken)]
         public async Task Test_AfterInsteadOfBefore()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -45,10 +45,10 @@ class C
     string M() =>
         null;
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrowTokenNewLine, "after"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken)]
         public async Task TestNoDiagnostic_BeforeInsteadOfAfter_Comment()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -57,10 +57,10 @@ class C
     string M() => // x
         null;
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrowTokenNewLine, "before"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken)]
         public async Task TestNoDiagnostic_AfterInsteadOfBefore_Comment()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -69,7 +69,7 @@ class C
     string M() // x
         => null;
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrowTokenNewLine, "after"));
         }
     }
 }

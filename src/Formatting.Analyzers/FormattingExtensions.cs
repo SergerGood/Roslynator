@@ -61,5 +61,27 @@ namespace Roslynator.Formatting
 
             return NewLinePosition.None;
         }
+
+        public static NewLinePosition GetArrowTokenNewLinePosition(this AnalyzerConfigOptions configOptions)
+        {
+            if (configOptions.TryGetNewLinePosition(ConfigOptions.ArrowTokenNewLine, out NewLinePosition newLinePosition))
+                return newLinePosition;
+
+            if (configOptions.IsEnabled(LegacyConfigOptions.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt))
+                return NewLinePosition.After;
+
+            return NewLinePosition.None;
+        }
+
+        public static NewLinePosition GetEqualsSignNewLinePosition(this AnalyzerConfigOptions configOptions)
+        {
+            if (configOptions.TryGetNewLinePosition(ConfigOptions.EqualsSignTokenNewLine, out NewLinePosition newLinePosition))
+                return newLinePosition;
+
+            if (configOptions.IsEnabled(LegacyConfigOptions.AddNewLineAfterEqualsSignInsteadOfBeforeIt))
+                return NewLinePosition.After;
+
+            return NewLinePosition.None;
+        }
     }
 }

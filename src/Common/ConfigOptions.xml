@@ -74,6 +74,14 @@
 	<ValuePlaceholder>after|before</ValuePlaceholder>
 	<Description>Place new line after/before conditional expression operator</Description>
   </Option>
+  <Option Id="ArrowTokenNewLine">
+	<ValuePlaceholder>after|before</ValuePlaceholder>
+	<Description>Place new line after/before arrow token</Description>
+  </Option>
+  <Option Id="EqualsSignTokenNewLine">
+	<ValuePlaceholder>after|before</ValuePlaceholder>
+	<Description>Place new line after/before equals sign</Description>
+  </Option>
   <!--
   <Option Id="">
     <Key></Key>

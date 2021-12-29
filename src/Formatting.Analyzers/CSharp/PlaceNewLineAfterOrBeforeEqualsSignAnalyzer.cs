@@ -11,7 +11,7 @@ using Roslynator.CSharp;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class PlaceNewLineAfterOrBeforeEqualsSignAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -20,7 +20,7 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PlaceNewLineAfterOrBeforeEqualsSign);
 
                 return _supportedDiagnostics;
             }
@@ -90,22 +90,26 @@ namespace Roslynator.Formatting.CSharp
 
         private static void Analyze(SyntaxNodeAnalysisContext context, SyntaxToken token, ExpressionSyntax expression)
         {
-            FormattingSuggestion suggestion = FormattingAnalysis.AnalyzeNewLineBeforeOrAfter(context, token, expression, AnalyzerOptions.AddNewLineAfterEqualsSignInsteadOfBeforeIt);
+            NewLinePosition newLinePosition = context.GetConfigOptions().GetEqualsSignNewLinePosition();
+
+            FormattingSuggestion suggestion = FormattingAnalysis.AnalyzeNewLineBeforeOrAfter(token, expression, newLinePosition);
 
             if (suggestion == FormattingSuggestion.AddNewLineBefore)
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticRules.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa,
-                    token.GetLocation());
+                    DiagnosticRules.PlaceNewLineAfterOrBeforeEqualsSign,
+                    token.GetLocation(),
+                    "before");
             }
             else if (suggestion == FormattingSuggestion.AddNewLineAfter)
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticRules.ReportOnly.AddNewLineAfterEqualsSignInsteadOfBeforeIt,
+                    DiagnosticRules.PlaceNewLineAfterOrBeforeEqualsSign,
                     token.GetLocation(),
-                    properties: DiagnosticProperties.AnalyzerOption_Invert);
+                    properties: DiagnosticProperties.AnalyzerOption_Invert,
+                    "after");
             }
         }
     }

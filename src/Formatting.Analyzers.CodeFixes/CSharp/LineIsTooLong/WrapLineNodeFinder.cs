@@ -139,8 +139,7 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong
                         if (previousToken.SpanStart < Span.Start)
                             return null;
 
-                        bool addNewLineAfter = AnalyzerOptions.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt.IsEnabled(Document, node);
-
+                        bool addNewLineAfter = Document.GetConfigOptions(node.SyntaxTree).GetArrowTokenNewLinePosition() == NewLinePosition.After;
                         int wrapPosition = (addNewLineAfter) ? arrowToken.Span.End : previousToken.Span.End;
                         int start = (addNewLineAfter) ? expressionBody.Expression.SpanStart : arrowToken.SpanStart;
                         int longestLength = expressionBody.GetLastToken().GetNextToken().Span.End - start;
@@ -160,7 +159,7 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong
                         if (previousToken.SpanStart < Span.Start)
                             return null;
 
-                        bool addNewLineAfter = AnalyzerOptions.AddNewLineAfterEqualsSignInsteadOfBeforeIt.IsEnabled(Document, node);
+                        bool addNewLineAfter = Document.GetConfigOptions(node.SyntaxTree).GetEqualsSignNewLinePosition() == NewLinePosition.After;
 
                         int wrapPosition = (addNewLineAfter) ? equalsToken.Span.End : previousToken.Span.End;
                         int start = (addNewLineAfter) ? equalsValueClause.Value.SpanStart : equalsToken.SpanStart;
@@ -422,8 +421,7 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong
                         if (left.SpanStart < Span.Start)
                             return null;
 
-                        bool addNewLineAfter = AnalyzerOptions.AddNewLineAfterEqualsSignInsteadOfBeforeIt.IsEnabled(Document, node);
-
+                        bool addNewLineAfter = Document.GetConfigOptions(node.SyntaxTree).GetEqualsSignNewLinePosition() == NewLinePosition.After;
                         int wrapPosition = (addNewLineAfter) ? operatorToken.Span.End : left.Span.End;
                         int start = (addNewLineAfter) ? assignment.Right.SpanStart : operatorToken.SpanStart;
                         int longestLength = Span.End - start;

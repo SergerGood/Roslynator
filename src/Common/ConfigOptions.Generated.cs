@@ -8,8 +8,10 @@ namespace Roslynator
 {
     public static partial class ConfigOptions
     {
+        public static readonly ConfigOptionDescriptor ArrowTokenNewLine = new(key: ConfigOptionKeys.ArrowTokenNewLine, defaultValue: null, defaultValuePlaceholder: "after|before", description: "Place new line after/before arrow token");
         public static readonly ConfigOptionDescriptor BinaryOperatorNewLine = new(key: ConfigOptionKeys.BinaryOperatorNewLine, defaultValue: null, defaultValuePlaceholder: "after|before", description: "Place new line after/before binary operator");
         public static readonly ConfigOptionDescriptor ConditionalExpressionNewLine = new(key: ConfigOptionKeys.ConditionalExpressionNewLine, defaultValue: null, defaultValuePlaceholder: "after|before", description: "Place new line after/before conditional expression operator");
+        public static readonly ConfigOptionDescriptor EqualsSignTokenNewLine = new(key: ConfigOptionKeys.EqualsSignTokenNewLine, defaultValue: null, defaultValuePlaceholder: "after|before", description: "Place new line after/before equals sign");
         public static readonly ConfigOptionDescriptor MaxLineLength = new(key: ConfigOptionKeys.MaxLineLength, defaultValue: "140", defaultValuePlaceholder: "<MAX_LINE_LENGTH>", description: "Max line length");
         public static readonly ConfigOptionDescriptor PreferBlockBodyToExpressionBody = new(key: ConfigOptionKeys.PreferBlockBodyToExpressionBody, defaultValue: null, defaultValuePlaceholder: "true|false", description: "Prefer block body to expression body");
         public static readonly ConfigOptionDescriptor PreferBlockBodyWhenDeclarationSpansOverMultipleLines = new(key: ConfigOptionKeys.PreferBlockBodyWhenDeclarationSpansOverMultipleLines, defaultValue: null, defaultValuePlaceholder: "true|false", description: "Prefer block body when declaration spans over multiple lines");
