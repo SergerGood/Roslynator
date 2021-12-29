@@ -95,7 +95,8 @@ namespace Roslynator.CodeGeneration
 
             WriteCompilationUnit(
                 @"Common\ConfigOptionKeys.Generated.cs",
-                CodeGenerator.GenerateConfigOptionKeys(options));
+                CodeGenerator.GenerateConfigOptionKeys(options),
+                normalizeWhitespace: false);
 
             WriteCompilationUnit(
                 @"Tools\CodeGeneration\CSharp\Symbols.Generated.cs",

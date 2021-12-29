@@ -42,7 +42,9 @@ namespace Roslynator.CodeGeneration.CSharp
 
             compilationUnit = compilationUnit.NormalizeWhitespace();
 
-            return (CompilationUnitSyntax)WrapArgumentsRewriter.Instance.Visit(compilationUnit);
+            var rewriter = new WrapRewriter(WrapRewriterOptions.WrapArguments);
+
+            return (CompilationUnitSyntax)rewriter.Visit(compilationUnit);
         }
 
         private IEnumerable<MemberDeclarationSyntax> CreateMembers(

@@ -65,7 +65,9 @@ namespace Roslynator.CodeGeneration.CSharp
 
             compilationUnit = compilationUnit.NormalizeWhitespace();
 
-            return (CompilationUnitSyntax)WrapArgumentsRewriter.Instance.Visit(compilationUnit);
+            var rewriter = new WrapRewriter(WrapRewriterOptions.WrapArguments);
+
+            return (CompilationUnitSyntax)rewriter.Visit(compilationUnit);
         }
 
         public static CompilationUnitSyntax GenerateLegacyConfigOptions(IEnumerable<AnalyzerMetadata> analyzers)
@@ -99,7 +101,7 @@ namespace Roslynator.CodeGeneration.CSharp
 
         public static CompilationUnitSyntax GenerateConfigOptionKeys(IEnumerable<ConfigOptionMetadata> options)
         {
-            return CompilationUnit(
+            CompilationUnitSyntax compilationUnit = CompilationUnit(
                 UsingDirectives(),
                 NamespaceDeclaration(
                     "Roslynator",
@@ -117,6 +119,12 @@ namespace Roslynator.CodeGeneration.CSharp
                                     StringLiteralExpression(f.Key));
                             })
                             .ToSyntaxList<MemberDeclarationSyntax>())));
+
+            compilationUnit = compilationUnit.NormalizeWhitespace();
+
+            var rewriter = new WrapRewriter(WrapRewriterOptions.IndentFieldInitializer);
+
+            return (CompilationUnitSyntax)rewriter.Visit(compilationUnit);
         }
     }
 }

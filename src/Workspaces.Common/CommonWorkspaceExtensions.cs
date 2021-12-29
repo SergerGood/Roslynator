@@ -7,33 +7,6 @@ namespace Roslynator
 {
     internal static class CommonWorkspaceExtensions
     {
-        public static bool IsEnabled(
-            this AnalyzerOptionDescriptor analyzerOption,
-            Document document,
-            SyntaxNode node)
-        {
-            return IsEnabled(analyzerOption, document, node.SyntaxTree);
-        }
-
-        public static bool IsEnabled(
-            this AnalyzerOptionDescriptor analyzerOption,
-            Document document,
-            SyntaxToken token)
-        {
-            return IsEnabled(analyzerOption, document, token.SyntaxTree);
-        }
-
-        public static bool IsEnabled(
-            this AnalyzerOptionDescriptor analyzerOption,
-            Document document,
-            SyntaxTree syntaxTree)
-        {
-            return analyzerOption.Descriptor.IsEffective(syntaxTree, document.Project.CompilationOptions)
-                && analyzerOption.IsEnabled(
-                    syntaxTree,
-                    document.Project.AnalyzerOptions);
-        }
-
         public static bool TryGetAnalyzerOptionValue(
             this Document document,
             SyntaxNode node,

@@ -10,69 +10,6 @@ namespace Roslynator
 {
     internal static class CommonExtensions
     {
-        public static bool IsEnabled(
-            this AnalyzerOptionDescriptor analyzerOption,
-            SyntaxNodeAnalysisContext context)
-        {
-            return IsEnabled(
-                analyzerOption,
-                context.Node.SyntaxTree,
-                context.Options);
-        }
-
-        public static bool? IsEnabled(
-            this AnalyzerOptionDescriptor analyzerOption,
-            SyntaxNodeAnalysisContext context,
-            bool checkParent)
-        {
-            return IsEnabled(
-                analyzerOption,
-                context.Node.SyntaxTree,
-                context.Compilation.Options,
-                context.Options,
-                checkParent);
-        }
-
-        public static bool IsEnabled(
-            this AnalyzerOptionDescriptor analyzerOption,
-            SymbolAnalysisContext context)
-        {
-            return IsEnabled(
-                analyzerOption,
-                context.Symbol.Locations[0].SourceTree,
-                context.Options);
-        }
-
-        public static bool? IsEnabled(
-            this AnalyzerOptionDescriptor analyzerOption,
-            SyntaxTree syntaxTree,
-            CompilationOptions compilationOptions,
-            AnalyzerOptions analyzerOptions,
-            bool checkParent)
-        {
-            if (checkParent && !analyzerOption.Descriptor.IsEffective(syntaxTree, compilationOptions))
-                return null;
-
-            return IsEnabled(analyzerOption, syntaxTree, analyzerOptions);
-        }
-
-        public static bool IsEnabled(
-            this AnalyzerOptionDescriptor analyzerOption,
-            SyntaxTree syntaxTree,
-            AnalyzerOptions analyzerOptions)
-        {
-            if (analyzerOptions
-                .AnalyzerConfigOptionsProvider
-                .GetOptions(syntaxTree)
-                .TryGetValue(analyzerOption.OptionKey, out string value)
-                && bool.TryParse(value, out bool result))
-            {
-                return result;
-            }
-
-            return false;
-        }
-
         internal static bool? GetOptionAsBoolOrDefault(
             this SyntaxNodeAnalysisContext context,
             ConfigOptionDescriptor option,
@@ -89,26 +26,6 @@ namespace Roslynator
             context.ReportRequiredOptionNotSet(descriptor);
 
             return null;
-        }
-
-        public static bool TryGetOptionAsBool(
-            this AnalyzerOptions analyzerOptions,
-            AnalyzerOptionDescriptor option,
-            SyntaxTree syntaxTree,
-            out bool result)
-        {
-            if (analyzerOptions
-                .AnalyzerConfigOptionsProvider
-                .GetOptions(syntaxTree)
-                .TryGetValue(option.OptionKey, out string rawValue)
-                && bool.TryParse(rawValue, out bool value))
-            {
-                result = value;
-                return true;
-            }
-
-            result = default;
-            return false;
         }
 
         public static bool IsEnabled(

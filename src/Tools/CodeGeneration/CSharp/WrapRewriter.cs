@@ -1,28 +1,44 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
-using System.Diagnostics;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
+using System.Collections.Generic;
 
 namespace Roslynator.CodeGeneration.CSharp
 {
-    internal class WrapArgumentsRewriter : CSharpSyntaxRewriter
+    internal class WrapRewriter : CSharpSyntaxRewriter
     {
         private int _classDeclarationDepth;
         private int _maxArgumentNameLength;
+        private int _maxFieldDeclarationLength;
 
-        public static WrapArgumentsRewriter Instance { get; } = new();
+        public WrapRewriter(WrapRewriterOptions options)
+        {
+            Options = options;
+        }
+
+        public WrapRewriterOptions Options { get; }
 
         public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
         {
+            IEnumerable<MemberDeclarationSyntax> fields = node.Members.Where(f => f.IsKind(SyntaxKind.FieldDeclaration));
+
+            if (fields.Any())
+            {
+                _maxFieldDeclarationLength = fields
+                    .Cast<FieldDeclarationSyntax>()
+                    .Max(f => f.Declaration.Variables.First().Initializer.EqualsToken.SpanStart - f.SpanStart);
+            }
+
             _classDeclarationDepth++;
             SyntaxNode result = base.VisitClassDeclaration(node);
             _classDeclarationDepth--;
+            _maxFieldDeclarationLength = 0;
 
             return result;
         }
@@ -31,12 +47,31 @@ namespace Roslynator.CodeGeneration.CSharp
         {
             node = (FieldDeclarationSyntax)base.VisitFieldDeclaration(node);
 
-            return node.AppendToTrailingTrivia(NewLine());
+            if ((Options & WrapRewriterOptions.IndentFieldInitializer) != 0)
+            {
+                SyntaxToken equalsToken = node.Declaration.Variables.First().Initializer.EqualsToken;
+
+                int count = _maxFieldDeclarationLength - (equalsToken.SpanStart - node.SpanStart);
+
+                SyntaxToken newEqualsToken = equalsToken.AppendToLeadingTrivia(Whitespace(new string(' ', count)));
+
+                node = node.ReplaceToken(equalsToken, newEqualsToken);
+            }
+
+            if ((Options & WrapRewriterOptions.WrapArguments) != 0)
+            {
+                return node.AppendToTrailingTrivia(NewLine());
+            }
+            else
+            {
+                return node;
+            }
         }
 
         public override SyntaxNode VisitArgument(ArgumentSyntax node)
         {
-            if (node.NameColon != null)
+            if ((Options & WrapRewriterOptions.WrapArguments) != 0
+                && node.NameColon != null)
             {
                 return node
                     .WithNameColon(node.NameColon.AppendToLeadingTrivia(TriviaList(NewLine(), Whitespace(new string(' ', 4 * (2 + _classDeclarationDepth))))))
