@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp;
@@ -37,29 +38,29 @@ namespace Roslynator.CodeGeneration.CSharp
                                             Argument(NameColon("description"), StringLiteralExpression(f.Description))),
                                         default(InitializerExpressionSyntax)));
                             })
-                            //TODO: x
-                            //.Concat(new MemberDeclarationSyntax[]
-                            //    {
-                            //        MethodDeclaration(
-                            //            Modifiers.Private_Static(),
-                            //            ParseTypeName("IEnumerable<KeyValuePair<string, string>>"),
-                            //            Identifier("GetRequiredOptions"),
-                            //            ParameterList(),
-                            //            Block(
-                            //                analyzers
-                            //                    .Where(f => f.ConfigOptions.Any(f => f.IsRequired))
-                            //                    .Select(f => (id: f.Id, keys: f.ConfigOptions.Where(f => f.IsRequired)))
-                            //                    .Select(f =>
-                            //                    {
-                            //                        IEnumerable<string> optionIdentifiers = f.keys
-                            //                            .Select(f => options.Single(o => o.Key == f.Key))
-                            //                            .Select(f => $"ConfigOptionKeys.{f.Id}");
+                            .Concat(new MemberDeclarationSyntax[]
+                                {
+                                    MethodDeclaration(
+                                        Modifiers.Private_Static(),
+                                        ParseTypeName("IEnumerable<KeyValuePair<string, string>>"),
+                                        Identifier("GetRequiredOptions"),
+                                        ParameterList(),
+                                        Block(
+                                            analyzers
+                                                .Where(f => f.ConfigOptions.Any(f => f.IsRequired))
+                                                .OrderBy(f => f.Id)
+                                                .Select(f => (id: f.Id, keys: f.ConfigOptions.Where(f => f.IsRequired)))
+                                                .Select(f =>
+                                                {
+                                                    IEnumerable<string> optionIdentifiers = f.keys
+                                                        .Select(f => options.Single(o => o.Key == f.Key))
+                                                        .Select(f => $"ConfigOptionKeys.{f.Id}");
 
-                            //                        return YieldReturnStatement(
-                            //                            ParseExpression($"new KeyValuePair<string, string>(\"{f.id}\", JoinOptionKeys({string.Join(", ", optionIdentifiers)}))"));
-                            //                    })))
-                            //    })
-                            .ToSyntaxList<MemberDeclarationSyntax>())));
+                                                    return YieldReturnStatement(
+                                                        ParseExpression($"new KeyValuePair<string, string>(\"{f.id}\", JoinOptionKeys({string.Join(", ", optionIdentifiers)}))"));
+                                                })))
+                                })
+                            .ToSyntaxList())));
         }
 
         public static CompilationUnitSyntax GenerateLegacyConfigOptions(IEnumerable<AnalyzerMetadata> analyzers)

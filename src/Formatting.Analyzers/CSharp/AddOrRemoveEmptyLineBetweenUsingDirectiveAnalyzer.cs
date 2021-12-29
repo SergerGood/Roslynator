@@ -142,7 +142,7 @@ namespace Roslynator.Formatting.CSharp
 
             var result = NewLineConfig.None;
 
-            if (configOptions.TryGetValueAsBool(ConfigOptions.PreferEmptyLineBetweenUsingDirectiveWithDifferentRootNamespace, out bool addLine))
+            if (configOptions.TryGetValueAsBool(ConfigOptions.PreferEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace, out bool addLine))
                 result = (addLine) ? NewLineConfig.Add : NewLineConfig.Remove;
 
             if (configOptions.TryGetValueAsBool(LegacyConfigOptions.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace, out bool removeLine))

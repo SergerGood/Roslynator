@@ -756,7 +756,7 @@ namespace Roslynator.CSharp.Analysis
         {
             AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-            if (configOptions.TryGetValueAsBool(ConfigOptions.UseAnonymousFunctionInsteadOfMethodGroup, out bool result))
+            if (configOptions.TryGetValueAsBool(ConfigOptions.UseAnonymousFunctionOrMethodGroup, out bool result))
                 return result;
 
             if (configOptions.IsEnabled(LegacyConfigOptions.ConvertMethodGroupToAnonymousFunction))

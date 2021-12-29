@@ -2414,15 +2414,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1248</summary>
-        public static readonly DiagnosticDescriptor UsePatternMatchingToCheckForNullOrViceVersa = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UsePatternMatchingToCheckForNullOrViceVersa, 
-            title:              "Use pattern matching to check for null (or vice versa).", 
-            messageFormat:      "Use pattern matching to check for null.", 
+        public static readonly DiagnosticDescriptor NormalizeNullCheck = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.NormalizeNullCheck, 
+            title:              "Normalize null check.", 
+            messageFormat:      "Use {0} to check for null.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UsePatternMatchingToCheckForNullOrViceVersa, 
+            helpLinkUri:        DiagnosticIdentifiers.NormalizeNullCheck, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1249</summary>
@@ -2437,20 +2437,5 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.UnnecessaryNullForgivingOperator, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
-        public static partial class ReportOnly
-        {
-            /// <summary>RCS1248i</summary>
-            public static readonly DiagnosticDescriptor UseComparisonInsteadPatternMatchingToCheckForNull = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.UsePatternMatchingToCheckForNullOrViceVersa, 
-                title:              "Use pattern matching to check for null (or vice versa).", 
-                messageFormat:      "Use comparison instead of pattern matching to check for null.", 
-                category:           DiagnosticCategories.Roslynator, 
-                defaultSeverity:    DiagnosticSeverity.Info, 
-                isEnabledByDefault: false, 
-                description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.UsePatternMatchingToCheckForNullOrViceVersa, 
-                customTags:         Array.Empty<string>());
-
-        }
     }
 }

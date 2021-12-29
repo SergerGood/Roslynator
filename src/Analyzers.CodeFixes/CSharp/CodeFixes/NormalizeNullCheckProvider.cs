@@ -17,13 +17,13 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.CodeFixes
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UsePatternMatchingToCheckForNullOrViceVersaCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(NormalizeNullCheckProvider))]
     [Shared]
-    public sealed class UsePatternMatchingToCheckForNullOrViceVersaCodeFixProvider : BaseCodeFixProvider
+    public sealed class NormalizeNullCheckProvider : BaseCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.UsePatternMatchingToCheckForNullOrViceVersa); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.NormalizeNullCheck); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)

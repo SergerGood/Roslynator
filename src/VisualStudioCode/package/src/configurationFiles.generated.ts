@@ -34,30 +34,69 @@ is_global = true
 
 # Options
 
+# Applicable to: RCS0032
 roslynator.arrow_token_new_line = after|before
+
+# Applicable to: RCS0027
 roslynator.binary_operator_new_line = after|before
+
+# Applicable to: RCS0028
 roslynator.conditional_expression_new_line = after|before
+
+# Applicable to: RCS1078
 roslynator.empty_string_style = field|literal
+
+# Applicable to: RCS1096
 roslynator.enum_flag_operation = method|operator
-roslynator.equals_sign_token_new_line = after|before
+
+# Applicable to: RCS0052
+roslynator.equals_sign_new_line = after|before
+
+# Applicable to: RCS1090
 roslynator.include_configure_await_call = true|false
+
 # Applicable to: RCS0056
 roslynator.max_line_length = 140
 
+# Applicable to: RCS1248
+roslynator.null_check_style = equality_operator|pattern_matching
+
+# Applicable to: RCS1051
 roslynator.parenthesize_condition_of_conditional_expression = true|false
+
+# Applicable to: RCS1051
 roslynator.parenthesize_condition_of_conditional_expression_when_it_contains_single_token = true|false
+
+# Applicable to: RCS1016
 roslynator.prefer_block_body_to_expression_body = true|false
+
+# Applicable to: RCS1016
 roslynator.prefer_block_body_when_declaration_spans_over_multiple_lines = true|false
+
+# Applicable to: RCS1016
 roslynator.prefer_block_body_when_expression_spans_over_multiple_lines = true|false
+
+# Applicable to: RCS1036
 roslynator.prefer_empty_line_between_closing_brace_and_switch_section = true|false
+
+# Applicable to: RCS0011
 roslynator.prefer_empty_line_between_single_line_accessors = true|false
-roslynator.prefer_empty_line_between_using_directive_with_different_root_namespace = true|false
+
+# Applicable to: RCS0015
+roslynator.prefer_empty_line_between_using_directives_with_different_root_namespace = true|false
+
+# Applicable to: RCS1018
 roslynator.prefer_explicit_accessibility_modifiers = true|false
+
 # Applicable to: RCS1014
 roslynator.prefer_explicitly_typed_array = true|false
 
+# Applicable to: RCS1016
 roslynator.prefer_expression_body_to_block_body = true|false
+
+# Applicable to: RCS1018
 roslynator.prefer_implicit_accessibility_modifiers = true|false
+
 # Applicable to: RCS1014
 roslynator.prefer_implicitly_typed_array = true|false
 
@@ -67,12 +106,17 @@ roslynator.prefer_implicitly_typed_array_when_type_is_obvious = true|false
 # Applicable to: RCS0058
 roslynator.prefer_new_line_at_end_of_file = true|false
 
+# Applicable to: RCS0051
 roslynator.prefer_new_line_before_while_in_do_statement = true|false
+
 # Applicable to: RCS1050
 roslynator.prefer_parentheses_when_creating_new_object = true|false
 
 roslynator.prefix_field_identifier_with_underscore = false
-roslynator.use_anonymous_function_instead_of_method_group = true|false
+roslynator.suppress_unity_script_methods = true|false
+# Applicable to: RCS1207
+roslynator.use_anonymous_function_or_method_group = true|false
+
 
 # Analyzers
 
@@ -860,7 +904,7 @@ roslynator.RCS1246.suppress_when_expression_is_invocation = false
 # Fix documentation comment tag
 dotnet_diagnostic.RCS1247.severity = suggestion
 
-# Use pattern matching to check for null (or vice versa)
+# Normalize null check
 dotnet_diagnostic.RCS1248.severity = none
 # Use comparison instead of pattern matching to check for null
 roslynator.RCS1248.invert = false

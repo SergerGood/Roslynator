@@ -57,9 +57,6 @@ namespace Roslynator.CodeGeneration.CSharp
                     continue;
 
                 string identifier = analyzer.Identifier;
-                string title = analyzer.Title;
-                string messageFormat = analyzer.MessageFormat;
-                bool isEnabledByDefault = analyzer.IsEnabledByDefault;
 
                 yield return CreateMember(
                     analyzer,
@@ -79,15 +76,6 @@ namespace Roslynator.CodeGeneration.CSharp
                             ArgumentList(Argument(IdentifierName(identifier)))))
                         .AddObsoleteAttributeIf(analyzer.IsObsolete, error: true);
                 }
-            }
-
-            IEnumerable<AnalyzerMetadata> optionAnalyzers = analyzers
-                .SelectMany(f => f.OptionAnalyzers.Where(f => !f.Tags.Contains("DoNotGenerateReportOnlyAnalyzer")
-                    && (f.Kind == AnalyzerOptionKind.Change || f.Kind == AnalyzerOptionKind.Invert)));
-
-            if (optionAnalyzers.Any())
-            {
-                yield return CreateClassDeclaration(optionAnalyzers, "ReportOnly", identifiersClassName, categoryName, useParentProperties = true);
             }
         }
 

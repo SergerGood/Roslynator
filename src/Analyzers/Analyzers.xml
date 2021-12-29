@@ -260,9 +260,9 @@ foreach (var item in items) // [|Id|]
       </Sample>
     </Samples>
     <ConfigOptions>
-      <Option Key="roslynator.prefer_explicitly_typed_array" IsRequired="true" />
-      <Option Key="roslynator.prefer_implicitly_typed_array" IsRequired="true" />
-      <Option Key="roslynator.prefer_implicitly_typed_array_when_type_is_obvious" IsRequired="true" />
+      <Option Key="prefer_explicitly_typed_array" IsRequired="true" />
+      <Option Key="prefer_implicitly_typed_array" IsRequired="true" />
+      <Option Key="prefer_implicitly_typed_array_when_type_is_obvious" IsRequired="true" />
     </ConfigOptions>
     <Options>
       <Option Identifier="UseImplicitlyTypedArrayWhenTypeIsObvious">
@@ -1172,7 +1172,7 @@ if (!f)
       </Sample>
     </Samples>
     <ConfigOptions>
-      <Option Key="roslynator.prefer_parentheses_when_creating_new_object" IsRequired="true" />
+      <Option Key="prefer_parentheses_when_creating_new_object" IsRequired="true" />
     </ConfigOptions>
     <Options>
       <Option Identifier="RemoveParenthesesWhenCreatingNewObject">
@@ -1193,7 +1193,7 @@ if (!f)
   <Analyzer Identifier="AddOrRemoveParenthesesFromConditionOfConditionalExpression">
     <Id>RCS1051</Id>
     <Title>Add/remove parentheses from condition of conditional expression.</Title>
-    <MessageFormat>{0} parentheses from condition.</MessageFormat>
+    <MessageFormat>{0} parentheses {1} condition.</MessageFormat>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -4504,11 +4504,15 @@ x = "";]]></Before>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
+    <ConfigOptions>
+      <Option Key="supress_unity_script_methods" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="SuppressUnityScriptMethods">
         <Title>Suppress Unity script methods.</Title>
         <OptionKey>suppress_unity_script_methods</OptionKey>
         <Kind>Disable</Kind>
+        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Summary>Suppress diagnostic from [Unity script methods](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html).</Summary>
       </Option>
     </Options>
@@ -5614,10 +5618,10 @@ void M()
       </Link>
     </Links>
   </Analyzer>
-  <Analyzer Identifier="UsePatternMatchingToCheckForNullOrViceVersa">
+  <Analyzer Identifier="NormalizeNullCheck">
     <Id>RCS1248</Id>
-    <Title>Use pattern matching to check for null (or vice versa).</Title>
-    <MessageFormat>Use pattern matching to check for null.</MessageFormat>
+    <Title>Normalize null check.</Title>
+    <MessageFormat>Use {0} to check for null.</MessageFormat>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -5628,12 +5632,16 @@ void M()
         <After><![CDATA[x is null]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="null_check_style" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="UseComparisonInsteadPatternMatchingToCheckForNull">
         <Id>i</Id>
         <Title>Use comparison instead of pattern matching to check for null.</Title>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
+        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[x is null]]></Before>

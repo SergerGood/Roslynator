@@ -224,13 +224,10 @@ namespace Roslynator
             if (configOptions.TryGetValue(ConfigOptions.EmptyStringStyle.Key, out string rawValue))
             {
                 if (string.Equals(rawValue, "field", StringComparison.OrdinalIgnoreCase))
-                {
                     return EmptyStringStyle.Field;
-                }
-                else if (string.Equals(rawValue, "literal", StringComparison.OrdinalIgnoreCase))
-                {
+
+                if (string.Equals(rawValue, "literal", StringComparison.OrdinalIgnoreCase))
                     return EmptyStringStyle.Literal;
-                }
             }
 
             if (configOptions.IsEnabled(LegacyConfigOptions.UseStringEmptyInsteadOfEmptyStringLiteral))
@@ -239,6 +236,23 @@ namespace Roslynator
             }
 
             return EmptyStringStyle.None;
+        }
+
+        public static NullCheckStyle GetNullCheckStyle(this AnalyzerConfigOptions configOptions)
+        {
+            if (configOptions.TryGetValue(ConfigOptions.NullCheckStyle.Key, out string rawValue))
+            {
+                if (string.Equals(rawValue, "equality_operator", StringComparison.OrdinalIgnoreCase))
+                    return NullCheckStyle.EqualityOperator;
+
+                if (string.Equals(rawValue, "pattern_matching", StringComparison.OrdinalIgnoreCase))
+                    return NullCheckStyle.PatternMatching;
+            }
+
+            if (configOptions.IsEnabled(LegacyConfigOptions.UseComparisonInsteadPatternMatchingToCheckForNull))
+                return NullCheckStyle.EqualityOperator;
+
+            return NullCheckStyle.None;
         }
     }
 }

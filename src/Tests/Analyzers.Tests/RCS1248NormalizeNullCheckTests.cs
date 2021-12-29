@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1248UsePatternMatchingToCheckForNullOrViceVersaTests : AbstractCSharpDiagnosticVerifier<UsePatternMatchingToCheckForNullOrViceVersaAnalyzer, UsePatternMatchingToCheckForNullOrViceVersaCodeFixProvider>
+    public class RCS1248NormalizeNullCheckTests : AbstractCSharpDiagnosticVerifier<NormalizeNullCheckAnalyzer, NormalizeNullCheckProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UsePatternMatchingToCheckForNullOrViceVersa;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.NormalizeNullCheck;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingToCheckForNullOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeNullCheck)]
         public async Task Test_EqualsToNull()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -39,10 +39,10 @@ class C
         }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.NullCheckStyle, "pattern_matching"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingToCheckForNullOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeNullCheck)]
         public async Task Test_EqualsToNull2()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -73,10 +73,10 @@ class C
         }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.NullCheckStyle, "pattern_matching"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingToCheckForNullOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeNullCheck)]
         public async Task Test_NotEqualsToNull()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -103,10 +103,10 @@ class C
         }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.NullCheckStyle, "pattern_matching"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingToCheckForNullOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeNullCheck)]
         public async Task Test_IsNull()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -133,10 +133,10 @@ class C
         }
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.UseComparisonInsteadPatternMatchingToCheckForNull.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.NullCheckStyle, "equality_operator"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingToCheckForNullOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeNullCheck)]
         public async Task Test_NotIsNull()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -163,10 +163,10 @@ class C
         }
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.UseComparisonInsteadPatternMatchingToCheckForNull.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.NullCheckStyle, "equality_operator"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingToCheckForNullOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeNullCheck)]
         public async Task TestNoDiagnostic_NotEqualsToNull_CSharp8()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -181,7 +181,8 @@ class C
         }
     }
 }
-", options: WellKnownCSharpTestOptions.Default_CSharp8);
+", options: WellKnownCSharpTestOptions.Default_CSharp8
+        .AddConfigOption(ConfigOptionKeys.NullCheckStyle, "pattern_matching"));
         }
     }
 }

@@ -11,11 +11,6 @@ namespace Roslynator
     {
         private static readonly ImmutableDictionary<string, string> _requiredOptions = GetRequiredOptions().ToImmutableDictionary(f => f.Key, f => f.Value);
 
-        private static IEnumerable<KeyValuePair<string, string>> GetRequiredOptions()
-        {
-            yield break;
-        }
-
         public static string GetRequiredOptions(DiagnosticDescriptor descriptor)
         {
             Debug.Assert(_requiredOptions.ContainsKey(descriptor.Id), descriptor.Id);

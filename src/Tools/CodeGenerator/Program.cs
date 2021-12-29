@@ -8,7 +8,6 @@ using System.Text;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeGeneration.CSharp;
 using Roslynator.Metadata;
-using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Roslynator.CodeGeneration.EditorConfig;
 
@@ -153,26 +152,6 @@ namespace Roslynator.CodeGeneration
                 WriteCompilationUnit(
                     Path.Combine(dirPath, $"{identifiersClassName}.Deprecated.Generated.cs"),
                     DiagnosticIdentifiersGenerator.Generate(analyzers, obsolete: true, comparer: comparer, @namespace: @namespace, className: identifiersClassName));
-
-                IEnumerable<AnalyzerMetadata> optionAnalyzers = analyzers.SelectMany(f => f.OptionAnalyzers);
-
-                if (optionAnalyzers.Any())
-                {
-                    WriteCompilationUnit(
-                        Path.Combine(dirPath, "AnalyzerOptionDiagnosticIdentifiers.Generated.cs"),
-                        DiagnosticIdentifiersGenerator.Generate(optionAnalyzers, obsolete: false, comparer: comparer, @namespace: @namespace, className: "AnalyzerOptionDiagnosticIdentifiers"),
-                        fileMustExist: false);
-
-                    WriteCompilationUnit(
-                        Path.Combine(dirPath, "AnalyzerOptions.Generated.cs"),
-                        AnalyzerOptionDescriptorsGenerator.Generate(analyzers, obsolete: false, comparer: comparer, @namespace: @namespace, className: "AnalyzerOptions"),
-                        fileMustExist: false);
-                }
-
-                IEnumerable<string> analyzerOptionIdentifiers = analyzers
-                    .SelectMany(f => f.OptionAnalyzers)
-                    .Where(f => f.Id != null)
-                    .Select(f => f.Identifier);
             }
 
             void WriteCompilationUnit(

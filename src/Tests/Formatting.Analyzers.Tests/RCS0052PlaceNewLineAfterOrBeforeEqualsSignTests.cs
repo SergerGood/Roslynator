@@ -33,7 +33,7 @@ class C
             = null;
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "before"));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignNewLine, "before"));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
@@ -57,7 +57,7 @@ class C
             null;
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "after"));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignNewLine, "after"));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
@@ -85,7 +85,7 @@ class C
             = null;
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "before"));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignNewLine, "before"));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
@@ -113,7 +113,7 @@ class C
             null;
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "after"));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignNewLine, "after"));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
@@ -131,7 +131,7 @@ class C
     string P { get; }
         = null;
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "before"));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignNewLine, "before"));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
@@ -149,7 +149,7 @@ class C
     string P { get; } =
         null;
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "after"));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignNewLine, "after"));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
@@ -167,7 +167,7 @@ class C
     string F
         = null;
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "before"));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignNewLine, "before"));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
@@ -185,7 +185,7 @@ class C
     string F =
         null;
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "after"));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignNewLine, "after"));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
@@ -207,7 +207,7 @@ class C
     {
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "before"));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignNewLine, "before"));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
@@ -229,7 +229,7 @@ class C
     {
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "after"));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignNewLine, "after"));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
@@ -261,7 +261,7 @@ class C
             = """" });
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "before"));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignNewLine, "before"));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
@@ -293,7 +293,7 @@ class C
             """" });
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "after"));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignNewLine, "after"));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
@@ -315,7 +315,7 @@ using System.Diagnostics;
 class C
 {
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "before"));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignNewLine, "before"));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
@@ -337,7 +337,7 @@ using System.Diagnostics;
 class C
 {
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "after"));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignNewLine, "after"));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsSign)]
@@ -367,7 +367,7 @@ class C
             = null;
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignTokenNewLine, "after"));
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsSignNewLine, "after"));
         }
     }
 }

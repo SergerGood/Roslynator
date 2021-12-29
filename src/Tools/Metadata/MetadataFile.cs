@@ -140,7 +140,7 @@ namespace Roslynator.Metadata
             return element
                 .Element("ConfigOptions")?
                 .Elements("Option")
-                .Select(f => new ConfigOptionKeyMetadata(f.Attribute("Key").Value, bool.Parse(f.Attribute("IsRequired")?.Value ?? bool.FalseString)));
+                .Select(f => new ConfigOptionKeyMetadata("roslynator." + f.Attribute("Key").Value, bool.Parse(f.Attribute("IsRequired")?.Value ?? bool.FalseString)));
         }
 
         private static AnalyzerOptionMetadata LoadOption(XElement element, string parentId)

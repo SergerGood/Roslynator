@@ -75,7 +75,7 @@ namespace Roslynator.Formatting
 
         public static NewLinePosition GetEqualsSignNewLinePosition(this AnalyzerConfigOptions configOptions)
         {
-            if (configOptions.TryGetNewLinePosition(ConfigOptions.EqualsSignTokenNewLine, out NewLinePosition newLinePosition))
+            if (configOptions.TryGetNewLinePosition(ConfigOptions.EqualsSignNewLine, out NewLinePosition newLinePosition))
                 return newLinePosition;
 
             if (configOptions.IsEnabled(LegacyConfigOptions.AddNewLineAfterEqualsSignInsteadOfBeforeIt))

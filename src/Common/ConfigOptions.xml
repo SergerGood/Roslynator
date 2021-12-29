@@ -62,7 +62,7 @@
 	<ValuePlaceholder>true|false</ValuePlaceholder>
 	<Description>Prefer empty line between single-line accessors</Description>
   </Option>
-  <Option Id="PreferEmptyLineBetweenUsingDirectiveWithDifferentRootNamespace">
+  <Option Id="PreferEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace">
 	<ValuePlaceholder>true|false</ValuePlaceholder>
 	<Description>Prefer empty line between using directives with different root namespace</Description>
   </Option>
@@ -78,7 +78,7 @@
 	<ValuePlaceholder>after|before</ValuePlaceholder>
 	<Description>Place new line after/before arrow token</Description>
   </Option>
-  <Option Id="EqualsSignTokenNewLine">
+  <Option Id="EqualsSignNewLine">
 	<ValuePlaceholder>after|before</ValuePlaceholder>
 	<Description>Place new line after/before equals sign</Description>
   </Option>
@@ -98,7 +98,7 @@
 	<ValuePlaceholder>method|operator</ValuePlaceholder>
 	<Description>Use 'HasFlag' method or bitwise operator</Description>
   </Option>
-  <Option Id="UseAnonymousFunctionInsteadOfMethodGroup">
+  <Option Id="UseAnonymousFunctionOrMethodGroup">
 	<ValuePlaceholder>true|false</ValuePlaceholder>
 	<Description>Use anonymous function instead of method group</Description>
   </Option>
@@ -109,6 +109,14 @@
   <Option Id="ParenthesizeConditionOfConditionalExpressionWhenItContainsSingleToken">
 	<ValuePlaceholder>true|false</ValuePlaceholder>
 	<Description>Parenthesize condition of conditional expression when it contains single token</Description>
+  </Option>
+  <Option Id="SuppressUnityScriptMethods">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Suppress Unity script methods</Description>
+  </Option>
+  <Option Id="NullCheckStyle">
+	<ValuePlaceholder>equality_operator|pattern_matching</ValuePlaceholder>
+	<Description>Use equality operator or pattern matchding as a null check</Description>
   </Option>
   <!--
   <Option Id="">

@@ -33,7 +33,7 @@ using System.Threading;
 class C
 {
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.PreferEmptyLineBetweenUsingDirectiveWithDifferentRootNamespace, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveEmptyLineBetweenUsingDirectiveWithDifferentRootNamespace)]
@@ -57,7 +57,7 @@ using System.Threading;
 class C
 {
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.PreferEmptyLineBetweenUsingDirectiveWithDifferentRootNamespace, false));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveEmptyLineBetweenUsingDirectiveWithDifferentRootNamespace)]
@@ -79,7 +79,7 @@ using Microsoft.CodeAnalysis;
 class C
 {
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.PreferEmptyLineBetweenUsingDirectiveWithDifferentRootNamespace, false));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveEmptyLineBetweenUsingDirectiveWithDifferentRootNamespace)]
@@ -146,7 +146,7 @@ using static System.IO.Path;
 class C
 {
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.PreferEmptyLineBetweenUsingDirectiveWithDifferentRootNamespace, false));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveEmptyLineBetweenUsingDirectiveWithDifferentRootNamespace)]
@@ -160,7 +160,7 @@ using I = System.Int32;
 class C
 {
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.PreferEmptyLineBetweenUsingDirectiveWithDifferentRootNamespace, false));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace, false));
         }
     }
 }
