@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -12,7 +13,7 @@ using static Roslynator.CSharp.Analysis.ConvertHasFlagCallToBitwiseOperationAnal
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class ConvertHasFlagCallToBitwiseOperationOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class UseHasFlagMethodOrBitwiseOperatorAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -21,7 +22,7 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.ConvertHasFlagCallToBitwiseOperationOrViceVersa, CommonDiagnosticRules.AnalyzerIsObsolete);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseHasFlagMethodOrBitwiseOperator);
 
                 return _supportedDiagnostics;
             }
@@ -34,7 +35,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(
                 c =>
                 {
-                    if (AnalyzerOptions.ConvertBitwiseOperationToHasFlagCall.IsEnabled(c))
+                    if (GetEnumFlagOperationStyle(c) == EnumFlagOperationStyle.Method)
                         AnalyzeBitwiseAndExpression(c);
                 },
                 SyntaxKind.BitwiseAndExpression);
@@ -42,7 +43,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(
                 c =>
                 {
-                    if (!AnalyzerOptions.ConvertBitwiseOperationToHasFlagCall.IsEnabled(c))
+                    if (GetEnumFlagOperationStyle(c) == EnumFlagOperationStyle.Operator)
                         AnalyzeInvocationExpression(c);
                 },
                 SyntaxKind.InvocationExpression);
@@ -99,8 +100,9 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.ReportOnly.ConvertBitwiseOperationToHasFlagCall,
-                equalsOrNotEquals);
+                DiagnosticRules.UseHasFlagMethodOrBitwiseOperator,
+                equalsOrNotEquals,
+                "'HasFlag' method");
 
             bool IsSuitableAsExpressionOfHasFlag(ExpressionSyntax expression)
             {
@@ -159,8 +161,40 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.ConvertHasFlagCallToBitwiseOperationOrViceVersa,
-                invocation);
+                DiagnosticRules.UseHasFlagMethodOrBitwiseOperator,
+                invocation,
+                "bitwise operator");
+        }
+
+        private static EnumFlagOperationStyle GetEnumFlagOperationStyle(SyntaxNodeAnalysisContext context)
+        {
+            AnalyzerConfigOptions configOptions = context.GetConfigOptions();
+
+            if (configOptions.TryGetValue(ConfigOptions.EnumFlagOperation.Key, out string rawValue))
+            {
+                if (string.Equals(rawValue, "method", StringComparison.OrdinalIgnoreCase))
+                {
+                    return EnumFlagOperationStyle.Method;
+                }
+                else if (string.Equals(rawValue, "operator", StringComparison.OrdinalIgnoreCase))
+                {
+                    return EnumFlagOperationStyle.Operator;
+                }
+            }
+
+            if (configOptions.IsEnabled(LegacyConfigOptions.ConvertBitwiseOperationToHasFlagCall))
+            {
+                return EnumFlagOperationStyle.Method;
+            }
+
+            return EnumFlagOperationStyle.None;
+        }
+
+        private enum EnumFlagOperationStyle
+        {
+            None,
+            Method,
+            Operator,
         }
     }
 }

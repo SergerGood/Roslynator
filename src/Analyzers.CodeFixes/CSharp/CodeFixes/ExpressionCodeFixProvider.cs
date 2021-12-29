@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse,
-                    DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression);
+                    DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionOfConditionalExpression);
             }
         }
 
@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression:
+                    case DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionOfConditionalExpression:
                         {
                             if (expression is ParenthesizedExpressionSyntax parenthesizedExpression)
                             {

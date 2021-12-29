@@ -6,10 +6,6 @@ namespace Roslynator.CSharp
 {
     public static partial class AnalyzerOptions
     {
-        internal static readonly AnalyzerOptionDescriptor ConvertBitwiseOperationToHasFlagCall = new AnalyzerOptionDescriptor("roslynator.RCS1096.invert", DiagnosticRules.ConvertHasFlagCallToBitwiseOperationOrViceVersa);
-        internal static readonly AnalyzerOptionDescriptor ConvertMethodGroupToAnonymousFunction = new AnalyzerOptionDescriptor("roslynator.RCS1207.invert", DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa);
-        internal static readonly AnalyzerOptionDescriptor RemoveCallToConfigureAwait = new AnalyzerOptionDescriptor("roslynator.RCS1090.invert", DiagnosticRules.AddCallToConfigureAwaitOrViceVersa);
-        internal static readonly AnalyzerOptionDescriptor RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken = new AnalyzerOptionDescriptor("roslynator.RCS1051.do_not_parenthesize_single_token", DiagnosticRules.ParenthesizeConditionOfConditionalExpression);
         internal static readonly AnalyzerOptionDescriptor SuppressUnityScriptMethods = new AnalyzerOptionDescriptor("roslynator.RCS1213.suppress_unity_script_methods", DiagnosticRules.RemoveUnusedMemberDeclaration);
         internal static readonly AnalyzerOptionDescriptor UseComparisonInsteadPatternMatchingToCheckForNull = new AnalyzerOptionDescriptor("roslynator.RCS1248.invert", DiagnosticRules.UsePatternMatchingToCheckForNullOrViceVersa);
     }

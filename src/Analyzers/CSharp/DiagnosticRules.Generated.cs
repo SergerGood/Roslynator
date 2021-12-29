@@ -488,15 +488,15 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1051</summary>
-        public static readonly DiagnosticDescriptor ParenthesizeConditionOfConditionalExpression = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression, 
-            title:              "Parenthesize condition of conditional expression.", 
-            messageFormat:      "Parenthesize condition of conditional expression.", 
+        public static readonly DiagnosticDescriptor AddOrRemoveParenthesesFromConditionOfConditionalExpression = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionOfConditionalExpression, 
+            title:              "Add/remove parentheses from condition of conditional expression.", 
+            messageFormat:      "{0} parentheses {1} condition.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression, 
+            helpLinkUri:        DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionOfConditionalExpression, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1052</summary>
@@ -836,15 +836,15 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UseUnaryOperatorInsteadOfAssignmentFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UseUnaryOperatorInsteadOfAssignment);
 
         /// <summary>RCS1090</summary>
-        public static readonly DiagnosticDescriptor AddCallToConfigureAwaitOrViceVersa = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa, 
-            title:              "Add call to 'ConfigureAwait' (or vice versa).", 
-            messageFormat:      "Add call to 'ConfigureAwait'.", 
+        public static readonly DiagnosticDescriptor AddOrRemoveConfigureAwaitCall = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddOrRemoveConfigureAwaitCall, 
+            title:              "Add/remove 'ConfigureAwait(false)' call.", 
+            messageFormat:      "{0} 'ConfigureAwait(false)' call.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa, 
+            helpLinkUri:        DiagnosticIdentifiers.AddOrRemoveConfigureAwaitCall, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1091</summary>
@@ -886,15 +886,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1096</summary>
-        public static readonly DiagnosticDescriptor ConvertHasFlagCallToBitwiseOperationOrViceVersa = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa, 
-            title:              "Convert 'HasFlag' call to bitwise operation (or vice versa).", 
-            messageFormat:      "Convert 'HasFlag' call to bitwise operation.", 
+        public static readonly DiagnosticDescriptor UseHasFlagMethodOrBitwiseOperator = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator, 
+            title:              "Use 'HasFlag' method or bitwise operator.", 
+            messageFormat:      "Use {0}.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa, 
+            helpLinkUri:        DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1097</summary>
@@ -1938,18 +1938,16 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1207</summary>
-        public static readonly DiagnosticDescriptor ConvertAnonymousFunctionToMethodGroupOrViceVersa = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa, 
-            title:              "Convert anonymous function to method group (or vice versa).", 
-            messageFormat:      "Convert anonymous function to method group.", 
+        public static readonly DiagnosticDescriptor UseAnonymousFunctionOrMethodGroup = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup, 
+            title:              "Use anonymous function of method group.", 
+            messageFormat:      "Use {0}.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa, 
+            helpLinkUri:        DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup, 
             customTags:         Array.Empty<string>());
-
-        public static readonly DiagnosticDescriptor ConvertAnonymousFunctionToMethodGroupOrViceVersaFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(ConvertAnonymousFunctionToMethodGroupOrViceVersa);
 
         /// <summary>RCS1208</summary>
         public static readonly DiagnosticDescriptor ReduceIfNesting = DiagnosticDescriptorFactory.Create(
@@ -2441,54 +2439,6 @@ namespace Roslynator.CSharp
 
         public static partial class ReportOnly
         {
-            /// <summary>RCS1051a</summary>
-            public static readonly DiagnosticDescriptor RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression, 
-                title:              "Parenthesize condition of conditional expression.", 
-                messageFormat:      "Remove parentheses from condition of conditional expression (when condition is a single token).", 
-                category:           DiagnosticCategories.Roslynator, 
-                defaultSeverity:    DiagnosticSeverity.Info, 
-                isEnabledByDefault: false, 
-                description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression, 
-                customTags:         Array.Empty<string>());
-
-            /// <summary>RCS1090i</summary>
-            public static readonly DiagnosticDescriptor RemoveCallToConfigureAwait = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa, 
-                title:              "Add call to 'ConfigureAwait' (or vice versa).", 
-                messageFormat:      "Remove call to 'ConfigureAwait'.", 
-                category:           DiagnosticCategories.Roslynator, 
-                defaultSeverity:    DiagnosticSeverity.Info, 
-                isEnabledByDefault: false, 
-                description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa, 
-                customTags:         WellKnownDiagnosticTags.Unnecessary);
-
-            /// <summary>RCS1096i</summary>
-            public static readonly DiagnosticDescriptor ConvertBitwiseOperationToHasFlagCall = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa, 
-                title:              "Convert 'HasFlag' call to bitwise operation (or vice versa).", 
-                messageFormat:      "Convert bitwise operation to 'HasFlag' call.", 
-                category:           DiagnosticCategories.Roslynator, 
-                defaultSeverity:    DiagnosticSeverity.Info, 
-                isEnabledByDefault: true, 
-                description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa, 
-                customTags:         Array.Empty<string>());
-
-            /// <summary>RCS1207i</summary>
-            public static readonly DiagnosticDescriptor ConvertMethodGroupToAnonymousFunction = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa, 
-                title:              "Convert anonymous function to method group (or vice versa).", 
-                messageFormat:      "Convert method group to anonymous function.", 
-                category:           DiagnosticCategories.Roslynator, 
-                defaultSeverity:    DiagnosticSeverity.Hidden, 
-                isEnabledByDefault: false, 
-                description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa, 
-                customTags:         Array.Empty<string>());
-
             /// <summary>RCS1248i</summary>
             public static readonly DiagnosticDescriptor UseComparisonInsteadPatternMatchingToCheckForNull = DiagnosticDescriptorFactory.Create(
                 id:                 DiagnosticIdentifiers.UsePatternMatchingToCheckForNullOrViceVersa, 

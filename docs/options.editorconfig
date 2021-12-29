@@ -36,10 +36,14 @@ roslynator.arrow_token_new_line = after|before
 roslynator.binary_operator_new_line = after|before
 roslynator.conditional_expression_new_line = after|before
 roslynator.empty_string_style = field|literal
+roslynator.enum_flag_operation = method|operator
 roslynator.equals_sign_token_new_line = after|before
+roslynator.include_configure_await_call = true|false
 # Applicable to: RCS0056
 roslynator.max_line_length = 140
 
+roslynator.parenthesize_condition_of_conditional_expression = true|false
+roslynator.parenthesize_condition_of_conditional_expression_when_it_contains_single_token = true|false
 roslynator.prefer_block_body_to_expression_body = true|false
 roslynator.prefer_block_body_when_declaration_spans_over_multiple_lines = true|false
 roslynator.prefer_block_body_when_expression_spans_over_multiple_lines = true|false
@@ -66,6 +70,7 @@ roslynator.prefer_new_line_before_while_in_do_statement = true|false
 roslynator.prefer_parentheses_when_creating_new_object = true|false
 
 roslynator.prefix_field_identifier_with_underscore = false
+roslynator.use_anonymous_function_instead_of_method_group = true|false
 
 # Analyzers
 
@@ -363,7 +368,7 @@ dotnet_diagnostic.RCS1050.severity = none
 # Remove parentheses when creating new object
 roslynator.RCS1050.invert = false
 
-# Parenthesize condition of conditional expression
+# Add/remove parentheses from condition of conditional expression
 dotnet_diagnostic.RCS1051.severity = none
 # Remove parentheses from condition of conditional expression (when condition is a single token)
 roslynator.RCS1051.do_not_parenthesize_single_token = false
@@ -451,7 +456,7 @@ dotnet_diagnostic.RCS1085.severity = suggestion
 # Use --/++ operator instead of assignment
 dotnet_diagnostic.RCS1089.severity = suggestion
 
-# Add call to 'ConfigureAwait' (or vice versa)
+# Add/remove 'ConfigureAwait(false)' call
 dotnet_diagnostic.RCS1090.severity = none
 # Remove call to 'ConfigureAwait'
 roslynator.RCS1090.invert = false
@@ -465,7 +470,7 @@ dotnet_diagnostic.RCS1093.severity = suggestion
 # Declare using directive on top level
 dotnet_diagnostic.RCS1094.severity = none
 
-# Convert 'HasFlag' call to bitwise operation (or vice versa)
+# Use 'HasFlag' method or bitwise operator
 dotnet_diagnostic.RCS1096.severity = suggestion
 # Convert bitwise operation to 'HasFlag' call
 roslynator.RCS1096.invert = false
@@ -730,7 +735,7 @@ dotnet_diagnostic.RCS1205.severity = suggestion
 # Use conditional access instead of conditional expression
 dotnet_diagnostic.RCS1206.severity = suggestion
 
-# Convert anonymous function to method group (or vice versa)
+# Use anonymous function of method group
 dotnet_diagnostic.RCS1207.severity = none
 # Convert method group to anonymous function
 roslynator.RCS1207.invert = false

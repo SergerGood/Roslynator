@@ -12,7 +12,7 @@ using Roslynator.CSharp;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class ConvertAnonymousFunctionToMethodGroupOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class UseAnonymousFunctionOrMethodGroupAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -24,8 +24,7 @@ namespace Roslynator.CSharp.Analysis
                 {
                     Immutable.InterlockedInitialize(
                         ref _supportedDiagnostics,
-                        DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa,
-                        DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersaFadeOut,
+                        DiagnosticRules.UseAnonymousFunctionOrMethodGroup,
                         CommonDiagnosticRules.AnalyzerIsObsolete);
                 }
 
@@ -60,10 +59,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeSimpleLambdaExpression(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
-                return;
-
-            if (AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
+            if (PreferAnonymousFunction(context) != false)
                 return;
 
             if (context.Node.SpanContainsDirectives())
@@ -145,17 +141,12 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa, lambda);
-
-            FadeOut(context, parameter, null, lambda.Body as BlockSyntax, argumentList, lambda.ArrowToken, memberAccessExpression);
+            ReportAnonymousFunction(context, lambda);
         }
 
         private static void AnalyzeParenthesizedLambdaExpression(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
-                return;
-
-            if (AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
+            if (PreferAnonymousFunction(context) != false)
                 return;
 
             if (context.Node.SpanContainsDirectives())
@@ -247,17 +238,12 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa, lambda);
-
-            FadeOut(context, null, parameterList, lambda.Body as BlockSyntax, argumentList, lambda.ArrowToken, memberAccessExpression);
+            ReportAnonymousFunction(context, lambda);
         }
 
         private static void AnalyzeAnonymousMethodExpression(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
-                return;
-
-            if (AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
+            if (PreferAnonymousFunction(context) != false)
                 return;
 
             if (context.Node.SpanContainsDirectives())
@@ -352,9 +338,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa, anonymousMethod);
-
-            FadeOut(context, null, parameterList, anonymousMethod.Block, argumentList, anonymousMethod.DelegateKeyword, memberAccessExpression);
+            ReportAnonymousFunction(context, anonymousMethod);
         }
 
         private static bool ExpressionIsParameter(
@@ -549,49 +533,46 @@ namespace Roslynator.CSharp.Analysis
             return node as ExpressionSyntax;
         }
 
-        private static void FadeOut(
-            SyntaxNodeAnalysisContext context,
-            ParameterSyntax parameter,
-            ParameterListSyntax parameterList,
-            BlockSyntax block,
-            ArgumentListSyntax argumentList,
-            SyntaxToken arrowTokenOrDelegateKeyword,
-            MemberAccessExpressionSyntax memberAccessExpression)
-        {
-            DiagnosticDescriptor fadeOutDescriptor = DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersaFadeOut;
+        //private static void FadeOut(
+        //    SyntaxNodeAnalysisContext context,
+        //    ParameterSyntax parameter,
+        //    ParameterListSyntax parameterList,
+        //    BlockSyntax block,
+        //    ArgumentListSyntax argumentList,
+        //    SyntaxToken arrowTokenOrDelegateKeyword,
+        //    MemberAccessExpressionSyntax memberAccessExpression)
+        //{
+        //    DiagnosticDescriptor fadeOutDescriptor = DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersaFadeOut;
 
-            if (parameter != null)
-                DiagnosticHelpers.ReportNode(context, fadeOutDescriptor, parameter);
+        //    if (parameter != null)
+        //        DiagnosticHelpers.ReportNode(context, fadeOutDescriptor, parameter);
 
-            if (parameterList != null)
-                DiagnosticHelpers.ReportNode(context, fadeOutDescriptor, parameterList);
+        //    if (parameterList != null)
+        //        DiagnosticHelpers.ReportNode(context, fadeOutDescriptor, parameterList);
 
-            if (!arrowTokenOrDelegateKeyword.IsKind(SyntaxKind.None))
-                DiagnosticHelpers.ReportToken(context, fadeOutDescriptor, arrowTokenOrDelegateKeyword);
+        //    if (!arrowTokenOrDelegateKeyword.IsKind(SyntaxKind.None))
+        //        DiagnosticHelpers.ReportToken(context, fadeOutDescriptor, arrowTokenOrDelegateKeyword);
 
-            if (block != null)
-            {
-                CSharpDiagnosticHelpers.ReportBraces(context, fadeOutDescriptor, block);
+        //    if (block != null)
+        //    {
+        //        CSharpDiagnosticHelpers.ReportBraces(context, fadeOutDescriptor, block);
 
-                if (block.Statements.SingleOrDefault(shouldThrow: false) is ReturnStatementSyntax returnStatement)
-                    DiagnosticHelpers.ReportToken(context, fadeOutDescriptor, returnStatement.ReturnKeyword);
-            }
+        //        if (block.Statements.SingleOrDefault(shouldThrow: false) is ReturnStatementSyntax returnStatement)
+        //            DiagnosticHelpers.ReportToken(context, fadeOutDescriptor, returnStatement.ReturnKeyword);
+        //    }
 
-            if (memberAccessExpression != null)
-            {
-                DiagnosticHelpers.ReportNode(context, fadeOutDescriptor, memberAccessExpression.Expression);
-                DiagnosticHelpers.ReportToken(context, fadeOutDescriptor, memberAccessExpression.OperatorToken);
-            }
+        //    if (memberAccessExpression != null)
+        //    {
+        //        DiagnosticHelpers.ReportNode(context, fadeOutDescriptor, memberAccessExpression.Expression);
+        //        DiagnosticHelpers.ReportToken(context, fadeOutDescriptor, memberAccessExpression.OperatorToken);
+        //    }
 
-            DiagnosticHelpers.ReportNode(context, fadeOutDescriptor, argumentList);
-        }
+        //    DiagnosticHelpers.ReportNode(context, fadeOutDescriptor, argumentList);
+        //}
 
         private static void AnalyzeArgument(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
-                return;
-
-            if (!AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
+            if (PreferAnonymousFunction(context) != true)
                 return;
 
             var argument = (ArgumentSyntax)context.Node;
@@ -606,15 +587,12 @@ namespace Roslynator.CSharp.Analysis
             if (methodSymbol == null)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression);
+            ReportMethodGroup(context, expression);
         }
 
         private static void AnalyzeEqualsValueClause(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
-                return;
-
-            if (!AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
+            if (PreferAnonymousFunction(context) != true)
                 return;
 
             var argument = (EqualsValueClauseSyntax)context.Node;
@@ -629,15 +607,12 @@ namespace Roslynator.CSharp.Analysis
             if (methodSymbol == null)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression);
+            ReportMethodGroup(context, expression);
         }
 
         private static void AnalyzeAssignment(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
-                return;
-
-            if (!AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
+            if (PreferAnonymousFunction(context) != true)
                 return;
 
             var argument = (AssignmentExpressionSyntax)context.Node;
@@ -652,15 +627,12 @@ namespace Roslynator.CSharp.Analysis
             if (methodSymbol == null)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression);
+            ReportMethodGroup(context, expression);
         }
 
         private static void AnalyzeReturnStatement(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
-                return;
-
-            if (!AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
+            if (PreferAnonymousFunction(context) != true)
                 return;
 
             var returnStatement = (ReturnStatementSyntax)context.Node;
@@ -675,15 +647,12 @@ namespace Roslynator.CSharp.Analysis
             if (methodSymbol == null)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression);
+            ReportMethodGroup(context, expression);
         }
 
         private static void AnalyzeYieldReturnStatement(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
-                return;
-
-            if (!AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
+            if (PreferAnonymousFunction(context) != true)
                 return;
 
             var yieldReturnStatement = (YieldStatementSyntax)context.Node;
@@ -698,15 +667,12 @@ namespace Roslynator.CSharp.Analysis
             if (methodSymbol == null)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression);
+            ReportMethodGroup(context, expression);
         }
 
         private static void AnalyzeArrowExpressionClause(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
-                return;
-
-            if (!AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
+            if (PreferAnonymousFunction(context) != true)
                 return;
 
             var arrowExpressionClause = (ArrowExpressionClauseSyntax)context.Node;
@@ -721,15 +687,12 @@ namespace Roslynator.CSharp.Analysis
             if (methodSymbol == null)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression);
+            ReportMethodGroup(context, expression);
         }
 
         private static void AnalyzeSwitchExpressionArm(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
-                return;
-
-            if (!AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
+            if (PreferAnonymousFunction(context) != true)
                 return;
 
             var switchExpressionArm = (SwitchExpressionArmSyntax)context.Node;
@@ -744,15 +707,12 @@ namespace Roslynator.CSharp.Analysis
             if (methodSymbol == null)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression);
+            ReportMethodGroup(context, expression);
         }
 
         private static void AnalyzeArrayInitializer(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
-                return;
-
-            if (!AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
+            if (PreferAnonymousFunction(context) != true)
                 return;
 
             var initializer = (InitializerExpressionSyntax)context.Node;
@@ -766,17 +726,14 @@ namespace Roslynator.CSharp.Analysis
                     IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(expression2, context.CancellationToken);
 
                     if (methodSymbol != null)
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression2);
+                        ReportMethodGroup(context, expression2);
                 }
             }
         }
 #if DEBUG
         private static void AnalyzeIdentifierName(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
-                return;
-
-            if (!AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
+            if (PreferAnonymousFunction(context) != true)
                 return;
 
             var identifierName = (IdentifierNameSyntax)context.Node;
@@ -786,10 +743,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeSimpleMemberAccessExpression(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
-                return;
-
-            if (!AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
+            if (PreferAnonymousFunction(context) != true)
                 return;
 
             var simpleMemberAccess = (MemberAccessExpressionSyntax)context.Node;
@@ -797,5 +751,32 @@ namespace Roslynator.CSharp.Analysis
             ConvertMethodGroupToAnonymousFunctionAnalysis.IsFixable(simpleMemberAccess, context.SemanticModel, context.CancellationToken);
         }
 #endif
+
+        private static bool? PreferAnonymousFunction(SyntaxNodeAnalysisContext context)
+        {
+            AnalyzerConfigOptions configOptions = context.GetConfigOptions();
+
+            if (configOptions.TryGetValueAsBool(ConfigOptions.UseAnonymousFunctionInsteadOfMethodGroup, out bool result))
+                return result;
+
+            if (configOptions.IsEnabled(LegacyConfigOptions.ConvertMethodGroupToAnonymousFunction))
+                return true;
+
+            return null;
+        }
+
+        private static void ReportAnonymousFunction(SyntaxNodeAnalysisContext context, AnonymousFunctionExpressionSyntax anonymousMethod)
+        {
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseAnonymousFunctionOrMethodGroup, anonymousMethod, "method group");
+        }
+
+        private static void ReportMethodGroup(SyntaxNodeAnalysisContext context, ExpressionSyntax expression)
+        {
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.UseAnonymousFunctionOrMethodGroup,
+                expression,
+                "anonymous function");
+        }
     }
 }

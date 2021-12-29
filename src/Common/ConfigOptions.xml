@@ -90,6 +90,26 @@
 	<ValuePlaceholder>field|literal</ValuePlaceholder>
 	<Description>Prefer 'string.Empty' or empty string literal</Description>
   </Option>
+  <Option Id="IncludeConfigureAwaitCall">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Include 'ConfigureAwait(false)' call</Description>
+  </Option>
+  <Option Id="EnumFlagOperation">
+	<ValuePlaceholder>method|operator</ValuePlaceholder>
+	<Description>Use 'HasFlag' method or bitwise operator</Description>
+  </Option>
+  <Option Id="UseAnonymousFunctionInsteadOfMethodGroup">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Use anonymous function instead of method group</Description>
+  </Option>
+  <Option Id="ParenthesizeConditionOfConditionalExpression">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Parenthesize condition of conditional expression</Description>
+  </Option>
+  <Option Id="ParenthesizeConditionOfConditionalExpressionWhenItContainsSingleToken">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Parenthesize condition of conditional expression when it contains single token</Description>
+  </Option>
   <!--
   <Option Id="">
     <Key></Key>

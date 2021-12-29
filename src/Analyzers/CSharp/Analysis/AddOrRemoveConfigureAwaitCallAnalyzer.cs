@@ -11,7 +11,7 @@ using Roslynator.CSharp.Syntax;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddCallToConfigureAwaitOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class AddOrRemoveConfigureAwaitCallAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddCallToConfigureAwaitOrViceVersa, CommonDiagnosticRules.AnalyzerIsObsolete);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddOrRemoveConfigureAwaitCall);
 
                 return _supportedDiagnostics;
             }
@@ -33,11 +33,22 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(
                 c =>
                 {
-                    if (AnalyzerOptions.RemoveCallToConfigureAwait.IsEnabled(c))
+                    AnalyzerConfigOptions configOptions = c.GetConfigOptions();
+
+                    if (!configOptions.TryGetValueAsBool(ConfigOptions.IncludeConfigureAwaitCall, out bool addCall))
+                    {
+                        if (!configOptions.IsEnabled(LegacyConfigOptions.RemoveCallToConfigureAwait))
+                            return;
+
+                        addCall = false;
+                    }
+
+                    if (!addCall)
                     {
                         RemoveCallToConfigureAwait(c);
                     }
-                    else if (c.Compilation.GetTypeByMetadataName("System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1") != null)
+                    else if (addCall
+                        && c.Compilation.GetTypeByMetadataName("System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1") != null)
                     {
                         AddCallToConfigureAwait(c);
                     }
@@ -62,7 +73,7 @@ namespace Roslynator.CSharp.Analysis
             if (!SymbolUtility.IsAwaitable(typeSymbol))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddCallToConfigureAwaitOrViceVersa, awaitExpression.Expression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddOrRemoveConfigureAwaitCall, awaitExpression.Expression, "Add");
         }
 
         private static void RemoveCallToConfigureAwait(SyntaxNodeAnalysisContext context)
@@ -92,10 +103,11 @@ namespace Roslynator.CSharp.Analysis
                         {
                             DiagnosticHelpers.ReportDiagnostic(
                                 context,
-                                DiagnosticRules.ReportOnly.RemoveCallToConfigureAwait,
+                                DiagnosticRules.AddOrRemoveConfigureAwaitCall,
                                 Location.Create(
                                     awaitExpression.SyntaxTree,
-                                    TextSpan.FromBounds(invocationInfo.OperatorToken.SpanStart, expression.Span.End)));
+                                    TextSpan.FromBounds(invocationInfo.OperatorToken.SpanStart, expression.Span.End)),
+                                "Remove");
                         }
 
                         break;

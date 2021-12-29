@@ -15,13 +15,13 @@ using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ConvertAnonymousFunctionToMethodGroupOrViceVersaCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseAnonymousFunctionOrMethodGroupCodeFixProvider))]
     [Shared]
-    public sealed class ConvertAnonymousFunctionToMethodGroupOrViceVersaCodeFixProvider : BaseCodeFixProvider
+    public sealed class UseAnonymousFunctionOrMethodGroupCodeFixProvider : BaseCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.CodeFixes
             AnonymousFunctionExpressionSyntax anonymousFunction,
             CancellationToken cancellationToken)
         {
-            InvocationExpressionSyntax invocationExpression = ConvertAnonymousFunctionToMethodGroupOrViceVersaAnalyzer.GetInvocationExpression(anonymousFunction.Body);
+            InvocationExpressionSyntax invocationExpression = UseAnonymousFunctionOrMethodGroupAnalyzer.GetInvocationExpression(anonymousFunction.Body);
 
             ExpressionSyntax newNode = invocationExpression.Expression;
 

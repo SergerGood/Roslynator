@@ -46,7 +46,7 @@ namespace Roslynator.CSharp
         public const string UseLambdaExpressionInsteadOfAnonymousMethod = "RCS1048";
         public const string SimplifyBooleanComparison = "RCS1049";
         public const string AddOrRemoveParenthesesWhenCreatingNewObject = "RCS1050";
-        public const string ParenthesizeConditionOfConditionalExpression = "RCS1051";
+        public const string AddOrRemoveParenthesesFromConditionOfConditionalExpression = "RCS1051";
         public const string DeclareEachAttributeSeparately = "RCS1052";
         public const string AvoidSemicolonAtEndOfDeclaration = "RCS1055";
         public const string AvoidUsageOfUsingAliasDirective = "RCS1056";
@@ -74,11 +74,11 @@ namespace Roslynator.CSharp
         public const string UseCoalesceExpressionInsteadOfConditionalExpression = "RCS1084";
         public const string UseAutoProperty = "RCS1085";
         public const string UseUnaryOperatorInsteadOfAssignment = "RCS1089";
-        public const string AddCallToConfigureAwaitOrViceVersa = "RCS1090";
+        public const string AddOrRemoveConfigureAwaitCall = "RCS1090";
         public const string RemoveEmptyRegion = "RCS1091";
         public const string RemoveFileWithNoCode = "RCS1093";
         public const string DeclareUsingDirectiveOnTopLevel = "RCS1094";
-        public const string ConvertHasFlagCallToBitwiseOperationOrViceVersa = "RCS1096";
+        public const string UseHasFlagMethodOrBitwiseOperator = "RCS1096";
         public const string RemoveRedundantToStringCall = "RCS1097";
         public const string ConstantValuesShouldBePlacedOnRightSideOfComparisons = "RCS1098";
         public const string DefaultLabelShouldBeLastLabelInSwitchSection = "RCS1099";
@@ -165,7 +165,7 @@ namespace Roslynator.CSharp
         public const string UseEventArgsEmpty = "RCS1204";
         public const string OrderNamedArguments = "RCS1205";
         public const string UseConditionalAccessInsteadOfConditionalExpression = "RCS1206";
-        public const string ConvertAnonymousFunctionToMethodGroupOrViceVersa = "RCS1207";
+        public const string UseAnonymousFunctionOrMethodGroup = "RCS1207";
         public const string ReduceIfNesting = "RCS1208";
         public const string OrderTypeParameterConstraints = "RCS1209";
         public const string ReturnCompletedTaskInsteadOfNull = "RCS1210";

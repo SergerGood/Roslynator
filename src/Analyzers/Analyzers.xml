@@ -1190,9 +1190,10 @@ if (!f)
       </Option>
     </Options>
   </Analyzer>
-  <Analyzer Identifier="ParenthesizeConditionOfConditionalExpression">
+  <Analyzer Identifier="AddOrRemoveParenthesesFromConditionOfConditionalExpression">
     <Id>RCS1051</Id>
-    <Title>Parenthesize condition of conditional expression.</Title>
+    <Title>Add/remove parentheses from condition of conditional expression.</Title>
+    <MessageFormat>{0} parentheses from condition.</MessageFormat>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1202,6 +1203,10 @@ if (!f)
         <After><![CDATA[x = (y != null) ? "true" : "false"]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="parenthesize_condition_of_conditional_expression" IsRequired="true" />
+      <Option Key="parenthesize_condition_of_conditional_expression_when_it_contains_single_token" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken">
         <Id>a</Id>
@@ -1209,6 +1214,7 @@ if (!f)
         <MessageFormat>Remove parentheses from condition of conditional expression.</MessageFormat>
         <OptionKey>do_not_parenthesize_single_token</OptionKey>
         <Kind>Change</Kind>
+        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[x = (condition) ? "true" : "false";]]></Before>
@@ -2071,10 +2077,10 @@ public string Foo // [|Id|]
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddCallToConfigureAwaitOrViceVersa">
+  <Analyzer Identifier="AddOrRemoveConfigureAwaitCall">
     <Id>RCS1090</Id>
-    <Title>Add call to 'ConfigureAwait' (or vice versa).</Title>
-    <MessageFormat>Add call to 'ConfigureAwait'.</MessageFormat>
+    <Title>Add/remove 'ConfigureAwait(false)' call.</Title>
+    <MessageFormat>{0} 'ConfigureAwait(false)' call.</MessageFormat>
     <Category>Design</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -2090,6 +2096,9 @@ public string Foo // [|Id|]
 }]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="include_configure_await_call" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="RemoveCallToConfigureAwait">
         <Title>Remove call to 'ConfigureAwait'.</Title>
@@ -2097,6 +2106,7 @@ public string Foo // [|Id|]
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
         <SupportsFadeOut>true</SupportsFadeOut>
+        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[public async Task FooAsync()
@@ -2181,10 +2191,10 @@ namespace Foo
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
   </Analyzer>
-  <Analyzer Identifier="ConvertHasFlagCallToBitwiseOperationOrViceVersa">
+  <Analyzer Identifier="UseHasFlagMethodOrBitwiseOperator">
     <Id>RCS1096</Id>
-    <Title>Convert 'HasFlag' call to bitwise operation (or vice versa).</Title>
-    <MessageFormat>Convert 'HasFlag' call to bitwise operation.</MessageFormat>
+    <Title>Use 'HasFlag' method or bitwise operator.</Title>
+    <MessageFormat>Use {0}.</MessageFormat>
     <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -2194,12 +2204,16 @@ namespace Foo
         <After><![CDATA[(options & RegexOptions.IgnoreCase) != 0]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="enum_flag_operation" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="ConvertBitwiseOperationToHasFlagCall">
         <Title>Convert bitwise operation to 'HasFlag' call.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
+        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[(options & RegexOptions.IgnoreCase) != 0]]></Before>
@@ -4289,26 +4303,29 @@ int i = (x != null) ? x.Value.GetHashCode() : 0; // [|Id|]]]></Before>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="ConvertAnonymousFunctionToMethodGroupOrViceVersa">
+  <Analyzer Identifier="UseAnonymousFunctionOrMethodGroup">
     <Id>RCS1207</Id>
-    <Title>Convert anonymous function to method group (or vice versa).</Title>
-    <MessageFormat>Convert anonymous function to method group.</MessageFormat>
+    <Title>Use anonymous function of method group.</Title>
+    <MessageFormat>Use {0}.</MessageFormat>
     <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
-    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
         <Before><![CDATA[var x = items.Select(f => Foo(f));]]></Before>
         <After><![CDATA[var x = items.Select(Foo);]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="use_anonymous_function_or_method_group" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="ConvertMethodGroupToAnonymousFunction">
         <Title>Convert method group to anonymous function.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
+        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[var x = items.Select(Foo);]]></Before>

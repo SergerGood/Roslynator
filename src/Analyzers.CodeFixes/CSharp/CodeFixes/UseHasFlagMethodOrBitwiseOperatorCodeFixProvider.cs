@@ -11,20 +11,19 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
-using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.Refactorings;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.CodeFixes
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ConvertHasFlagCallToBitwiseOperationOrViceVersaCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseHasFlagMethodOrBitwiseOperatorCodeFixProvider))]
     [Shared]
-    public sealed class ConvertHasFlagCallToBitwiseOperationOrViceVersaCodeFixProvider : BaseCodeFixProvider
+    public sealed class UseHasFlagMethodOrBitwiseOperatorCodeFixProvider : BaseCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)

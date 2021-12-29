@@ -10,8 +10,12 @@ namespace Roslynator
         public const string BinaryOperatorNewLine = "roslynator.binary_operator_new_line";
         public const string ConditionalExpressionNewLine = "roslynator.conditional_expression_new_line";
         public const string EmptyStringStyle = "roslynator.empty_string_style";
+        public const string EnumFlagOperation = "roslynator.enum_flag_operation";
         public const string EqualsSignTokenNewLine = "roslynator.equals_sign_token_new_line";
+        public const string IncludeConfigureAwaitCall = "roslynator.include_configure_await_call";
         public const string MaxLineLength = "roslynator.max_line_length";
+        public const string ParenthesizeConditionOfConditionalExpression = "roslynator.parenthesize_condition_of_conditional_expression";
+        public const string ParenthesizeConditionOfConditionalExpressionWhenItContainsSingleToken = "roslynator.parenthesize_condition_of_conditional_expression_when_it_contains_single_token";
         public const string PreferBlockBodyToExpressionBody = "roslynator.prefer_block_body_to_expression_body";
         public const string PreferBlockBodyWhenDeclarationSpansOverMultipleLines = "roslynator.prefer_block_body_when_declaration_spans_over_multiple_lines";
         public const string PreferBlockBodyWhenExpressionSpansOverMultipleLines = "roslynator.prefer_block_body_when_expression_spans_over_multiple_lines";
@@ -28,5 +32,6 @@ namespace Roslynator
         public const string PreferNewLineBeforeWhileInDoStatement = "roslynator.prefer_new_line_before_while_in_do_statement";
         public const string PreferParenthesesWhenCreatingNewObject = "roslynator.prefer_parentheses_when_creating_new_object";
         public const string PrefixFieldIdentifierWithUnderscore = "roslynator.prefix_field_identifier_with_underscore";
+        public const string UseAnonymousFunctionInsteadOfMethodGroup = "roslynator.use_anonymous_function_instead_of_method_group";
     }
 }
