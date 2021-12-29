@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1016ConvertExpressionBodyToBlockBodyTests : AbstractCSharpDiagnosticVerifier<ConvertBlockBodyToExpressionBodyOrViceVersaAnalyzer, ConvertBlockBodyToExpressionBodyOrViceVersaCodeFixProvider>
+    public class RCS1016UseBlockBodyTests : AbstractCSharpDiagnosticVerifier<UseBlockBodyOrExpressionBodyAnalyzer, UseBlockBodyOrExpressionBodyCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseBlockBodyOrExpressionBody;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_Constructor()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -32,10 +32,10 @@ class C
 
     void M() { }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_Destructor()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -55,10 +55,10 @@ class C
 
     void M() { }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_Method()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -74,10 +74,10 @@ class C
         return null;
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_Method_MultilineExpression()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -97,10 +97,10 @@ class C
             y);
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_Method_MultilineExpression2()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -122,10 +122,10 @@ class C
                     z);
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_VoidMethod()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -141,10 +141,10 @@ class C
         M();
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_LocalFunction()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -166,10 +166,10 @@ class C
         }
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_LocalFunction_MultilineExpression()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -199,10 +199,10 @@ class C
         }
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_VoidLocalFunction()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -224,10 +224,10 @@ class C
         }
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_PropertyWithGetter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -243,10 +243,10 @@ class C
         get { return null; }
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_PropertyWithGetter_MultilineExpression()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -276,10 +276,10 @@ class C
         return null;
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_PropertyWithGetterAndSetter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -323,10 +323,10 @@ class C
         return null;
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_PropertyWithGetterAndInitSetter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -370,10 +370,10 @@ class C
         return null;
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey).AddAllowedCompilerDiagnosticId("CS0518"));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody).AddAllowedCompilerDiagnosticId("CS0518"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_IndexerWithGetter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -389,10 +389,10 @@ class C
         get { return null; }
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_IndexerWithGetterAndSetter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -424,10 +424,10 @@ class C
         }
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_Operator()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -443,10 +443,10 @@ class C
         return value;
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_ConversionOperator()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -462,10 +462,10 @@ class C
         return new C();
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_Constructor_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -485,10 +485,10 @@ class C
 
     void M() { }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_Destructor_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -504,10 +504,10 @@ class C
         throw new System.NotImplementedException();
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_Method_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -523,10 +523,10 @@ class C
         throw new System.NotImplementedException();
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_VoidMethod_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -542,10 +542,10 @@ class C
         throw new System.NotImplementedException();
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_LocalFunction_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -567,10 +567,10 @@ class C
         }
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_VoidLocalFunction_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -592,10 +592,10 @@ class C
         }
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_PropertyWithGetter_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -611,10 +611,10 @@ class C
         get { throw new System.NotImplementedException(); }
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_PropertyWithGetterAndSetter_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -646,10 +646,10 @@ class C
         }
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_IndexerWithGetter_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -665,10 +665,10 @@ class C
         get { throw new System.NotImplementedException(); }
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_IndexerWithGetterAndSetter_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -700,10 +700,10 @@ class C
         }
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_Operator_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -719,10 +719,10 @@ class C
         throw new System.NotImplementedException();
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_ConversionOperator_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -738,10 +738,10 @@ class C
         throw new System.NotImplementedException();
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task TestNoDiagnostic_ExpressionBody()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -831,7 +831,7 @@ class C
 
     string _f;
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyToExpressionBody));
         }
     }
 }

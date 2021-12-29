@@ -300,7 +300,7 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong
                         SyntaxToken questionToken = conditionalExpression.QuestionToken;
                         SyntaxToken colonToken = conditionalExpression.ColonToken;
 
-                        bool addNewLineAfter = AnalyzerOptions.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt.IsEnabled(Document, node);
+                        bool addNewLineAfter = Document.GetConfigOptions(node.SyntaxTree).GetConditionalExpressionNewLinePosition() == NewLinePosition.After;
 
                         int wrapPosition = (addNewLineAfter)
                             ? questionToken.Span.End
@@ -356,7 +356,7 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong
 
                         SyntaxToken operatorToken = binaryExpression.OperatorToken;
 
-                        bool addNewLineAfter = AnalyzerOptions.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt.IsEnabled(Document, node);
+                        bool addNewLineAfter = Document.GetConfigOptions(node.SyntaxTree).GetBinaryExpressionNewLinePosition() == NewLinePosition.After;
 
                         int wrapPosition = (addNewLineAfter)
                             ? operatorToken.Span.End

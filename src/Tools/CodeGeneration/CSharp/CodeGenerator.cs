@@ -37,28 +37,29 @@ namespace Roslynator.CodeGeneration.CSharp
                                             Argument(NameColon("description"), StringLiteralExpression(f.Description))),
                                         default(InitializerExpressionSyntax)));
                             })
-                            .Concat(new MemberDeclarationSyntax[]
-                                {
-                                    MethodDeclaration(
-                                        Modifiers.Private_Static(),
-                                        ParseTypeName("IEnumerable<KeyValuePair<string, string>>"),
-                                        Identifier("GetRequiredOptions"),
-                                        ParameterList(),
-                                        Block(
-                                            analyzers
-                                                .Where(f => f.ConfigOptions.Any(f => f.IsRequired))
-                                                .Select(f => (id: f.Id, keys: f.ConfigOptions.Where(f => f.IsRequired)))
-                                                .Select(f =>
-                                                {
-                                                    IEnumerable<string> optionIdentifiers = f.keys
-                                                        .Select(f => options.Single(o => o.Key == f.Key))
-                                                        .Select(f => $"ConfigOptionKeys.{f.Id}");
+                            //TODO: x
+                            //.Concat(new MemberDeclarationSyntax[]
+                            //    {
+                            //        MethodDeclaration(
+                            //            Modifiers.Private_Static(),
+                            //            ParseTypeName("IEnumerable<KeyValuePair<string, string>>"),
+                            //            Identifier("GetRequiredOptions"),
+                            //            ParameterList(),
+                            //            Block(
+                            //                analyzers
+                            //                    .Where(f => f.ConfigOptions.Any(f => f.IsRequired))
+                            //                    .Select(f => (id: f.Id, keys: f.ConfigOptions.Where(f => f.IsRequired)))
+                            //                    .Select(f =>
+                            //                    {
+                            //                        IEnumerable<string> optionIdentifiers = f.keys
+                            //                            .Select(f => options.Single(o => o.Key == f.Key))
+                            //                            .Select(f => $"ConfigOptionKeys.{f.Id}");
 
-                                                    return YieldReturnStatement(
-                                                        ParseExpression($"new KeyValuePair<string, string>(\"{f.id}\", JoinOptionKeys({string.Join(", ", optionIdentifiers)}))"));
-                                                })))
-                                })
-                            .ToSyntaxList())));
+                            //                        return YieldReturnStatement(
+                            //                            ParseExpression($"new KeyValuePair<string, string>(\"{f.id}\", JoinOptionKeys({string.Join(", ", optionIdentifiers)}))"));
+                            //                    })))
+                            //    })
+                            .ToSyntaxList<MemberDeclarationSyntax>())));
         }
 
         public static CompilationUnitSyntax GenerateLegacyConfigOptions(IEnumerable<AnalyzerMetadata> analyzers)

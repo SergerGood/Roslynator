@@ -562,7 +562,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             string indentation;
             if (indentationAnalysis.Indentation == binaryExpression.GetLeadingTrivia().LastOrDefault()
-                && AnalyzerOptions.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt.IsEnabled(document, binaryExpression))
+                && document.GetConfigOptions(binaryExpression.SyntaxTree).GetBinaryExpressionNewLinePosition() == NewLinePosition.After)
             {
                 indentation = indentationAnalysis.Indentation.ToString();
             }
@@ -606,7 +606,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                 else if (leftTrailing.IsEmptyOrWhitespace()
                     && tokenTrailing.IsEmptyOrWhitespace())
                 {
-                    if (AnalyzerOptions.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt.IsEnabled(document, binaryExpression))
+                    if (document.GetConfigOptions(binaryExpression.SyntaxTree).GetBinaryExpressionNewLinePosition() == NewLinePosition.After)
                     {
                         if (!SetIndentation(right))
                             break;

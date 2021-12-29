@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RCS0051AddNewLineBetweenClosingBraceAndWhileKeywordTests : AbstractCSharpDiagnosticVerifier<AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersaAnalyzer, SyntaxTokenCodeFixProvider>
+    public class RCS0051AddOrRemoveNewLineBeforeWhileInDoStatementTests : AbstractCSharpDiagnosticVerifier<AddOrRemoveNewLineBeforeWhileInDoStatementAnalyzer, SyntaxTokenCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement)]
         public async Task Test_AddNewLine()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -42,10 +42,10 @@ class C
         while (x);
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferNewLineBeforeWhileInDoStatement, true));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement)]
         public async Task Test_AddNewLine_WithoutTrivia()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -75,10 +75,10 @@ class C
         while (x);
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferNewLineBeforeWhileInDoStatement, true));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement)]
         public async Task Test_RemoveNewLine()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -108,10 +108,10 @@ class C
         } while (x);
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferNewLineBeforeWhileInDoStatement, false));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement)]
         public async Task Test_RemoveNewLine_EmptyLine()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -142,10 +142,10 @@ class C
         } while (x);
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferNewLineBeforeWhileInDoStatement, false));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement)]
         public async Task TestNoDiagnostic_AddNewLine()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -165,7 +165,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement)]
         public async Task TestNoDiagnostic_AddNewLine_EmbeddedStatement()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -183,7 +183,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement)]
         public async Task TestNoDiagnostic_RemoveNewLine()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -199,10 +199,10 @@ class C
         } while (x);
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferNewLineBeforeWhileInDoStatement, false));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement)]
         public async Task TestNoDiagnostic_RemoveNewLine_EmbeddedStatement()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -217,7 +217,7 @@ class C
         while (x);
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferNewLineBeforeWhileInDoStatement, false));
         }
     }
 }

@@ -46,7 +46,34 @@
 	<ValuePlaceholder>true|false</ValuePlaceholder>
 	<Description>Prefer block body when expression spans over multiple lines</Description>
   </Option>
-
+  <Option Id="PreferExplicitAccessibilityModifiers">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Prefer explicit accessibility modifiers</Description>
+  </Option>
+  <Option Id="PreferImplicitAccessibilityModifiers">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Prefer implicit accessibility modifiers</Description>
+  </Option>
+  <Option Id="PreferNewLineBeforeWhileInDoStatement">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Prefer new line before 'while' in 'do' statement</Description>
+  </Option>
+  <Option Id="PreferEmptyLineBetweenSingleLineAccessors">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Prefer empty line between single-line accessors</Description>
+  </Option>
+  <Option Id="PreferEmptyLineBetweenUsingDirectiveWithDifferentRootNamespace">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Prefer empty line between using directives with different root namespace</Description>
+  </Option>
+  <Option Id="BinaryOperatorNewLine">
+	<ValuePlaceholder>after|before</ValuePlaceholder>
+	<Description>Place new line after/before binary operator</Description>
+  </Option>
+  <Option Id="ConditionalExpressionNewLine">
+	<ValuePlaceholder>after|before</ValuePlaceholder>
+	<Description>Place new line after/before conditional expression operator</Description>
+  </Option>
   <!--
   <Option Id="">
     <Key></Key>

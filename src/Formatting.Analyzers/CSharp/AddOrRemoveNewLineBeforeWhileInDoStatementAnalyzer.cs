@@ -11,7 +11,7 @@ using Roslynator.CSharp;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class AddOrRemoveNewLineBeforeWhileInDoStatementAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -20,7 +20,7 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa, CommonDiagnosticRules.AnalyzerIsObsolete);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement);
 
                 return _supportedDiagnostics;
             }
@@ -42,32 +42,52 @@ namespace Roslynator.Formatting.CSharp
             if (!statement.IsKind(SyntaxKind.Block))
                 return;
 
+            NewLineConfig newLineConfig = GetNewLineConfig(context);
+
+            if (newLineConfig == NewLineConfig.None)
+                return;
+
             SyntaxTriviaList trailingTrivia = statement.GetTrailingTrivia();
 
             if (!trailingTrivia.Any()
                 || trailingTrivia.SingleOrDefault(shouldThrow: false).IsWhitespaceTrivia())
             {
                 if (!doStatement.WhileKeyword.LeadingTrivia.Any()
-                    && !AnalyzerOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword.IsEnabled(context))
+                    && newLineConfig == NewLineConfig.Add)
                 {
                     context.ReportDiagnostic(
-                        DiagnosticRules.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa,
+                        DiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement,
                         Location.Create(doStatement.SyntaxTree, new TextSpan(statement.FullSpan.End, 0)),
-                        AnalyzerOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword);
+                        "Add");
                 }
             }
             else if (SyntaxTriviaAnalysis.IsOptionalWhitespaceThenEndOfLineTrivia(trailingTrivia))
             {
                 if (doStatement.WhileKeyword.LeadingTrivia.IsEmptyOrWhitespace()
-                    && AnalyzerOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword.IsEnabled(context))
+                    && newLineConfig == NewLineConfig.Remove)
                 {
                     context.ReportDiagnostic(
-                        DiagnosticRules.ReportOnly.RemoveNewLineBetweenClosingBraceAndWhileKeyword,
+                        DiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement,
                         Location.Create(doStatement.SyntaxTree, new TextSpan(trailingTrivia.Last().SpanStart, 0)),
                         properties: DiagnosticProperties.AnalyzerOption_Invert,
-                        AnalyzerOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword);
+                        "Remove");
                 }
             }
+        }
+
+        private static NewLineConfig GetNewLineConfig(SyntaxNodeAnalysisContext context)
+        {
+            AnalyzerConfigOptions configOptions = context.GetConfigOptions();
+
+            var result = NewLineConfig.None;
+
+            if (configOptions.TryGetValueAsBool(ConfigOptions.PreferNewLineBeforeWhileInDoStatement, out bool addNewLine))
+                result = (addNewLine) ? NewLineConfig.Add : NewLineConfig.Remove;
+
+            if (configOptions.TryGetValueAsBool(LegacyConfigOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword, out bool removeLine))
+                result = (removeLine) ? NewLineConfig.Remove : NewLineConfig.Add;
+
+            return result;
         }
     }
 }

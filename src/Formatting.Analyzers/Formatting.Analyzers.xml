@@ -308,10 +308,10 @@ enum Bar
 
 This rule does not enforce an empty line between two single-line declaration.</Remarks>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBetweenSingleLineAccessorsOrViceVersa">
+  <Analyzer Identifier="AddOrRemoveEmptyLineBetweenSingleLineAccessors">
     <Id>RCS0011</Id>
-    <Title>Add empty line between single-line accessors (or vice versa).</Title>
-    <MessageFormat>Add empty line between single-line accessors.</MessageFormat>
+    <Title>Add/remove empty line between single-line accessors.</Title>
+    <MessageFormat>{0} empty line between single-line accessors.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -330,12 +330,16 @@ This rule does not enforce an empty line between two single-line declaration.</R
 }]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="prefer_empty_line_between_single_line_accessors" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="RemoveEmptyLineBetweenSingleLineAccessors">
         <Title>Remove empty line between single-line accessors.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
+        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[string P
@@ -414,10 +418,10 @@ object this[int index] { get; }]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa">
+  <Analyzer Identifier="AddOrRemoveEmptyLineBetweenUsingDirectiveWithDifferentRootNamespace">
     <Id>RCS0015</Id>
-    <Title>Add empty line between using directives with different root namespace (or vice versa).</Title>
-    <MessageFormat>Add empty line between using directives.</MessageFormat>
+    <Title>Add/remove empty line between using directives with different root namespace.</Title>
+    <MessageFormat>{0} empty line between using directives.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -438,6 +442,9 @@ namespace N
 }]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="prefer_empty_line_between_using_directives_with_different_root_namespace" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace">
         <Title>Remove empty line between using directives with different root namespace.</Title>
@@ -445,6 +452,7 @@ namespace N
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
+        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[using System;
@@ -657,10 +665,10 @@ namespace N
     </Samples>
     <Remarks>This rule was derived from [RCS1024](RCS1024.md).</Remarks>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersa">
+  <Analyzer Identifier="PlaceNewLineAfterOrBeforeBinaryOperator">
     <Id>RCS0027</Id>
-    <Title>Add new line before binary operator instead of after it (or vice versa).</Title>
-    <MessageFormat>Add new line before binary operator instead of after it.</MessageFormat>
+    <Title>Place new line after/before binary operator.</Title>
+    <MessageFormat>Place new line {0} binary operator.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -678,12 +686,16 @@ namespace N
 }]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="binary_operator_new_line" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="AddNewLineAfterBinaryOperatorInsteadOfBeforeIt">
         <Title>Add new line after binary operator instead of before it.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
+        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[if (x
@@ -702,10 +714,10 @@ namespace N
     </Options>
     <Remarks>This rule was originally introduced as [RCS1029](RCS1029.md)</Remarks>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersa">
+  <Analyzer Identifier="PlaceNewLineAfterOrBeforeConditionalExpressionOperator">
     <Id>RCS0028</Id>
-    <Title>Add new line before conditional operator instead of after it (or vice versa).</Title>
-    <MessageFormat>Add new line before conditional operator instead of after it.</MessageFormat>
+    <Title>Place new line after/before operator of conditional expression operator.</Title>
+    <MessageFormat>Place new line {0} operator.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -719,12 +731,16 @@ namespace N
     : Bar();]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="conditional_expression_new_line" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="AddNewLineAfterConditionalOperatorInsteadOfBeforeIt">
         <Title>Add new line after conditional operator instead of before it.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
+        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[var y = x
@@ -1181,10 +1197,10 @@ namespace Foo
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa">
+  <Analyzer Identifier="AddOrRemoveNewLineBeforeWhileInDoStatement">
     <Id>RCS0051</Id>
-    <Title>Add new line between closing brace and 'while' keyword (or vice versa).</Title>
-    <MessageFormat>Add new line between closing brace and 'while' keyword.</MessageFormat>
+    <Title>Add/remove new line before 'while' in 'do' statement.</Title>
+    <MessageFormat>{0} new line before 'while' in 'do' statement.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1201,12 +1217,16 @@ namespace Foo
 while (x);]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="prefer_new_line_before_while_in_do_statement" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="RemoveNewLineBetweenClosingBraceAndWhileKeyword">
         <Title>Remove new line between closing brace and 'while' keyword.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
+        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[do

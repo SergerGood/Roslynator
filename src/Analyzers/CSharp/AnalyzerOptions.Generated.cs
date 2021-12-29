@@ -7,9 +7,7 @@ namespace Roslynator.CSharp
     public static partial class AnalyzerOptions
     {
         internal static readonly AnalyzerOptionDescriptor ConvertBitwiseOperationToHasFlagCall = new AnalyzerOptionDescriptor("roslynator.RCS1096.invert", DiagnosticRules.ConvertHasFlagCallToBitwiseOperationOrViceVersa);
-        internal static readonly AnalyzerOptionDescriptor ConvertExpressionBodyToBlockBody = new AnalyzerOptionDescriptor("roslynator.RCS1016.invert", DiagnosticRules.UseBlockOrExpressionBody);
         internal static readonly AnalyzerOptionDescriptor ConvertMethodGroupToAnonymousFunction = new AnalyzerOptionDescriptor("roslynator.RCS1207.invert", DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa);
-        internal static readonly AnalyzerOptionDescriptor RemoveAccessibilityModifiers = new AnalyzerOptionDescriptor("roslynator.RCS1018.invert", DiagnosticRules.AddAccessibilityModifiersOrViceVersa);
         internal static readonly AnalyzerOptionDescriptor RemoveCallToConfigureAwait = new AnalyzerOptionDescriptor("roslynator.RCS1090.invert", DiagnosticRules.AddCallToConfigureAwaitOrViceVersa);
         internal static readonly AnalyzerOptionDescriptor RemoveEmptyLineBetweenClosingBraceAndSwitchSection = new AnalyzerOptionDescriptor("roslynator.RCS1036.remove_empty_line_between_closing_brace_and_switch_section", DiagnosticRules.RemoveRedundantEmptyLine);
         internal static readonly AnalyzerOptionDescriptor RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken = new AnalyzerOptionDescriptor("roslynator.RCS1051.do_not_parenthesize_single_token", DiagnosticRules.ParenthesizeConditionOfConditionalExpression);

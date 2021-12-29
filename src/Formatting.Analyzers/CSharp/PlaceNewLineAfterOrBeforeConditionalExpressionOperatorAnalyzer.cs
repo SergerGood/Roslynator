@@ -10,7 +10,7 @@ using Roslynator.CSharp;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class PlaceNewLineAfterOrBeforeConditionalExpressionOperatorAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -19,7 +19,7 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersa, CommonDiagnosticRules.AnalyzerIsObsolete);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PlaceNewLineAfterOrBeforeConditionalExpressionOperator);
 
                 return _supportedDiagnostics;
             }
@@ -46,19 +46,24 @@ namespace Roslynator.Formatting.CSharp
             if (whenTrue.IsMissing)
                 return;
 
+            NewLinePosition newLinePosition = GetNewLinePosition(context);
+
+            if (newLinePosition == NewLinePosition.None)
+                return;
+
             if (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(condition, conditionalExpression.QuestionToken, whenTrue))
             {
-                if (!AnalyzerOptions.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt.IsEnabled(context))
+                if (newLinePosition == NewLinePosition.Before)
                 {
-                    ReportDiagnostic(DiagnosticRules.AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersa, conditionalExpression.QuestionToken, ImmutableDictionary<string, string>.Empty);
+                    ReportDiagnostic(conditionalExpression.QuestionToken, ImmutableDictionary<string, string>.Empty, "before");
                     return;
                 }
             }
             else if (SyntaxTriviaAnalysis.IsTokenPrecededWithNewLineAndNotFollowedWithNewLine(condition, conditionalExpression.QuestionToken, whenTrue))
             {
-                if (AnalyzerOptions.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt.IsEnabled(context))
+                if (newLinePosition == NewLinePosition.After)
                 {
-                    ReportDiagnostic(DiagnosticRules.ReportOnly.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt, conditionalExpression.QuestionToken, DiagnosticProperties.AnalyzerOption_Invert);
+                    ReportDiagnostic(conditionalExpression.QuestionToken, DiagnosticProperties.AnalyzerOption_Invert, "after");
                     return;
                 }
             }
@@ -69,24 +74,33 @@ namespace Roslynator.Formatting.CSharp
             {
                 if (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(whenTrue, conditionalExpression.ColonToken, whenFalse))
                 {
-                    if (!AnalyzerOptions.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt.IsEnabled(context))
-                        ReportDiagnostic(DiagnosticRules.AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersa, conditionalExpression.ColonToken, ImmutableDictionary<string, string>.Empty);
+                    if (newLinePosition == NewLinePosition.Before)
+                        ReportDiagnostic(conditionalExpression.ColonToken, ImmutableDictionary<string, string>.Empty, "before");
                 }
                 else if (SyntaxTriviaAnalysis.IsTokenPrecededWithNewLineAndNotFollowedWithNewLine(whenTrue, conditionalExpression.ColonToken, whenFalse))
                 {
-                    if (AnalyzerOptions.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt.IsEnabled(context))
-                        ReportDiagnostic(DiagnosticRules.ReportOnly.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt, conditionalExpression.ColonToken, DiagnosticProperties.AnalyzerOption_Invert);
+                    if (newLinePosition == NewLinePosition.After)
+                        ReportDiagnostic(conditionalExpression.ColonToken, DiagnosticProperties.AnalyzerOption_Invert, "after");
                 }
             }
 
-            void ReportDiagnostic(DiagnosticDescriptor descriptor, SyntaxToken token, ImmutableDictionary<string, string> properties)
+            void ReportDiagnostic(
+                SyntaxToken token,
+                ImmutableDictionary<string, string> properties,
+                string messageArg)
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    descriptor,
+                    DiagnosticRules.PlaceNewLineAfterOrBeforeConditionalExpressionOperator,
                     Location.Create(token.SyntaxTree, token.Span.WithLength(0)),
-                    properties: properties);
+                    properties: properties,
+                    messageArg);
             }
+        }
+
+        private static NewLinePosition GetNewLinePosition(SyntaxNodeAnalysisContext context)
+        {
+            return context.GetConfigOptions().GetConditionalExpressionNewLinePosition();
         }
     }
 }

@@ -13,13 +13,13 @@ using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ConvertBlockBodyToExpressionBodyOrViceVersaCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseBlockBodyOrExpressionBodyCodeFixProvider))]
     [Shared]
-    public sealed class ConvertBlockBodyToExpressionBodyOrViceVersaCodeFixProvider : BaseCodeFixProvider
+    public sealed class UseBlockBodyOrExpressionBodyCodeFixProvider : BaseCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseBlockBodyOrExpressionBody); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)

@@ -8,18 +8,23 @@ namespace Roslynator
 {
     public static partial class ConfigOptions
     {
+        public static readonly ConfigOptionDescriptor BinaryOperatorNewLine = new(key: ConfigOptionKeys.BinaryOperatorNewLine, defaultValue: null, defaultValuePlaceholder: "after|before", description: "Place new line after/before binary operator");
+        public static readonly ConfigOptionDescriptor ConditionalExpressionNewLine = new(key: ConfigOptionKeys.ConditionalExpressionNewLine, defaultValue: null, defaultValuePlaceholder: "after|before", description: "Place new line after/before conditional expression operator");
         public static readonly ConfigOptionDescriptor MaxLineLength = new(key: ConfigOptionKeys.MaxLineLength, defaultValue: "140", defaultValuePlaceholder: "<MAX_LINE_LENGTH>", description: "Max line length");
+        public static readonly ConfigOptionDescriptor PreferBlockBodyToExpressionBody = new(key: ConfigOptionKeys.PreferBlockBodyToExpressionBody, defaultValue: null, defaultValuePlaceholder: "true|false", description: "Prefer block body to expression body");
+        public static readonly ConfigOptionDescriptor PreferBlockBodyWhenDeclarationSpansOverMultipleLines = new(key: ConfigOptionKeys.PreferBlockBodyWhenDeclarationSpansOverMultipleLines, defaultValue: null, defaultValuePlaceholder: "true|false", description: "Prefer block body when declaration spans over multiple lines");
+        public static readonly ConfigOptionDescriptor PreferBlockBodyWhenExpressionSpansOverMultipleLines = new(key: ConfigOptionKeys.PreferBlockBodyWhenExpressionSpansOverMultipleLines, defaultValue: null, defaultValuePlaceholder: "true|false", description: "Prefer block body when expression spans over multiple lines");
+        public static readonly ConfigOptionDescriptor PreferEmptyLineBetweenSingleLineAccessors = new(key: ConfigOptionKeys.PreferEmptyLineBetweenSingleLineAccessors, defaultValue: null, defaultValuePlaceholder: "true|false", description: "Prefer empty line between single-line accessors");
+        public static readonly ConfigOptionDescriptor PreferEmptyLineBetweenUsingDirectiveWithDifferentRootNamespace = new(key: ConfigOptionKeys.PreferEmptyLineBetweenUsingDirectiveWithDifferentRootNamespace, defaultValue: null, defaultValuePlaceholder: "true|false", description: "Prefer empty line between using directives with different root namespace");
+        public static readonly ConfigOptionDescriptor PreferExplicitAccessibilityModifiers = new(key: ConfigOptionKeys.PreferExplicitAccessibilityModifiers, defaultValue: null, defaultValuePlaceholder: "true|false", description: "Prefer explicit accessibility modifiers");
         public static readonly ConfigOptionDescriptor PreferExplicitlyTypedArray = new(key: ConfigOptionKeys.PreferExplicitlyTypedArray, defaultValue: null, defaultValuePlaceholder: "true|false", description: "Prefer explicitly typed array");
+        public static readonly ConfigOptionDescriptor PreferExpressionBodyToBlockBody = new(key: ConfigOptionKeys.PreferExpressionBodyToBlockBody, defaultValue: null, defaultValuePlaceholder: "true|false", description: "Prefer expression body to block body");
+        public static readonly ConfigOptionDescriptor PreferImplicitAccessibilityModifiers = new(key: ConfigOptionKeys.PreferImplicitAccessibilityModifiers, defaultValue: null, defaultValuePlaceholder: "true|false", description: "Prefer implicit accessibility modifiers");
         public static readonly ConfigOptionDescriptor PreferImplicitlyTypedArray = new(key: ConfigOptionKeys.PreferImplicitlyTypedArray, defaultValue: null, defaultValuePlaceholder: "true|false", description: "Prefer implicitly typed array");
         public static readonly ConfigOptionDescriptor PreferImplicitlyTypedArrayWhenTypeIsObvious = new(key: ConfigOptionKeys.PreferImplicitlyTypedArrayWhenTypeIsObvious, defaultValue: null, defaultValuePlaceholder: "true|false", description: "Prefer implicitly typed array when type is obvious");
         public static readonly ConfigOptionDescriptor PreferNewLineAtEndOfFile = new(key: ConfigOptionKeys.PreferNewLineAtEndOfFile, defaultValue: null, defaultValuePlaceholder: "true|false", description: "Prefer new line at the end of a file");
+        public static readonly ConfigOptionDescriptor PreferNewLineBeforeWhileInDoStatement = new(key: ConfigOptionKeys.PreferNewLineBeforeWhileInDoStatement, defaultValue: null, defaultValuePlaceholder: "true|false", description: "Prefer new line before 'while' in 'do' statement");
         public static readonly ConfigOptionDescriptor PreferParenthesesWhenCreatingNewObject = new(key: ConfigOptionKeys.PreferParenthesesWhenCreatingNewObject, defaultValue: null, defaultValuePlaceholder: "true|false", description: "Prefer parentheses when creating new object");
         public static readonly ConfigOptionDescriptor PrefixFieldIdentifierWithUnderscore = new(key: ConfigOptionKeys.PrefixFieldIdentifierWithUnderscore, defaultValue: "false", defaultValuePlaceholder: "true|false", description: "Prefix field identifier with underscore");
-        private static IEnumerable<KeyValuePair<string, string>> GetRequiredOptions()
-        {
-            yield return new KeyValuePair<string, string>("RCS1014", JoinOptionKeys(ConfigOptionKeys.PreferExplicitlyTypedArray, ConfigOptionKeys.PreferImplicitlyTypedArray, ConfigOptionKeys.PreferImplicitlyTypedArrayWhenTypeIsObvious));
-            yield return new KeyValuePair<string, string>("RCS1050", JoinOptionKeys(ConfigOptionKeys.PreferParenthesesWhenCreatingNewObject));
-            yield return new KeyValuePair<string, string>("RCS0058", JoinOptionKeys(ConfigOptionKeys.PreferNewLineAtEndOfFile));
-        }
     }
 }

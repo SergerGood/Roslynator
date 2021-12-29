@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
@@ -9,6 +10,11 @@ namespace Roslynator
     public static partial class ConfigOptions
     {
         private static readonly ImmutableDictionary<string, string> _requiredOptions = GetRequiredOptions().ToImmutableDictionary(f => f.Key, f => f.Value);
+
+        private static IEnumerable<KeyValuePair<string, string>> GetRequiredOptions()
+        {
+            yield break;
+        }
 
         public static string GetRequiredOptions(DiagnosticDescriptor descriptor)
         {

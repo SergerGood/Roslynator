@@ -25,11 +25,11 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.AddEmptyLineBetweenBlockAndStatement,
-                    DiagnosticIdentifiers.AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersa,
+                    DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeConditionalExpressionOperator,
                     DiagnosticIdentifiers.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa,
                     DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa,
                     DiagnosticIdentifiers.AddNewLineAfterAttributeList,
-                    DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa);
+                    DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement);
             }
         }
 
@@ -55,7 +55,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;
                     }
-                case DiagnosticIdentifiers.AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersa:
+                case DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeConditionalExpressionOperator:
                     {
                         if (DiagnosticProperties.ContainsInvert(diagnostic.Properties))
                         {
@@ -65,12 +65,12 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                             if (token.IsKind(SyntaxKind.QuestionToken))
                             {
                                 title = (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(conditionalExpression.WhenTrue, conditionalExpression.ColonToken, conditionalExpression.WhenFalse))
-                                    ? "Add new line after '?' and ':' instead of before it"
-                                    : "Add new line after '?' instead of before it";
+                                    ? "Place new line after '?' and ':'"
+                                    : "Place new line after '?'";
                             }
                             else
                             {
-                                title = "Add new line after ':' instead of before it";
+                                title = "Place new line after ':'";
                             }
 
                             CodeAction codeAction = CodeAction.Create(
@@ -88,12 +88,12 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                             if (token.IsKind(SyntaxKind.QuestionToken))
                             {
                                 title = (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(conditionalExpression.WhenTrue, conditionalExpression.ColonToken, conditionalExpression.WhenFalse))
-                                    ? "Add new line before '?' and ':' instead of after it"
-                                    : "Add new line before '?' instead of after it";
+                                    ? "Place new line before '?' and ':'"
+                                    : "Place new line before '?'";
                             }
                             else
                             {
-                                title = "Add new line before ':' instead of after it";
+                                title = "Place new line before ':'";
                             }
 
                             CodeAction codeAction = CodeAction.Create(
@@ -122,7 +122,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;
                     }
-                case DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa:
+                case DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement:
                     {
                         if (DiagnosticProperties.ContainsInvert(diagnostic.Properties))
                         {

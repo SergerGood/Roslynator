@@ -24,7 +24,7 @@ namespace Roslynator.Formatting.CSharp
                     Immutable.InterlockedInitialize(
                         ref _supportedDiagnostics,
                         DiagnosticRules.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace,
-                        DiagnosticRules.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa,
+                        DiagnosticRules.AddOrRemoveEmptyLineBetweenUsingDirectiveWithDifferentRootNamespace,
                         CommonDiagnosticRules.AnalyzerIsObsolete);
                 }
 
@@ -108,28 +108,47 @@ namespace Roslynator.Formatting.CSharp
                             Location.Create(context.Node.SyntaxTree, leadingTrivia[0].Span.WithLength(0)));
                     }
                 }
-                else if (DiagnosticRules.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa.IsEffective(context))
+                else if (DiagnosticRules.AddOrRemoveEmptyLineBetweenUsingDirectiveWithDifferentRootNamespace.IsEffective(context))
                 {
+                    NewLineConfig emptyLineConfig = GetEmptyLineConfig(context);
+
                     if (isEmptyLine)
                     {
-                        if (AnalyzerOptions.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace.IsEnabled(context))
+                        if (emptyLineConfig == NewLineConfig.Remove)
                         {
                             DiagnosticHelpers.ReportDiagnostic(
                                 context,
-                                DiagnosticRules.ReportOnly.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace,
+                                DiagnosticRules.AddOrRemoveEmptyLineBetweenUsingDirectiveWithDifferentRootNamespace,
                                 Location.Create(context.Node.SyntaxTree, leadingTrivia[0].Span.WithLength(0)),
-                                properties: DiagnosticProperties.AnalyzerOption_Invert);
+                                properties: DiagnosticProperties.AnalyzerOption_Invert,
+                                "Remove");
                         }
                     }
-                    else if (!AnalyzerOptions.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace.IsEnabled(context))
+                    else if (emptyLineConfig == NewLineConfig.Add)
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
-                            DiagnosticRules.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa,
-                            Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)));
+                            DiagnosticRules.AddOrRemoveEmptyLineBetweenUsingDirectiveWithDifferentRootNamespace,
+                            Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)),
+                            "Add");
                     }
                 }
             }
+        }
+
+        private static NewLineConfig GetEmptyLineConfig(SyntaxNodeAnalysisContext context)
+        {
+            AnalyzerConfigOptions configOptions = context.GetConfigOptions();
+
+            var result = NewLineConfig.None;
+
+            if (configOptions.TryGetValueAsBool(ConfigOptions.PreferEmptyLineBetweenUsingDirectiveWithDifferentRootNamespace, out bool addLine))
+                result = (addLine) ? NewLineConfig.Add : NewLineConfig.Remove;
+
+            if (configOptions.TryGetValueAsBool(LegacyConfigOptions.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace, out bool removeLine))
+                result = (removeLine) ? NewLineConfig.Remove : NewLineConfig.Add;
+
+            return result;
         }
     }
 }

@@ -188,29 +188,27 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UseNameOfOperatorFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UseNameOfOperator);
 
         /// <summary>RCS1016</summary>
-        public static readonly DiagnosticDescriptor UseBlockOrExpressionBody = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UseBlockOrExpressionBody, 
+        public static readonly DiagnosticDescriptor UseBlockBodyOrExpressionBody = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.UseBlockBodyOrExpressionBody, 
             title:              "Use block/expression body.", 
-            messageFormat:      "Use block/expression body.", 
+            messageFormat:      "Use {0} body.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseBlockOrExpressionBody, 
+            helpLinkUri:        DiagnosticIdentifiers.UseBlockBodyOrExpressionBody, 
             customTags:         Array.Empty<string>());
 
-        public static readonly DiagnosticDescriptor UseBlockOrExpressionBodyFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UseBlockOrExpressionBody);
-
         /// <summary>RCS1018</summary>
-        public static readonly DiagnosticDescriptor AddAccessibilityModifiersOrViceVersa = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddAccessibilityModifiersOrViceVersa, 
-            title:              "Add accessibility modifiers (or vice versa).", 
-            messageFormat:      "Add accessibility modifiers.", 
+        public static readonly DiagnosticDescriptor AddOrRemoveAccessibilityModifiers = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers, 
+            title:              "Add/remove accessibility modifiers.", 
+            messageFormat:      "{0} accessibility modifiers.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddAccessibilityModifiersOrViceVersa, 
+            helpLinkUri:        DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1019</summary>
@@ -2443,30 +2441,6 @@ namespace Roslynator.CSharp
 
         public static partial class ReportOnly
         {
-            /// <summary>RCS1016i</summary>
-            public static readonly DiagnosticDescriptor ConvertExpressionBodyToBlockBody = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.UseBlockOrExpressionBody, 
-                title:              "Use block/expression body.", 
-                messageFormat:      "Convert expression body to block body.", 
-                category:           DiagnosticCategories.Roslynator, 
-                defaultSeverity:    DiagnosticSeverity.Hidden, 
-                isEnabledByDefault: false, 
-                description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.UseBlockOrExpressionBody, 
-                customTags:         Array.Empty<string>());
-
-            /// <summary>RCS1018i</summary>
-            public static readonly DiagnosticDescriptor RemoveAccessibilityModifiers = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.AddAccessibilityModifiersOrViceVersa, 
-                title:              "Add accessibility modifiers (or vice versa).", 
-                messageFormat:      "Remove accessibility modifiers.", 
-                category:           DiagnosticCategories.Roslynator, 
-                defaultSeverity:    DiagnosticSeverity.Info, 
-                isEnabledByDefault: true, 
-                description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.AddAccessibilityModifiersOrViceVersa, 
-                customTags:         WellKnownDiagnosticTags.Unnecessary);
-
             /// <summary>RCS1051a</summary>
             public static readonly DiagnosticDescriptor RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken = DiagnosticDescriptorFactory.Create(
                 id:                 DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression, 

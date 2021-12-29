@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -11,7 +11,7 @@ using Roslynator.CSharp;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class ConvertBlockBodyToExpressionBodyOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class UseBlockBodyOrExpressionBodyAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Analysis
                 {
                     Immutable.InterlockedInitialize(
                         ref _supportedDiagnostics,
-                        DiagnosticRules.UseBlockOrExpressionBody,
+                        DiagnosticRules.UseBlockBodyOrExpressionBody,
                         CommonDiagnosticRules.RequiredOptionNotSetForAnalyzer);
                 }
 
@@ -48,19 +48,19 @@ namespace Roslynator.CSharp.Analysis
                 startContext.RegisterSyntaxNodeAction(f => AnalyzeConstructorDeclaration(f), SyntaxKind.ConstructorDeclaration);
                 startContext.RegisterSyntaxNodeAction(f => AnalyzeDestructorDeclaration(f), SyntaxKind.DestructorDeclaration);
                 startContext.RegisterSyntaxNodeAction(f => AnalyzeLocalFunctionStatement(f), SyntaxKind.LocalFunctionStatement);
-                startContext.RegisterSyntaxNodeAction(f => AnalyzeAccessorDeclaration(f), SyntaxKind.GetAccessorDeclaration);
-                startContext.RegisterSyntaxNodeAction(f => AnalyzeAccessorDeclaration(f), SyntaxKind.SetAccessorDeclaration);
-                startContext.RegisterSyntaxNodeAction(f => AnalyzeAccessorDeclaration(f), SyntaxKind.AddAccessorDeclaration);
-                startContext.RegisterSyntaxNodeAction(f => AnalyzeAccessorDeclaration(f), SyntaxKind.RemoveAccessorDeclaration);
-                startContext.RegisterSyntaxNodeAction(f => AnalyzeAccessorDeclaration(f), SyntaxKind.InitAccessorDeclaration);
+
+                startContext.RegisterSyntaxNodeAction(
+                    f => AnalyzeAccessorDeclaration(f),
+                    SyntaxKind.GetAccessorDeclaration,
+                    SyntaxKind.SetAccessorDeclaration,
+                    SyntaxKind.AddAccessorDeclaration,
+                    SyntaxKind.RemoveAccessorDeclaration,
+                    SyntaxKind.InitAccessorDeclaration);
             });
         }
 
         private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
-                return;
-
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
             BlockSyntax body = methodDeclaration.Body;
@@ -69,21 +69,26 @@ namespace Roslynator.CSharp.Analysis
                 if (body.ContainsDirectives)
                     return;
 
+                AnalyzerConfig config = AnalyzerConfig.Create(context);
+
+                if (config.IsEmpty)
+                    return;
+
                 BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(body);
 
                 if (!analysis.Success)
                     return;
 
-                if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
+                if (config.UseBlockBody)
                     return;
 
-                if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context)
+                if (config.UseBlockBodyWhenDeclarationIsMultiLine
                     && methodDeclaration.SyntaxTree.IsMultiLineSpan(methodDeclaration.HeaderSpan()))
                 {
                     return;
                 }
 
-                AnalyzeBlock(context, body, analysis);
+                AnalyzeBlock(context, body, analysis, config);
             }
             else
             {
@@ -91,23 +96,28 @@ namespace Roslynator.CSharp.Analysis
 
                 if (expressionBody?.ContainsDirectives == false)
                 {
-                    if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
+                    AnalyzerConfig config = AnalyzerConfig.Create(context);
+
+                    if (config.IsEmpty)
+                        return;
+
+                    if (config.UseBlockBody)
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
+                        ReportDiagnostic(context, expressionBody);
                         return;
                     }
 
-                    if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context)
+                    if (config.UseBlockBodyWhenDeclarationIsMultiLine
                         && methodDeclaration.SyntaxTree.IsMultiLineSpan(methodDeclaration.HeaderSpan()))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
+                        ReportDiagnostic(context, expressionBody);
                         return;
                     }
 
-                    if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.IsEnabled(context)
+                    if (config.UseBlockBodyWhenExpressionIsMultiLine
                         && expressionBody.Expression?.IsMultiLine() == true)
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
+                        ReportDiagnostic(context, expressionBody);
                     }
                 }
             }
@@ -115,73 +125,74 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
-                return;
-
             var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
 
             ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
 
             if (expressionBody?.ContainsDirectives == false)
             {
-                if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
+                AnalyzerConfig config = AnalyzerConfig.Create(context);
+
+                if (config.IsEmpty)
+                    return;
+
+                if (config.UseBlockBody)
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
+                    ReportDiagnostic(context, expressionBody);
                     return;
                 }
 
-                if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context)
+                if (config.UseBlockBodyWhenDeclarationIsMultiLine
                     && propertyDeclaration.SyntaxTree.IsMultiLineSpan(propertyDeclaration.HeaderSpan()))
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
+                    ReportDiagnostic(context, expressionBody);
                     return;
                 }
 
-                if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.IsEnabled(context)
+                if (config.UseBlockBodyWhenExpressionIsMultiLine
                     && expressionBody.Expression?.IsMultiLine() == true)
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
+                    ReportDiagnostic(context, expressionBody);
                 }
             }
         }
 
         private static void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
-                return;
-
             var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
 
             ArrowExpressionClauseSyntax expressionBody = indexerDeclaration.ExpressionBody;
 
             if (expressionBody?.ContainsDirectives == false)
             {
-                if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
+                AnalyzerConfig config = AnalyzerConfig.Create(context);
+
+                if (config.IsEmpty)
+                    return;
+
+                if (config.UseBlockBody)
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
+                    ReportDiagnostic(context, expressionBody);
                     return;
                 }
 
-                if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context)
+                if (config.UseBlockBodyWhenDeclarationIsMultiLine
                     && indexerDeclaration.SyntaxTree.IsMultiLineSpan(indexerDeclaration.HeaderSpan()))
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
+                    ReportDiagnostic(context, expressionBody);
                     return;
                 }
 
-                if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.IsEnabled(context)
+                if (config.UseBlockBodyWhenExpressionIsMultiLine
                     && expressionBody.Expression?.IsMultiLine() == true)
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
+                    ReportDiagnostic(context, expressionBody);
                 }
             }
         }
 
         private static void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
-                return;
-
             var operatorDeclaration = (OperatorDeclarationSyntax)context.Node;
 
             BlockSyntax body = operatorDeclaration.Body;
@@ -190,21 +201,26 @@ namespace Roslynator.CSharp.Analysis
                 if (body.ContainsDirectives)
                     return;
 
+                AnalyzerConfig config = AnalyzerConfig.Create(context);
+
+                if (config.IsEmpty)
+                    return;
+
                 BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(body, allowExpressionStatement: false);
 
                 if (!analysis.Success)
                     return;
 
-                if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
+                if (config.UseBlockBody)
                     return;
 
-                if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context)
+                if (config.UseBlockBodyWhenDeclarationIsMultiLine
                     && operatorDeclaration.SyntaxTree.IsMultiLineSpan(operatorDeclaration.HeaderSpan()))
                 {
                     return;
                 }
 
-                AnalyzeBlock(context, body, analysis);
+                AnalyzeBlock(context, body, analysis, config);
             }
             else
             {
@@ -212,23 +228,28 @@ namespace Roslynator.CSharp.Analysis
 
                 if (expressionBody?.ContainsDirectives == false)
                 {
-                    if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
+                    AnalyzerConfig config = AnalyzerConfig.Create(context);
+
+                    if (config.IsEmpty)
+                        return;
+
+                    if (config.UseBlockBody)
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
+                        ReportDiagnostic(context, expressionBody);
                         return;
                     }
 
-                    if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context)
+                    if (config.UseBlockBodyWhenDeclarationIsMultiLine
                         && operatorDeclaration.SyntaxTree.IsMultiLineSpan(operatorDeclaration.HeaderSpan()))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
+                        ReportDiagnostic(context, expressionBody);
                         return;
                     }
 
-                    if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.IsEnabled(context)
+                    if (config.UseBlockBodyWhenExpressionIsMultiLine
                         && expressionBody.Expression?.IsMultiLine() == true)
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
+                        ReportDiagnostic(context, expressionBody);
                     }
                 }
             }
@@ -236,9 +257,6 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
-                return;
-
             var operatorDeclaration = (ConversionOperatorDeclarationSyntax)context.Node;
 
             BlockSyntax body = operatorDeclaration.Body;
@@ -247,21 +265,26 @@ namespace Roslynator.CSharp.Analysis
                 if (body.ContainsDirectives)
                     return;
 
+                AnalyzerConfig config = AnalyzerConfig.Create(context);
+
+                if (config.IsEmpty)
+                    return;
+
                 BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(body, allowExpressionStatement: false);
 
                 if (!analysis.Success)
                     return;
 
-                if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
+                if (config.UseBlockBody)
                     return;
 
-                if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context)
+                if (config.UseBlockBodyWhenDeclarationIsMultiLine
                     && operatorDeclaration.SyntaxTree.IsMultiLineSpan(operatorDeclaration.HeaderSpan()))
                 {
                     return;
                 }
 
-                AnalyzeBlock(context, body, analysis);
+                AnalyzeBlock(context, body, analysis, config);
             }
             else
             {
@@ -269,23 +292,28 @@ namespace Roslynator.CSharp.Analysis
 
                 if (expressionBody?.ContainsDirectives == false)
                 {
-                    if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
+                    AnalyzerConfig config = AnalyzerConfig.Create(context);
+
+                    if (config.IsEmpty)
+                        return;
+
+                    if (config.UseBlockBody)
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
+                        ReportDiagnostic(context, expressionBody);
                         return;
                     }
 
-                    if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context)
+                    if (config.UseBlockBodyWhenDeclarationIsMultiLine
                         && operatorDeclaration.SyntaxTree.IsMultiLineSpan(operatorDeclaration.HeaderSpan()))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
+                        ReportDiagnostic(context, expressionBody);
                         return;
                     }
 
-                    if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.IsEnabled(context)
+                    if (config.UseBlockBodyWhenExpressionIsMultiLine
                         && expressionBody.Expression?.IsMultiLine() == true)
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
+                        ReportDiagnostic(context, expressionBody);
                     }
                 }
             }
@@ -293,9 +321,6 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
-                return;
-
             var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
 
             BlockSyntax body = constructorDeclaration.Body;
@@ -304,21 +329,26 @@ namespace Roslynator.CSharp.Analysis
                 if (body.ContainsDirectives)
                     return;
 
+                AnalyzerConfig config = AnalyzerConfig.Create(context);
+
+                if (config.IsEmpty)
+                    return;
+
                 BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(body);
 
                 if (!analysis.Success)
                     return;
 
-                if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
+                if (config.UseBlockBody)
                     return;
 
-                if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context)
+                if (config.UseBlockBodyWhenDeclarationIsMultiLine
                     && constructorDeclaration.SyntaxTree.IsMultiLineSpan(constructorDeclaration.HeaderSpan()))
                 {
                     return;
                 }
 
-                AnalyzeBlock(context, body, analysis);
+                AnalyzeBlock(context, body, analysis, config);
             }
             else
             {
@@ -326,23 +356,28 @@ namespace Roslynator.CSharp.Analysis
 
                 if (expressionBody?.ContainsDirectives == false)
                 {
-                    if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
+                    AnalyzerConfig config = AnalyzerConfig.Create(context);
+
+                    if (config.IsEmpty)
+                        return;
+
+                    if (config.UseBlockBody)
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
+                        ReportDiagnostic(context, expressionBody);
                         return;
                     }
 
-                    if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context)
+                    if (config.UseBlockBodyWhenDeclarationIsMultiLine
                         && constructorDeclaration.SyntaxTree.IsMultiLineSpan(constructorDeclaration.HeaderSpan()))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
+                        ReportDiagnostic(context, expressionBody);
                         return;
                     }
 
-                    if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.IsEnabled(context)
+                    if (config.UseBlockBodyWhenExpressionIsMultiLine
                         && expressionBody.Expression?.IsMultiLine() == true)
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
+                        ReportDiagnostic(context, expressionBody);
                     }
                 }
             }
@@ -350,9 +385,6 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeDestructorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
-                return;
-
             var destructorDeclaration = (DestructorDeclarationSyntax)context.Node;
 
             BlockSyntax body = destructorDeclaration.Body;
@@ -361,21 +393,26 @@ namespace Roslynator.CSharp.Analysis
                 if (body.ContainsDirectives)
                     return;
 
+                AnalyzerConfig config = AnalyzerConfig.Create(context);
+
+                if (config.IsEmpty)
+                    return;
+
                 BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(body);
 
                 if (!analysis.Success)
                     return;
 
-                if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
+                if (config.UseBlockBody)
                     return;
 
-                if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context)
+                if (config.UseBlockBodyWhenDeclarationIsMultiLine
                     && destructorDeclaration.SyntaxTree.IsMultiLineSpan(destructorDeclaration.HeaderSpan()))
                 {
                     return;
                 }
 
-                AnalyzeBlock(context, body, analysis);
+                AnalyzeBlock(context, body, analysis, config);
             }
             else
             {
@@ -383,23 +420,28 @@ namespace Roslynator.CSharp.Analysis
 
                 if (expressionBody?.ContainsDirectives == false)
                 {
-                    if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
+                    AnalyzerConfig config = AnalyzerConfig.Create(context);
+
+                    if (config.IsEmpty)
+                        return;
+
+                    if (config.UseBlockBody)
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
+                        ReportDiagnostic(context, expressionBody);
                         return;
                     }
 
-                    if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context)
+                    if (config.UseBlockBodyWhenDeclarationIsMultiLine
                         && destructorDeclaration.SyntaxTree.IsMultiLineSpan(destructorDeclaration.HeaderSpan()))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
+                        ReportDiagnostic(context, expressionBody);
                         return;
                     }
 
-                    if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.IsEnabled(context)
+                    if (config.UseBlockBodyWhenExpressionIsMultiLine
                         && expressionBody.Expression?.IsMultiLine() == true)
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
+                        ReportDiagnostic(context, expressionBody);
                     }
                 }
             }
@@ -407,9 +449,6 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeLocalFunctionStatement(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
-                return;
-
             var localFunction = (LocalFunctionStatementSyntax)context.Node;
 
             BlockSyntax body = localFunction.Body;
@@ -418,21 +457,26 @@ namespace Roslynator.CSharp.Analysis
                 if (body.ContainsDirectives)
                     return;
 
+                AnalyzerConfig config = AnalyzerConfig.Create(context);
+
+                if (config.IsEmpty)
+                    return;
+
                 BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(body);
 
                 if (!analysis.Success)
                     return;
 
-                if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
+                if (config.UseBlockBody)
                     return;
 
-                if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context)
+                if (config.UseBlockBodyWhenDeclarationIsMultiLine
                     && localFunction.SyntaxTree.IsMultiLineSpan(localFunction.HeaderSpan()))
                 {
                     return;
                 }
 
-                AnalyzeBlock(context, body, analysis);
+                AnalyzeBlock(context, body, analysis, config);
             }
             else
             {
@@ -440,23 +484,28 @@ namespace Roslynator.CSharp.Analysis
 
                 if (expressionBody?.ContainsDirectives == false)
                 {
-                    if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
+                    AnalyzerConfig config = AnalyzerConfig.Create(context);
+
+                    if (config.IsEmpty)
+                        return;
+
+                    if (config.UseBlockBody)
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
+                        ReportDiagnostic(context, expressionBody);
                         return;
                     }
 
-                    if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context)
+                    if (config.UseBlockBodyWhenDeclarationIsMultiLine
                         && localFunction.SyntaxTree.IsMultiLineSpan(localFunction.HeaderSpan()))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
+                        ReportDiagnostic(context, expressionBody);
                         return;
                     }
 
-                    if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.IsEnabled(context)
+                    if (config.UseBlockBodyWhenExpressionIsMultiLine
                         && expressionBody.Expression?.IsMultiLine() == true)
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
+                        ReportDiagnostic(context, expressionBody);
                     }
                 }
             }
@@ -464,9 +513,6 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeAccessorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
-                return;
-
             var accessor = (AccessorDeclarationSyntax)context.Node;
 
             BlockSyntax body = accessor.Body;
@@ -481,16 +527,21 @@ namespace Roslynator.CSharp.Analysis
 
                 if (expressionBody?.ContainsDirectives == false)
                 {
-                    if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
+                    AnalyzerConfig config = AnalyzerConfig.Create(context);
+
+                    if (config.IsEmpty)
+                        return;
+
+                    if (config.UseBlockBody)
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
+                        ReportDiagnostic(context, expressionBody);
                         return;
                     }
 
-                    if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.IsEnabled(context)
+                    if (config.UseBlockBodyWhenExpressionIsMultiLine
                         && expressionBody.Expression?.IsMultiLine() == true)
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
+                        ReportDiagnostic(context, expressionBody);
                     }
                 }
             }
@@ -507,6 +558,11 @@ namespace Roslynator.CSharp.Analysis
             if (accessor.AttributeLists.Any())
                 return;
 
+            AnalyzerConfig config = AnalyzerConfig.Create(context);
+
+            if (config.IsEmpty)
+                return;
+
             bool isGetter = accessor.IsKind(SyntaxKind.GetAccessorDeclaration);
 
             BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(body, allowExpressionStatement: !isGetter);
@@ -516,10 +572,10 @@ namespace Roslynator.CSharp.Analysis
             if (expression == null)
                 return;
 
-            if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
+            if (config.UseBlockBody)
                 return;
 
-            if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.IsEnabled(context)
+            if (config.UseBlockBodyWhenExpressionIsMultiLine
                 && expression.IsMultiLine())
             {
                 return;
@@ -538,7 +594,7 @@ namespace Roslynator.CSharp.Analysis
                 if (!SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(body.OpenBraceToken))
                     return;
 
-                if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context))
+                if (config.UseBlockBodyWhenDeclarationIsMultiLine)
                 {
                     switch (accessorList.Parent.Kind())
                     {
@@ -566,8 +622,7 @@ namespace Roslynator.CSharp.Analysis
                     return;
                 }
 
-                ReportDiagnostic(context, accessorList, expression);
-                ReportFadeOut(context, accessor.Keyword, body);
+                ReportDiagnostic(context, accessorList);
                 return;
             }
 
@@ -580,12 +635,12 @@ namespace Roslynator.CSharp.Analysis
             if (!accessor.Keyword.LeadingTrivia.IsEmptyOrWhitespace())
                 return;
 
-            ReportDiagnostic(context, body, expression);
+            ReportDiagnostic(context, body);
         }
 
-        private static void AnalyzeBlock(SyntaxNodeAnalysisContext context, BlockSyntax block, BlockExpressionAnalysis analysis)
+        private static void AnalyzeBlock(SyntaxNodeAnalysisContext context, BlockSyntax block, BlockExpressionAnalysis analysis, AnalyzerConfig config)
         {
-            if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.IsEnabled(context)
+            if (config.UseBlockBodyWhenExpressionIsMultiLine
                 && analysis.Expression.IsMultiLine())
             {
                 return;
@@ -597,40 +652,93 @@ namespace Roslynator.CSharp.Analysis
             if (!analysis.ReturnOrThrowKeyword.LeadingTrivia.IsEmptyOrWhitespace())
                 return;
 
-            ReportDiagnostic(context, analysis.Block, analysis.Expression);
+            ReportDiagnostic(context, analysis.Block);
         }
 
-        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxNode blockOrAccessorList, ExpressionSyntax expression)
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, AccessorListSyntax accessorList)
         {
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa, blockOrAccessorList);
-
-            ReportFadeOut(context, (expression.Parent as ReturnStatementSyntax)?.ReturnKeyword ?? default, blockOrAccessorList);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseBlockBodyOrExpressionBody, accessorList, "expression");
         }
 
-        private static void ReportFadeOut(SyntaxNodeAnalysisContext context, SyntaxToken token, SyntaxNode blockOrAccessorList)
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, BlockSyntax block)
         {
-            DiagnosticDescriptor fadeOutAnalyzer = DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersaFadeOut;
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseBlockBodyOrExpressionBody, block, "expression");
+        }
 
-            if (token != default)
-                DiagnosticHelpers.ReportToken(context, fadeOutAnalyzer, token);
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, ArrowExpressionClauseSyntax expressionBody)
+        {
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseBlockBodyOrExpressionBody, expressionBody, "block");
+        }
 
-            switch (blockOrAccessorList)
+        private readonly struct AnalyzerConfig
+        {
+            private readonly Options _options;
+
+            private AnalyzerConfig(Options options)
             {
-                case BlockSyntax block:
-                    {
-                        CSharpDiagnosticHelpers.ReportBraces(context, fadeOutAnalyzer, block);
-                        break;
-                    }
-                case AccessorListSyntax accessorList:
-                    {
-                        CSharpDiagnosticHelpers.ReportBraces(context, fadeOutAnalyzer, accessorList);
-                        break;
-                    }
-                default:
-                    {
-                        SyntaxDebug.Fail(blockOrAccessorList);
-                        break;
-                    }
+                _options = options;
+            }
+
+            public bool IsEmpty => _options == Options.None;
+
+            public bool UseExpressionBody => (_options & Options.UseExpressionBody) != 0;
+
+            public bool UseBlockBody => (_options & Options.UseBlockBody) != 0;
+
+            public bool UseBlockBodyWhenDeclarationIsMultiLine => (_options & Options.UseBlockBodyWhenDeclarationIsMultiLine) != 0;
+
+            public bool UseBlockBodyWhenExpressionIsMultiLine => (_options & Options.UseBlockBodyWhenExpressionIsMultiline) != 0;
+
+            public static AnalyzerConfig Create(SyntaxNodeAnalysisContext context)
+            {
+                AnalyzerConfigOptions configOptions = context.GetConfigOptions();
+
+                var options = Options.None;
+
+                if (configOptions.TryGetValueAsBool(ConfigOptions.PreferBlockBodyToExpressionBody, out bool useBlockBody))
+                {
+                    options |= (useBlockBody)
+                        ? Options.UseBlockBody
+                        : Options.UseExpressionBody;
+                }
+
+                if (configOptions.TryGetValueAsBool(ConfigOptions.PreferExpressionBodyToBlockBody, out bool useExpressionBody))
+                {
+                    options |= (useExpressionBody)
+                        ? Options.UseExpressionBody
+                        : Options.UseBlockBody;
+                }
+
+                if (configOptions.IsEnabled(ConfigOptions.PreferBlockBodyWhenDeclarationSpansOverMultipleLines))
+                    options |= Options.UseBlockBodyWhenDeclarationIsMultiLine;
+
+                if (configOptions.IsEnabled(ConfigOptions.PreferBlockBodyWhenExpressionSpansOverMultipleLines))
+                    options |= Options.UseBlockBodyWhenExpressionIsMultiline;
+
+                if (configOptions.TryGetValueAsBool(LegacyConfigOptions.ConvertExpressionBodyToBlockBody, out useBlockBody))
+                {
+                    options |= (useBlockBody)
+                        ? Options.UseBlockBody
+                        : Options.UseExpressionBody;
+                }
+
+                if (configOptions.IsEnabled(LegacyConfigOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine))
+                    options |= Options.UseBlockBodyWhenDeclarationIsMultiLine;
+
+                if (configOptions.IsEnabled(LegacyConfigOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine))
+                    options |= Options.UseBlockBodyWhenExpressionIsMultiline;
+
+                return new AnalyzerConfig(options);
+            }
+
+            [Flags]
+            private enum Options
+            {
+                None = 0,
+                UseBlockBody = 1,
+                UseExpressionBody = 1 << 1,
+                UseBlockBodyWhenDeclarationIsMultiLine = 1 << 2,
+                UseBlockBodyWhenExpressionIsMultiline = 1 << 3,
             }
         }
     }

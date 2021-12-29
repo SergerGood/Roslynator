@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Roslynator
 {
@@ -69,6 +70,11 @@ namespace Roslynator
 
             value = null;
             return false;
+        }
+
+        internal static AnalyzerConfigOptions GetConfigOptions(this Document document, SyntaxTree syntaxTree)
+        {
+            return document.Project.AnalyzerOptions.AnalyzerConfigOptionsProvider.GetOptions(syntaxTree);
         }
     }
 }

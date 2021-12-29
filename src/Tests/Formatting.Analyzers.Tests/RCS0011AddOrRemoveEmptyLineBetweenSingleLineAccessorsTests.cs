@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RCS0011AddEmptyLineBetweenSingleLineAccessorsOrViceVersaTests : AbstractCSharpDiagnosticVerifier<AddOrRemoveEmptyLineBetweenAccessorsAnalyzer, SyntaxTriviaCodeFixProvider>
+    public class RCS0011AddOrRemoveEmptyLineBetweenSingleLineAccessorsTests : AbstractCSharpDiagnosticVerifier<AddOrRemoveEmptyLineBetweenAccessorsAnalyzer, SyntaxTriviaCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddOrRemoveEmptyLineBetweenSingleLineAccessors;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveEmptyLineBetweenSingleLineAccessors)]
         public async Task Test_Property()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -38,10 +38,10 @@ class C
         set { _p = value; }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferEmptyLineBetweenSingleLineAccessors, true));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveEmptyLineBetweenSingleLineAccessors)]
         public async Task Test_RemoveEmptyLine_Property()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -67,10 +67,10 @@ class C
         set { _p = value; }
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.RemoveEmptyLineBetweenSingleLineAccessors.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferEmptyLineBetweenSingleLineAccessors, false));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveEmptyLineBetweenSingleLineAccessors)]
         public async Task Test_RemoveEmptyLines_Property()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -97,10 +97,10 @@ class C
         set { _p = value; }
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.RemoveEmptyLineBetweenSingleLineAccessors.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferEmptyLineBetweenSingleLineAccessors, false));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveEmptyLineBetweenSingleLineAccessors)]
         public async Task Test_RemoveEmptyLine_Event()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -126,10 +126,10 @@ class C
         remove { }
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.RemoveEmptyLineBetweenSingleLineAccessors.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferEmptyLineBetweenSingleLineAccessors, false));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveEmptyLineBetweenSingleLineAccessors)]
         public async Task TestNoDiagnostic_Property_FirstIsMultiline()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -149,7 +149,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveEmptyLineBetweenSingleLineAccessors)]
         public async Task TestNoDiagnostic_Property_SecondIsMultiline()
         {
             await VerifyNoDiagnosticAsync(@"

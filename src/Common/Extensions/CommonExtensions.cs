@@ -197,5 +197,25 @@ namespace Roslynator
                 ? result
                 : defaultValue;
         }
+
+        internal static bool IsEnabled(this AnalyzerConfigOptions analyzerConfigOptions, ConfigOptionDescriptor option)
+        {
+            return analyzerConfigOptions.TryGetValue(option.Key, out string rawValue)
+                && bool.TryParse(rawValue, out bool value)
+                && value;
+        }
+
+        internal static bool TryGetValueAsBool(this AnalyzerConfigOptions analyzerConfigOptions, ConfigOptionDescriptor option, out bool value)
+        {
+            value = false;
+
+            return analyzerConfigOptions.TryGetValue(option.Key, out string rawValue)
+                && bool.TryParse(rawValue, out value);
+        }
+
+        internal static AnalyzerConfigOptions GetConfigOptions(this SyntaxNodeAnalysisContext context)
+        {
+            return context.Options.AnalyzerConfigOptionsProvider.GetOptions(context.Node.SyntaxTree);
+        }
     }
 }

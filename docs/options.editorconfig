@@ -1,5 +1,3 @@
-export const configurationFileContent = {
-	roslynatorconfig: `is_global = true
 # Roslynator Config File
 
 is_global = true
@@ -1266,5 +1264,3 @@ roslynator.compiler_diagnostic_fix.CS8403.enabled = true
 roslynator.compiler_diagnostic_fix.CS8618.enabled = true
 roslynator.compiler_diagnostic_fix.CS8625.enabled = true
 roslynator.compiler_diagnostic_fix.CS8632.enabled = true
-`
-};

@@ -10,7 +10,7 @@ using Roslynator.CSharp;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class PlaceNewLineAfterOrBeforeBinaryOperatorAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -19,7 +19,7 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersa, CommonDiagnosticRules.AnalyzerIsObsolete);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PlaceNewLineAfterOrBeforeBinaryOperator);
 
                 return _supportedDiagnostics;
             }
@@ -69,23 +69,30 @@ namespace Roslynator.Formatting.CSharp
 
             if (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(left, binaryExpression.OperatorToken, right))
             {
-                if (!AnalyzerOptions.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt.IsEnabled(context))
-                    ReportDiagnostic(DiagnosticRules.AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersa, ImmutableDictionary<string, string>.Empty);
+                if (GetNewLineConfig(context) == NewLinePosition.Before)
+                {
+                    DiagnosticHelpers.ReportDiagnostic(
+                        context,
+                        DiagnosticRules.PlaceNewLineAfterOrBeforeBinaryOperator,
+                        Location.Create(binaryExpression.SyntaxTree, binaryExpression.OperatorToken.Span.WithLength(0)),
+                        "before");
+                }
             }
             else if (SyntaxTriviaAnalysis.IsTokenPrecededWithNewLineAndNotFollowedWithNewLine(left, binaryExpression.OperatorToken, right)
-                && AnalyzerOptions.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt.IsEnabled(context))
-            {
-                ReportDiagnostic(DiagnosticRules.ReportOnly.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt, DiagnosticProperties.AnalyzerOption_Invert);
-            }
-
-            void ReportDiagnostic(DiagnosticDescriptor descriptor, ImmutableDictionary<string, string> properties)
+                && GetNewLineConfig(context) == NewLinePosition.After)
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    descriptor,
+                    DiagnosticRules.PlaceNewLineAfterOrBeforeBinaryOperator,
                     Location.Create(binaryExpression.SyntaxTree, binaryExpression.OperatorToken.Span.WithLength(0)),
-                    properties: properties);
+                    properties: DiagnosticProperties.AnalyzerOption_Invert,
+                    "after");
             }
+        }
+
+        private static NewLinePosition GetNewLineConfig(SyntaxNodeAnalysisContext context)
+        {
+            return context.GetConfigOptions().GetBinaryExpressionNewLinePosition();
         }
     }
 }

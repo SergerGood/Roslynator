@@ -22,8 +22,8 @@ namespace Roslynator.CSharp
         public const string UsePredefinedType = "RCS1013";
         public const string UseExplicitlyOrImplicitlyTypedArray = "RCS1014";
         public const string UseNameOfOperator = "RCS1015";
-        public const string UseBlockOrExpressionBody = "RCS1016";
-        public const string AddAccessibilityModifiersOrViceVersa = "RCS1018";
+        public const string UseBlockBodyOrExpressionBody = "RCS1016";
+        public const string AddOrRemoveAccessibilityModifiers = "RCS1018";
         public const string OrderModifiers = "RCS1019";
         public const string SimplifyNullableOfT = "RCS1020";
         public const string ConvertLambdaExpressionBodyToExpressionBody = "RCS1021";

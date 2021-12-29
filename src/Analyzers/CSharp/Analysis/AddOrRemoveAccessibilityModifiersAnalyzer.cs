@@ -15,7 +15,7 @@ using Roslynator.CSharp;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddAccessibilityModifiersOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class AddOrRemoveAccessibilityModifiersAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableDictionary<Accessibility, ImmutableDictionary<string, string>> _properties;
 
@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Analysis
                         .Where(f => f != Accessibility.NotApplicable)
                         .ToImmutableDictionary(
                             f => f,
-                            f => ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>(nameof(Microsoft.CodeAnalysis.Accessibility), f.ToString()) }));
+                            f => ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>(nameof(Accessibility), f.ToString()) }));
                 }
             }
         }
@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddAccessibilityModifiersOrViceVersa, CommonDiagnosticRules.AnalyzerIsObsolete);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddOrRemoveAccessibilityModifiers, CommonDiagnosticRules.AnalyzerIsObsolete);
 
                 return _supportedDiagnostics;
             }
@@ -181,11 +181,16 @@ namespace Roslynator.CSharp.Analysis
 
         private static void Analyze(SyntaxNodeAnalysisContext context, MemberDeclarationSyntax declaration, SyntaxTokenList modifiers)
         {
+            AccessibilityOptions accessOptions = GetAccessibilityOptions(context);
+
+            if (accessOptions == AccessibilityOptions.None)
+                return;
+
             Accessibility explicitAccessibility = SyntaxAccessibility.GetExplicitAccessibility(modifiers);
 
             if (explicitAccessibility == Accessibility.NotApplicable)
             {
-                if (AnalyzerOptions.RemoveAccessibilityModifiers.IsEnabled(context))
+                if (accessOptions != AccessibilityOptions.Explicit)
                     return;
 
                 Accessibility accessibility = GetAccessibility(context, declaration, modifiers);
@@ -200,11 +205,12 @@ namespace Roslynator.CSharp.Analysis
 
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticRules.AddAccessibilityModifiersOrViceVersa,
+                    DiagnosticRules.AddOrRemoveAccessibilityModifiers,
                     location,
-                    Properties[accessibility]);
+                    Properties[accessibility],
+                    "Add");
             }
-            else if (AnalyzerOptions.RemoveAccessibilityModifiers.IsEnabled(context)
+            else if (accessOptions == AccessibilityOptions.Implicit
                 && !declaration.IsKind(SyntaxKind.OperatorDeclaration, SyntaxKind.ConversionOperatorDeclaration))
             {
                 Accessibility accessibility = SyntaxAccessibility.GetDefaultAccessibility(declaration);
@@ -217,8 +223,9 @@ namespace Roslynator.CSharp.Analysis
 
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticRules.ReportOnly.RemoveAccessibilityModifiers,
-                    Location.Create(declaration.SyntaxTree, TextSpan.FromBounds(first.SpanStart, last.Span.End)));
+                    DiagnosticRules.AddOrRemoveAccessibilityModifiers,
+                    Location.Create(declaration.SyntaxTree, TextSpan.FromBounds(first.SpanStart, last.Span.End)),
+                    "Remove");
             }
         }
 
@@ -301,6 +308,31 @@ namespace Roslynator.CSharp.Analysis
                 return token.GetLocation();
 
             return null;
+        }
+
+        private static AccessibilityOptions GetAccessibilityOptions(SyntaxNodeAnalysisContext context)
+        {
+            AnalyzerConfigOptions configOptions = context.GetConfigOptions();
+
+            var result = AccessibilityOptions.None;
+
+            if (configOptions.TryGetValueAsBool(ConfigOptions.PreferExplicitAccessibilityModifiers, out bool useExplicit))
+                result = (useExplicit) ? AccessibilityOptions.Explicit : AccessibilityOptions.Implicit;
+
+            if (configOptions.TryGetValueAsBool(ConfigOptions.PreferImplicitAccessibilityModifiers, out bool useImplicit))
+                result = (useImplicit) ? AccessibilityOptions.Implicit : AccessibilityOptions.Explicit;
+
+            if (configOptions.TryGetValueAsBool(LegacyConfigOptions.RemoveAccessibilityModifiers, out useImplicit))
+                result = (useImplicit) ? AccessibilityOptions.Implicit : AccessibilityOptions.Explicit;
+
+            return result;
+        }
+
+        private enum AccessibilityOptions
+        {
+            None,
+            Explicit,
+            Implicit
         }
     }
 }

@@ -25,8 +25,7 @@ namespace Roslynator.Formatting.CSharp
                     Immutable.InterlockedInitialize(
                         ref _supportedDiagnostics,
                         DiagnosticRules.AddEmptyLineBetweenAccessors,
-                        DiagnosticRules.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa,
-                        CommonDiagnosticRules.AnalyzerIsObsolete);
+                        DiagnosticRules.AddOrRemoveEmptyLineBetweenSingleLineAccessors);
                 }
 
                 return _supportedDiagnostics;
@@ -73,25 +72,29 @@ namespace Roslynator.Formatting.CSharp
             if (accessorList.SyntaxTree.IsSingleLineSpan(accessor1.Span, context.CancellationToken)
                 && accessorList.SyntaxTree.IsSingleLineSpan(accessor2.Span, context.CancellationToken))
             {
-                if (DiagnosticRules.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa.IsEffective(context))
+                if (DiagnosticRules.AddOrRemoveEmptyLineBetweenSingleLineAccessors.IsEffective(context))
                 {
+                    NewLineConfig lineConfig = GetEmptyLineConfig(context);
+
                     if (isEmptyLine)
                     {
-                        if (AnalyzerOptions.RemoveEmptyLineBetweenSingleLineAccessors.IsEnabled(context))
+                        if (lineConfig == NewLineConfig.Remove)
                         {
                             DiagnosticHelpers.ReportDiagnostic(
                                 context,
-                                DiagnosticRules.ReportOnly.RemoveEmptyLineBetweenSingleLineAccessors,
+                                DiagnosticRules.AddOrRemoveEmptyLineBetweenSingleLineAccessors,
                                 Location.Create(context.Node.SyntaxTree, leadingTrivia[0].Span.WithLength(0)),
-                                properties: DiagnosticProperties.AnalyzerOption_Invert);
+                                properties: DiagnosticProperties.AnalyzerOption_Invert,
+                                "Remove");
                         }
                     }
-                    else if (!AnalyzerOptions.RemoveEmptyLineBetweenSingleLineAccessors.IsEnabled(context))
+                    else if (lineConfig == NewLineConfig.Add)
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
-                            DiagnosticRules.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa,
-                            Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)));
+                            DiagnosticRules.AddOrRemoveEmptyLineBetweenSingleLineAccessors,
+                            Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)),
+                            "Add");
                     }
                 }
             }
@@ -102,6 +105,21 @@ namespace Roslynator.Formatting.CSharp
                     DiagnosticRules.AddEmptyLineBetweenAccessors,
                     Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)));
             }
+        }
+
+        private static NewLineConfig GetEmptyLineConfig(SyntaxNodeAnalysisContext context)
+        {
+            AnalyzerConfigOptions configOptions = context.GetConfigOptions();
+
+            var result = NewLineConfig.None;
+
+            if (configOptions.TryGetValueAsBool(ConfigOptions.PreferEmptyLineBetweenSingleLineAccessors, out bool addLine))
+                result = (addLine) ? NewLineConfig.Add : NewLineConfig.Remove;
+
+            if (configOptions.TryGetValueAsBool(LegacyConfigOptions.RemoveEmptyLineBetweenSingleLineAccessors, out bool removeLine))
+                result = (removeLine) ? NewLineConfig.Remove : NewLineConfig.Add;
+
+            return result;
         }
     }
 }

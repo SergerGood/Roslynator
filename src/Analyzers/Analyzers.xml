@@ -321,13 +321,13 @@ foreach (var item in items) // [|Id|]
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="UseBlockOrExpressionBody">
+  <Analyzer Identifier="UseBlockBodyOrExpressionBody">
     <Id>RCS1016</Id>
     <Title>Use block/expression body.</Title>
+    <MessageFormat>Use {0} body.</MessageFormat>
     <Category>Usage</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
-    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <MinLanguageVersion>6.0</MinLanguageVersion>
     <Samples>
       <Sample>
@@ -339,8 +339,8 @@ foreach (var item in items) // [|Id|]
       </Sample>
     </Samples>
     <ConfigOptions>
-	  <Option Key="prefer_expression_body_to_block_body" IsRequired="true" />
-	  <Option Key="prefer_block_body_to_expression_body" IsRequired="true" />
+      <Option Key="prefer_expression_body_to_block_body" IsRequired="true" />
+      <Option Key="prefer_block_body_to_expression_body" IsRequired="true" />
       <Option Key="prefer_block_body_when_declaration_spans_over_multiple_lines" />
       <Option Key="prefer_block_body_when_expression_spans_over_multiple_lines" />
     </ConfigOptions>
@@ -398,8 +398,8 @@ foreach (var item in items) // [|Id|]
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
-		<Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
-		<Samples>
+        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
+        <Samples>
           <Sample>
             <Before><![CDATA[public string Foo() => null; // [|Id|]]]></Before>
             <After><![CDATA[public string Foo()
@@ -419,7 +419,7 @@ foreach (var item in items) // [|Id|]
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
-    <Summary>This analyzer has been deprecated. Use EditorConfig option `use_block_body_when_expression_is_multiline = true` instead.</Summary>
+    <Summary>This analyzer has been deprecated. Use EditorConfig option `roslynator.prefer_block_body_when_expression_spans_over_multiple_lines = true` instead.</Summary>
     <Samples>
       <Sample>
         <Before><![CDATA[public string[] Foo() => new string[] // [|Id|]
@@ -440,10 +440,10 @@ foreach (var item in items) // [|Id|]
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddAccessibilityModifiersOrViceVersa">
+  <Analyzer Identifier="AddOrRemoveAccessibilityModifiers">
     <Id>RCS1018</Id>
-    <Title>Add accessibility modifiers (or vice versa).</Title>
-    <MessageFormat>Add accessibility modifiers.</MessageFormat>
+    <Title>Add/remove accessibility modifiers.</Title>
+    <MessageFormat>{0} accessibility modifiers.</MessageFormat>
     <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -463,6 +463,10 @@ foreach (var item in items) // [|Id|]
 }]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="prefer_explicit_accessibility_modifiers" IsRequired="true" />
+      <Option Key="prefer_implicit_accessibility_modifiers" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="RemoveAccessibilityModifiers">
         <Title>Remove accessibility modifiers.</Title>
@@ -470,6 +474,7 @@ foreach (var item in items) // [|Id|]
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
         <SupportsFadeOut>true</SupportsFadeOut>
+        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[internal class Foo // [|Id|]
