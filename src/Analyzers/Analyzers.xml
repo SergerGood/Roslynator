@@ -855,12 +855,16 @@ if (f)
 }]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="prefer_empty_line_between_closing_brace_and_switch_section" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="RemoveEmptyLineBetweenClosingBraceAndSwitchSection">
         <Id>a</Id>
         <Title>Remove empty line between closing brace and switch section.</Title>
         <OptionKey>remove_empty_line_between_closing_brace_and_switch_section</OptionKey>
         <Kind>Enable</Kind>
+        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[switch (x)
@@ -1878,10 +1882,10 @@ object x = items.Peek();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersa">
+  <Analyzer Identifier="UseEmptyStringLiteralOrStringEmpty">
     <Id>RCS1078</Id>
-    <Title>Use "" instead of string.Empty (or vice versa).</Title>
-    <MessageFormat>Use "" instead of string.Empty</MessageFormat>
+    <Title>Use "" or 'string.Empty'.</Title>
+    <MessageFormat>Use {0}</MessageFormat>
     <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1892,12 +1896,16 @@ object x = items.Peek();]]></After>
         <After><![CDATA[string s = "";]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="empty_string_style" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="UseStringEmptyInsteadOfEmptyStringLiteral">
         <Title>Use string.Empty instead of "".</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
+        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[string s = "";]]></Before>

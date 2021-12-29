@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class UseEmptyStringLiteralOrStringEmptyAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersa, CommonDiagnosticRules.AnalyzerIsObsolete);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseEmptyStringLiteralOrStringEmpty);
 
                 return _supportedDiagnostics;
             }
@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(
                 c =>
                 {
-                    if (!AnalyzerOptions.UseStringEmptyInsteadOfEmptyStringLiteral.IsEnabled(c))
+                    if (c.GetConfigOptions().GetEmptyStringStyle() == EmptyStringStyle.Literal)
                         AnalyzeSimpleMemberAccessExpression(c);
                 },
                 SyntaxKind.SimpleMemberAccessExpression);
@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(
                 c =>
                 {
-                    if (AnalyzerOptions.UseStringEmptyInsteadOfEmptyStringLiteral.IsEnabled(c))
+                    if (c.GetConfigOptions().GetEmptyStringStyle() == EmptyStringStyle.Field)
                         AnalyzeStringLiteralExpression(c);
                 },
                 SyntaxKind.StringLiteralExpression);
@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(
                 c =>
                 {
-                    if (AnalyzerOptions.UseStringEmptyInsteadOfEmptyStringLiteral.IsEnabled(c))
+                    if (c.GetConfigOptions().GetEmptyStringStyle() == EmptyStringStyle.Field)
                         AnalyzeInterpolatedStringExpression(c);
                 },
                 SyntaxKind.InterpolatedStringExpression);
@@ -75,7 +75,11 @@ namespace Roslynator.CSharp.Analysis
             if (fieldSymbol.ContainingType?.SpecialType != SpecialType.System_String)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersa, memberAccess);
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.UseEmptyStringLiteralOrStringEmpty,
+                memberAccess,
+                "empty string literal");
         }
 
         private static void AnalyzeStringLiteralExpression(SyntaxNodeAnalysisContext context)
@@ -90,8 +94,9 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.ReportOnly.UseStringEmptyInsteadOfEmptyStringLiteral,
-                literalExpression);
+                DiagnosticRules.UseEmptyStringLiteralOrStringEmpty,
+                literalExpression,
+                "'string.Empty'");
         }
 
         private static void AnalyzeInterpolatedStringExpression(SyntaxNodeAnalysisContext context)
@@ -106,8 +111,9 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.ReportOnly.UseStringEmptyInsteadOfEmptyStringLiteral,
-                interpolatedString);
+                DiagnosticRules.UseEmptyStringLiteralOrStringEmpty,
+                interpolatedString,
+                "'string.Empty'");
         }
     }
 }

@@ -748,15 +748,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1078</summary>
-        public static readonly DiagnosticDescriptor UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersa = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersa, 
-            title:              "Use \"\" instead of string.Empty (or vice versa).", 
-            messageFormat:      "Use \"\" instead of string.Empty", 
+        public static readonly DiagnosticDescriptor UseEmptyStringLiteralOrStringEmpty = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.UseEmptyStringLiteralOrStringEmpty, 
+            title:              "Use \"\" or 'string.Empty'.", 
+            messageFormat:      "Use {0}", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersa, 
+            helpLinkUri:        DiagnosticIdentifiers.UseEmptyStringLiteralOrStringEmpty, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1079</summary>
@@ -2451,18 +2451,6 @@ namespace Roslynator.CSharp
                 isEnabledByDefault: false, 
                 description:        null, 
                 helpLinkUri:        DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression, 
-                customTags:         Array.Empty<string>());
-
-            /// <summary>RCS1078i</summary>
-            public static readonly DiagnosticDescriptor UseStringEmptyInsteadOfEmptyStringLiteral = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersa, 
-                title:              "Use \"\" instead of string.Empty (or vice versa).", 
-                messageFormat:      "Use string.Empty instead of \"\".", 
-                category:           DiagnosticCategories.Roslynator, 
-                defaultSeverity:    DiagnosticSeverity.Info, 
-                isEnabledByDefault: false, 
-                description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersa, 
                 customTags:         Array.Empty<string>());
 
             /// <summary>RCS1090i</summary>

@@ -9,11 +9,13 @@ namespace Roslynator
         public const string ArrowTokenNewLine = "roslynator.arrow_token_new_line";
         public const string BinaryOperatorNewLine = "roslynator.binary_operator_new_line";
         public const string ConditionalExpressionNewLine = "roslynator.conditional_expression_new_line";
+        public const string EmptyStringStyle = "roslynator.empty_string_style";
         public const string EqualsSignTokenNewLine = "roslynator.equals_sign_token_new_line";
         public const string MaxLineLength = "roslynator.max_line_length";
         public const string PreferBlockBodyToExpressionBody = "roslynator.prefer_block_body_to_expression_body";
         public const string PreferBlockBodyWhenDeclarationSpansOverMultipleLines = "roslynator.prefer_block_body_when_declaration_spans_over_multiple_lines";
         public const string PreferBlockBodyWhenExpressionSpansOverMultipleLines = "roslynator.prefer_block_body_when_expression_spans_over_multiple_lines";
+        public const string PreferEmptyLineBetweenClosingBraceAndSwitchSection = "roslynator.prefer_empty_line_between_closing_brace_and_switch_section";
         public const string PreferEmptyLineBetweenSingleLineAccessors = "roslynator.prefer_empty_line_between_single_line_accessors";
         public const string PreferEmptyLineBetweenUsingDirectiveWithDifferentRootNamespace = "roslynator.prefer_empty_line_between_using_directive_with_different_root_namespace";
         public const string PreferExplicitAccessibilityModifiers = "roslynator.prefer_explicit_accessibility_modifiers";

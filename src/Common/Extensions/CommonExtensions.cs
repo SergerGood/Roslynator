@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Globalization;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -216,6 +217,28 @@ namespace Roslynator
         internal static AnalyzerConfigOptions GetConfigOptions(this SyntaxNodeAnalysisContext context)
         {
             return context.Options.AnalyzerConfigOptionsProvider.GetOptions(context.Node.SyntaxTree);
+        }
+
+        public static EmptyStringStyle GetEmptyStringStyle(this AnalyzerConfigOptions configOptions)
+        {
+            if (configOptions.TryGetValue(ConfigOptions.EmptyStringStyle.Key, out string rawValue))
+            {
+                if (string.Equals(rawValue, "field", StringComparison.OrdinalIgnoreCase))
+                {
+                    return EmptyStringStyle.Field;
+                }
+                else if (string.Equals(rawValue, "literal", StringComparison.OrdinalIgnoreCase))
+                {
+                    return EmptyStringStyle.Literal;
+                }
+            }
+
+            if (configOptions.IsEnabled(LegacyConfigOptions.UseStringEmptyInsteadOfEmptyStringLiteral))
+            {
+                return EmptyStringStyle.Field;
+            }
+
+            return EmptyStringStyle.None;
         }
     }
 }

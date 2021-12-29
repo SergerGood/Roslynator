@@ -145,7 +145,8 @@ namespace Roslynator.CSharp.Analysis
                 AnalyzeEnd(context, sections.Last(), switchStatement.CloseBraceToken);
 
                 if (sections.Count > 1
-                    && AnalyzerOptions.RemoveEmptyLineBetweenClosingBraceAndSwitchSection.IsEnabled(context))
+                    && (context.IsEnabled(ConfigOptions.PreferEmptyLineBetweenClosingBraceAndSwitchSection)
+                        || context.IsEnabled(LegacyConfigOptions.RemoveEmptyLineBetweenClosingBraceAndSwitchSection)))
                 {
                     SwitchSectionSyntax prevSection = sections[0];
 
@@ -154,7 +155,7 @@ namespace Roslynator.CSharp.Analysis
                         SwitchSectionSyntax section = sections[i];
 
                         if (prevSection.Statements.LastOrDefault() is BlockSyntax block)
-                            Analyze(context, block.CloseBraceToken, section, AnalyzerOptions.RemoveEmptyLineBetweenClosingBraceAndSwitchSection);
+                            Analyze(context, block.CloseBraceToken, section);
 
                         prevSection = section;
                     }
@@ -321,8 +322,7 @@ namespace Roslynator.CSharp.Analysis
         private static void Analyze(
             SyntaxNodeAnalysisContext context,
             SyntaxToken token,
-            SyntaxNode node,
-            AnalyzerOptionDescriptor obsoleteAnalyzerOption = default)
+            SyntaxNode node)
         {
             SyntaxTriviaList trailingTrivia = token.TrailingTrivia;
             SyntaxTriviaList leadingTrivia = node.GetLeadingTrivia();
@@ -360,14 +360,7 @@ namespace Roslynator.CSharp.Analysis
 
             Location location = Location.Create(token.SyntaxTree, TextSpan.FromBounds(node.FullSpan.Start, trivia.Span.End));
 
-            if (obsoleteAnalyzerOption.IsDefault)
-            {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantEmptyLine, location);
-            }
-            else
-            {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantEmptyLine, location);
-            }
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantEmptyLine, location);
         }
 
         private static void AnalyzeDeclaration(

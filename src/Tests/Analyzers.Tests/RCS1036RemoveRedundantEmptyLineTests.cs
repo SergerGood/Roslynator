@@ -268,7 +268,7 @@ class C
         }
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.RemoveEmptyLineBetweenClosingBraceAndSwitchSection.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferEmptyLineBetweenClosingBraceAndSwitchSection));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
@@ -283,7 +283,7 @@ class C
 class C
 {
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.RemoveEmptyLineBetweenClosingBraceAndSwitchSection.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferEmptyLineBetweenClosingBraceAndSwitchSection));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
@@ -299,7 +299,7 @@ class C
 class C
 {
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.RemoveEmptyLineBetweenClosingBraceAndSwitchSection.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.PreferEmptyLineBetweenClosingBraceAndSwitchSection));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]

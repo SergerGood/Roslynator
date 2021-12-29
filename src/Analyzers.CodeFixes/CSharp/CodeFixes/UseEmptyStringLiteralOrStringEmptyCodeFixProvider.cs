@@ -14,13 +14,13 @@ using Roslynator.CodeFixes;
 
 namespace Roslynator.CSharp.CodeFixes
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersaCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseEmptyStringLiteralOrStringEmptyCodeFixProvider))]
     [Shared]
-    public sealed class UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersaCodeFixProvider : BaseCodeFixProvider
+    public sealed class UseEmptyStringLiteralOrStringEmptyCodeFixProvider : BaseCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersa); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseEmptyStringLiteralOrStringEmpty); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.CodeFixes
                         var memberAccessExpression = (MemberAccessExpressionSyntax)node;
 
                         CodeAction codeAction = CodeAction.Create(
-                            $"Use \"\" instead of '{memberAccessExpression}'",
+                            "Use empty string literal",
                             ct => UseEmptyStringLiteralInsteadOfStringEmptyAsync(document, memberAccessExpression, ct),
                             GetEquivalenceKey(diagnostic));
 
@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.CodeFixes
                 case SyntaxKind.InterpolatedStringExpression:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            "Use 'string.Empty' instead of \"\"",
+                            "Use 'string.Empty'",
                             ct => UseStringEmptyInsteadOfEmptyStringLiteralAsync(document, (ExpressionSyntax)node, ct),
                             GetEquivalenceKey(diagnostic));
 

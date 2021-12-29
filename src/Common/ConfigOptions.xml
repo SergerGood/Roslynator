@@ -82,6 +82,14 @@
 	<ValuePlaceholder>after|before</ValuePlaceholder>
 	<Description>Place new line after/before equals sign</Description>
   </Option>
+  <Option Id="PreferEmptyLineBetweenClosingBraceAndSwitchSection">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Prefer empty line between closing brace and switch section</Description>
+  </Option>
+  <Option Id="EmptyStringStyle">
+	<ValuePlaceholder>field|literal</ValuePlaceholder>
+	<Description>Prefer 'string.Empty' or empty string literal</Description>
+  </Option>
   <!--
   <Option Id="">
     <Key></Key>

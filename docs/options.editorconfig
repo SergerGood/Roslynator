@@ -35,6 +35,7 @@ is_global = true
 roslynator.arrow_token_new_line = after|before
 roslynator.binary_operator_new_line = after|before
 roslynator.conditional_expression_new_line = after|before
+roslynator.empty_string_style = field|literal
 roslynator.equals_sign_token_new_line = after|before
 # Applicable to: RCS0056
 roslynator.max_line_length = 140
@@ -42,6 +43,7 @@ roslynator.max_line_length = 140
 roslynator.prefer_block_body_to_expression_body = true|false
 roslynator.prefer_block_body_when_declaration_spans_over_multiple_lines = true|false
 roslynator.prefer_block_body_when_expression_spans_over_multiple_lines = true|false
+roslynator.prefer_empty_line_between_closing_brace_and_switch_section = true|false
 roslynator.prefer_empty_line_between_single_line_accessors = true|false
 roslynator.prefer_empty_line_between_using_directive_with_different_root_namespace = true|false
 roslynator.prefer_explicit_accessibility_modifiers = true|false
@@ -426,7 +428,7 @@ dotnet_diagnostic.RCS1075.severity = warning
 # Optimize LINQ method call
 dotnet_diagnostic.RCS1077.severity = suggestion
 
-# Use "" instead of string.Empty (or vice versa)
+# Use "" or 'string.Empty'
 dotnet_diagnostic.RCS1078.severity = none
 # Use string.Empty instead of ""
 roslynator.RCS1078.invert = false
