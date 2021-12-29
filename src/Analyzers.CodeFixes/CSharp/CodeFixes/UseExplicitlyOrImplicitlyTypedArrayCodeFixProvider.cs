@@ -14,13 +14,13 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.CodeFixes
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseExplicitlyTypedArrayOrViceVersaCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider))]
     [Shared]
-    public sealed class UseExplicitlyTypedArrayOrViceVersaCodeFixProvider : BaseCodeFixProvider
+    public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)

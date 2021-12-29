@@ -246,10 +246,10 @@ foreach (var item in items) // [|Id|]
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="UseExplicitlyTypedArrayOrViceVersa">
+  <Analyzer Identifier="UseExplicitlyOrImplicitlyTypedArray">
     <Id>RCS1014</Id>
-    <Title>Use explicitly typed array (or vice versa).</Title>
-    <MessageFormat>Use explicitly typed array.</MessageFormat>
+    <Title>Use explicitly/implicitly typed array.</Title>
+    <MessageFormat>Use {0} typed array.</MessageFormat>
     <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -259,6 +259,11 @@ foreach (var item in items) // [|Id|]
         <After><![CDATA[var items = new string[] { "a", B };]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="roslynator.prefer_explicitly_typed_array" IsRequired="true" />
+      <Option Key="roslynator.prefer_implicitly_typed_array" IsRequired="true" />
+      <Option Key="roslynator.prefer_implicitly_typed_array_when_type_is_obvious" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="UseImplicitlyTypedArrayWhenTypeIsObvious">
         <Title>Use implicitly typed array (when type is obvious).</Title>
@@ -266,6 +271,7 @@ foreach (var item in items) // [|Id|]
         <OptionKey>use_implicit_type_when_obvious</OptionKey>
         <Kind>Change</Kind>
         <SupportsFadeOut>true</SupportsFadeOut>
+        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[var items = new string[] { "a", "b" };]]></Before>
@@ -278,6 +284,7 @@ foreach (var item in items) // [|Id|]
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
+        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[var items = new string[] { A, B };]]></Before>
@@ -314,10 +321,9 @@ foreach (var item in items) // [|Id|]
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="ConvertBlockBodyToExpressionBodyOrViceVersa">
+  <Analyzer Identifier="UseBlockOrExpressionBody">
     <Id>RCS1016</Id>
-    <Title>Convert block body to expression body (or vice versa).</Title>
-    <MessageFormat>Use expression-bodied member.</MessageFormat>
+    <Title>Use block/expression body.</Title>
     <Category>Usage</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -332,12 +338,19 @@ foreach (var item in items) // [|Id|]
         <After><![CDATA[public string Foo() => "";]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+	  <Option Key="prefer_expression_body_to_block_body" IsRequired="true" />
+	  <Option Key="prefer_block_body_to_expression_body" IsRequired="true" />
+      <Option Key="prefer_block_body_when_declaration_spans_over_multiple_lines" />
+      <Option Key="prefer_block_body_when_expression_spans_over_multiple_lines" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine">
         <Title>Convert expression body to block body when expression is multi-line.</Title>
         <Id>a</Id>
         <OptionKey>use_block_body_when_expression_is_multiline</OptionKey>
         <Kind>Change</Kind>
+        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[public string[] Foo() => new string[] // [|Id|]
@@ -363,6 +376,7 @@ foreach (var item in items) // [|Id|]
         <Id>b</Id>
         <OptionKey>use_block_body_when_declaration_is_multiline</OptionKey>
         <Kind>Change</Kind>
+        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[public string[] Foo(
@@ -384,7 +398,8 @@ foreach (var item in items) // [|Id|]
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
-        <Samples>
+		<Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
+		<Samples>
           <Sample>
             <Before><![CDATA[public string Foo() => null; // [|Id|]]]></Before>
             <After><![CDATA[public string Foo()
@@ -1133,10 +1148,10 @@ if (!f)
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddArgumentListToObjectCreationOrViceVersa">
+  <Analyzer Identifier="AddOrRemoveParenthesesWhenCreatingNewObject">
     <Id>RCS1050</Id>
-    <Title>Add argument list to object creation expression (or vice versa).</Title>
-    <MessageFormat>Add argument list to object creation expression.</MessageFormat>
+    <Title>Add/remove parentheses when creating new object.</Title>
+    <MessageFormat>{0} parentheses when creating new object.</MessageFormat>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1147,12 +1162,16 @@ if (!f)
         <After><![CDATA[var items = new List<string>() { "a", "b", "c"  };]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="roslynator.prefer_parentheses_when_creating_new_object" IsRequired="true" />
+    </ConfigOptions>
     <Options>
-      <Option Identifier="RemoveArgumentListFromObjectCreation">
-        <Title>Remove argument list from object creation expression.</Title>
+      <Option Identifier="RemoveParenthesesWhenCreatingNewObject">
+        <Title>Remove parentheses when creating new object.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
+        <Tags>DoNotGenerateReportOnlyAnalyzer,DoNotGenerateAnalyzerOptions</Tags>
         <Samples>
           <Sample>
             <Before><![CDATA[var items = new List<string>() { "a", "b", "c" };]]></Before>

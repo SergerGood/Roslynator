@@ -5,13 +5,13 @@ using System.Text.RegularExpressions;
 
 namespace Roslynator.Metadata
 {
-    public class OptionMetadata
+    public class ConfigOptionMetadata
     {
-        public OptionMetadata(
+        public ConfigOptionMetadata(
             string id,
             string key,
             string defaultValue,
-            string valuePlaceholder,
+            string defaultValuePlaceholder,
             string description)
         {
             if (key == null)
@@ -20,7 +20,7 @@ namespace Roslynator.Metadata
             Id = id;
             Key = key;
             DefaultValue = defaultValue;
-            ValuePlaceholder = valuePlaceholder;
+            DefaultValuePlaceholder = defaultValuePlaceholder;
             Description = description;
         }
 
@@ -30,7 +30,7 @@ namespace Roslynator.Metadata
 
         public string DefaultValue { get; }
 
-        public string ValuePlaceholder { get; }
+        public string DefaultValuePlaceholder { get; }
 
         public string Description { get; }
     }

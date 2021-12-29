@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddArgumentListToObjectCreationOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class AddOrRemoveParenthesesWhenCreatingNewObjectAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddArgumentListToObjectCreationOrViceVersa, CommonDiagnosticRules.AnalyzerIsObsolete);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddOrRemoveParenthesesWhenCreatingNewObject, CommonDiagnosticRules.RequiredOptionNotSetForAnalyzer);
 
                 return _supportedDiagnostics;
             }
@@ -30,6 +30,15 @@ namespace Roslynator.CSharp.Analysis
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(f => AnalyzeObjectCreationExpression(f), SyntaxKind.ObjectCreationExpression);
+        }
+
+        private static bool? PreferParenthesesWhenCreatingNewObject(SyntaxNodeAnalysisContext context)
+        {
+            return context.GetOptionAsBoolOrDefault(
+                ConfigOptions.PreferParenthesesWhenCreatingNewObject,
+                LegacyConfigOptions.RemoveParenthesesWhenCreatingNewObject,
+                DiagnosticRules.AddOrRemoveParenthesesWhenCreatingNewObject,
+                invertOldValue: true);
         }
 
         private static void AnalyzeObjectCreationExpression(SyntaxNodeAnalysisContext context)
@@ -46,18 +55,19 @@ namespace Roslynator.CSharp.Analysis
 
             if (argumentList == null)
             {
-                if (!AnalyzerOptions.RemoveArgumentListFromObjectCreation.IsEnabled(context))
+                if (PreferParenthesesWhenCreatingNewObject(context) == true)
                 {
                     var span = new TextSpan(objectCreationExpression.Type.Span.End, 0);
 
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
-                        DiagnosticRules.AddArgumentListToObjectCreationOrViceVersa,
-                        Location.Create(objectCreationExpression.SyntaxTree, span));
+                        DiagnosticRules.AddOrRemoveParenthesesWhenCreatingNewObject,
+                        Location.Create(objectCreationExpression.SyntaxTree, span),
+                        "Add");
                 }
             }
             else if (!argumentList.Arguments.Any()
-                && AnalyzerOptions.RemoveArgumentListFromObjectCreation.IsEnabled(context))
+                && PreferParenthesesWhenCreatingNewObject(context) == false)
             {
                 SyntaxToken openParen = argumentList.OpenParenToken;
                 SyntaxToken closeParen = argumentList.CloseParenToken;
@@ -69,8 +79,9 @@ namespace Roslynator.CSharp.Analysis
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
-                        DiagnosticRules.ReportOnly.RemoveArgumentListFromObjectCreation,
-                        argumentList);
+                        DiagnosticRules.AddOrRemoveParenthesesWhenCreatingNewObject,
+                        argumentList,
+                        "Remove");
                 }
             }
         }

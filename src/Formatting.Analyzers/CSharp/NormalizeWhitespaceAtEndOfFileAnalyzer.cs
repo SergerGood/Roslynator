@@ -21,7 +21,12 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.NormalizeWhitespaceAtEndOfFile);
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.NormalizeWhitespaceAtEndOfFile,
+                        CommonDiagnosticRules.RequiredOptionNotSetForAnalyzer);
+                }
 
                 return _supportedDiagnostics;
             }
@@ -41,7 +46,13 @@ namespace Roslynator.Formatting.CSharp
             SyntaxToken endOfFile = compilationUnit.EndOfFileToken;
             SyntaxTriviaList.Reversed.Enumerator en = endOfFile.LeadingTrivia.Reverse().GetEnumerator();
 
-            if (!context.IsEnabled(ConfigOptions.PreferNewLineAtEndOfFile))
+            if (!context.TryGetOptionAsBool(ConfigOptions.PreferNewLineAtEndOfFile, out bool preferNewLineAtEndOfFile))
+            {
+                context.ReportRequiredOptionNotSet(DiagnosticRules.NormalizeWhitespaceAtEndOfFile);
+                return;
+            }
+
+            if (!preferNewLineAtEndOfFile)
             {
                 if (en.MoveNext()
                     && (!en.Current.IsWhitespaceTrivia()

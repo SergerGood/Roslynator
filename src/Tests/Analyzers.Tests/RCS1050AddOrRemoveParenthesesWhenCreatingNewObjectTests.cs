@@ -8,12 +8,12 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1050AddArgumentListToObjectCreationOrViceVersaTests : AbstractCSharpDiagnosticVerifier<AddArgumentListToObjectCreationOrViceVersaAnalyzer, AddArgumentListToObjectCreationOrViceVersaCodeFixProvider>
+    public class RCS1050AddOrRemoveParenthesesWhenCreatingNewObjectTests : AbstractCSharpDiagnosticVerifier<AddOrRemoveParenthesesWhenCreatingNewObjectAnalyzer, AddOrRemoveParenthesesWhenCreatingNewObjectCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddArgumentListToObjectCreationOrViceVersa;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddOrRemoveParenthesesWhenCreatingNewObject;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddArgumentListToObjectCreationOrViceVersa)]
-        public async Task Test_AddArgumentList()
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesWhenCreatingNewObject)]
+        public async Task Test_AddParentheses()
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
@@ -29,11 +29,11 @@ public class C
 {
     List<string> items = new List<string>() { ""a"", ""b"", ""c"" };
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferParenthesesWhenCreatingNewObject, true));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddArgumentListToObjectCreationOrViceVersa)]
-        public async Task Test_RemoveArgumentList()
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesWhenCreatingNewObject)]
+        public async Task Test_RemoveParentheses()
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
@@ -49,11 +49,11 @@ public class C
 {
     List<string> items = new List<string> { ""a"", ""b"", ""c"" };
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.RemoveArgumentListFromObjectCreation.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferParenthesesWhenCreatingNewObject, false));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddArgumentListToObjectCreationOrViceVersa)]
-        public async Task TestNoDiagnostic_AddArgumentList()
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesWhenCreatingNewObject)]
+        public async Task TestNoDiagnostic_AddParentheses()
         {
             await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
@@ -65,8 +65,8 @@ public class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddArgumentListToObjectCreationOrViceVersa)]
-        public async Task TestNoDiagnostic_RemoveArgumentList()
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesWhenCreatingNewObject)]
+        public async Task TestNoDiagnostic_RemoveParentheses()
         {
             await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
@@ -78,8 +78,8 @@ public class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddArgumentListToObjectCreationOrViceVersa)]
-        public async Task TestNoDiagnostic_RemoveArgumentList_NoInitializer()
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesWhenCreatingNewObject)]
+        public async Task TestNoDiagnostic_RemoveParentheses_NoInitializer()
         {
             await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
@@ -88,7 +88,7 @@ public class C
 {
     List<string> items = new List<string>();
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.RemoveArgumentListFromObjectCreation.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.PreferParenthesesWhenCreatingNewObject, false));
         }
     }
 }

@@ -1411,9 +1411,9 @@ void M(
     <Summary>This analyzer reports any line that is longer than maximal length.
     
 Default maximal length is 140.</Summary>
-    <GlobalOptions>
+    <ConfigOptions>
       <Option Key="roslynator.max_line_length" />
-    </GlobalOptions>
+    </ConfigOptions>
   </Analyzer>
   <Analyzer Identifier="NormalizeWhitespaceAtBeginningOfFile">
     <Id>RCS0057</Id>
@@ -1432,8 +1432,8 @@ Default maximal length is 140.</Summary>
     <Summary>This analyzer enforces:
 * new line at the end of a file
 * no new line at the end of a file if the option `roslynator.prefer_new_line_at_end_of_file` is set to `false`.</Summary>
-    <GlobalOptions>
-      <Option Key="roslynator.prefer_new_line_at_end_of_file" />
-    </GlobalOptions>
+    <ConfigOptions>
+      <Option Key="roslynator.prefer_new_line_at_end_of_file" IsRequired="true" />
+    </ConfigOptions>
   </Analyzer>
 </Analyzers>

@@ -81,7 +81,9 @@ namespace Roslynator.CodeGeneration.CSharp
                 }
             }
 
-            IEnumerable<AnalyzerMetadata> optionAnalyzers = analyzers.SelectMany(f => f.OptionAnalyzers.Where(f => f.Kind == AnalyzerOptionKind.Change || f.Kind == AnalyzerOptionKind.Invert));
+            IEnumerable<AnalyzerMetadata> optionAnalyzers = analyzers
+                .SelectMany(f => f.OptionAnalyzers.Where(f => !f.Tags.Contains("DoNotGenerateReportOnlyAnalyzer")
+                    && (f.Kind == AnalyzerOptionKind.Change || f.Kind == AnalyzerOptionKind.Invert)));
 
             if (optionAnalyzers.Any())
             {

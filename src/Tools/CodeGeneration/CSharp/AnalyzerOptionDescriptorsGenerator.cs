@@ -29,8 +29,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         analyzers
                             .Where(f => !f.IsObsolete)
                             .SelectMany(f => f.Options)
-                            .Where(f => f.IsObsolete == obsolete)
-                            .OrderBy(f => f.Id, comparer)
+                            .Where(f => f.IsObsolete == obsolete && !f.Tags.Contains("DoNotGenerateAnalyzerOptions"))
+                            .OrderBy(f => f.Identifier, comparer)
                             .Select(f => CreateMember(f, analyzers.Single(a => a.Id == f.ParentId)))
                             .ToSyntaxList<MemberDeclarationSyntax>())));
         }

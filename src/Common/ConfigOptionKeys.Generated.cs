@@ -7,7 +7,11 @@ namespace Roslynator
     internal static partial class ConfigOptionKeys
     {
         public const string MaxLineLength = "roslynator.max_line_length";
+        public const string PreferExplicitlyTypedArray = "roslynator.prefer_explicitly_typed_array";
+        public const string PreferImplicitlyTypedArray = "roslynator.prefer_implicitly_typed_array";
+        public const string PreferImplicitlyTypedArrayWhenTypeIsObvious = "roslynator.prefer_implicitly_typed_array_when_type_is_obvious";
         public const string PreferNewLineAtEndOfFile = "roslynator.prefer_new_line_at_end_of_file";
+        public const string PreferParenthesesWhenCreatingNewObject = "roslynator.prefer_parentheses_when_creating_new_object";
         public const string PrefixFieldIdentifierWithUnderscore = "roslynator.prefix_field_identifier_with_underscore";
     }
 }

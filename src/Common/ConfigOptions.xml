@@ -11,10 +11,42 @@
     <Description>Prefix field identifier with underscore</Description>
   </Option>
   <Option Id="PreferNewLineAtEndOfFile">
-    <DefaultValue>true</DefaultValue>
     <ValuePlaceholder>true|false</ValuePlaceholder>
-    <Description>Prefer no new line at the end of a file</Description>
+    <Description>Prefer new line at the end of a file</Description>
   </Option>
+  <Option Id="PreferParenthesesWhenCreatingNewObject">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Prefer parentheses when creating new object</Description>
+  </Option>
+  <Option Id="PreferExplicitlyTypedArray">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Prefer explicitly typed array</Description>
+  </Option>
+  <Option Id="PreferImplicitlyTypedArray">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Prefer implicitly typed array</Description>
+  </Option>
+  <Option Id="PreferImplicitlyTypedArrayWhenTypeIsObvious">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Prefer implicitly typed array when type is obvious</Description>
+  </Option>
+  <Option Id="PreferExpressionBodyToBlockBody">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Prefer expression body to block body</Description>
+  </Option>
+  <Option Id="PreferBlockBodyToExpressionBody">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Prefer block body to expression body</Description>
+  </Option>
+  <Option Id="PreferBlockBodyWhenDeclarationSpansOverMultipleLines">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Prefer block body when declaration spans over multiple lines</Description>
+  </Option>
+  <Option Id="PreferBlockBodyWhenExpressionSpansOverMultipleLines">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Prefer block body when expression spans over multiple lines</Description>
+  </Option>
+
   <!--
   <Option Id="">
     <Key></Key>

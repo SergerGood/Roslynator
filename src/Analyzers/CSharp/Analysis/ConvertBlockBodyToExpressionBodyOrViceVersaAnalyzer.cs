@@ -23,9 +23,8 @@ namespace Roslynator.CSharp.Analysis
                 {
                     Immutable.InterlockedInitialize(
                         ref _supportedDiagnostics,
-                        DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa,
-                        DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersaFadeOut,
-                        CommonDiagnosticRules.AnalyzerIsObsolete);
+                        DiagnosticRules.UseBlockOrExpressionBody,
+                        CommonDiagnosticRules.RequiredOptionNotSetForAnalyzer);
                 }
 
                 return _supportedDiagnostics;

@@ -72,6 +72,44 @@ namespace Roslynator
             return false;
         }
 
+        internal static bool? GetOptionAsBoolOrDefault(
+            this SyntaxNodeAnalysisContext context,
+            ConfigOptionDescriptor option,
+            ConfigOptionDescriptor oldOption,
+            DiagnosticDescriptor descriptor,
+            bool invertOldValue = false)
+        {
+            if (context.TryGetOptionAsBool(option, out bool value))
+                return value;
+
+            if (context.TryGetOptionAsBool(oldOption, out bool oldValue))
+                return (invertOldValue) ? !oldValue : oldValue;
+
+            context.ReportRequiredOptionNotSet(descriptor);
+
+            return null;
+        }
+
+        public static bool TryGetOptionAsBool(
+            this AnalyzerOptions analyzerOptions,
+            AnalyzerOptionDescriptor option,
+            SyntaxTree syntaxTree,
+            out bool result)
+        {
+            if (analyzerOptions
+                .AnalyzerConfigOptionsProvider
+                .GetOptions(syntaxTree)
+                .TryGetValue(option.OptionKey, out string rawValue)
+                && bool.TryParse(rawValue, out bool value))
+            {
+                result = value;
+                return true;
+            }
+
+            result = default;
+            return false;
+        }
+
         public static bool IsEnabled(
             this SyntaxNodeAnalysisContext context,
             ConfigOptionDescriptor option,
@@ -101,6 +139,34 @@ namespace Roslynator
                 ?? false;
         }
 
+        public static bool TryGetOptionAsBool(
+            this SyntaxNodeAnalysisContext context,
+            ConfigOptionDescriptor option,
+            out bool result)
+        {
+            return TryGetOptionAsBool(context.Options, option, context.Node.SyntaxTree, out result);
+        }
+
+        public static bool TryGetOptionAsBool(
+            this AnalyzerOptions analyzerOptions,
+            ConfigOptionDescriptor option,
+            SyntaxTree syntaxTree,
+            out bool result)
+        {
+            if (analyzerOptions
+                .AnalyzerConfigOptionsProvider
+                .GetOptions(syntaxTree)
+                .TryGetValue(option.Key, out string rawValue)
+                && bool.TryParse(rawValue, out bool value))
+            {
+                result = value;
+                return true;
+            }
+
+            result = default;
+            return false;
+        }
+
         public static bool TryGetOptionAsInt(
             this AnalyzerOptions analyzerOptions,
             ConfigOptionDescriptor option,
@@ -110,8 +176,8 @@ namespace Roslynator
             if (analyzerOptions
                 .AnalyzerConfigOptionsProvider
                 .GetOptions(syntaxTree)
-                .TryGetValue(option.Key, out string textValue)
-                && int.TryParse(textValue, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, CultureInfo.CurrentCulture, out int value))
+                .TryGetValue(option.Key, out string rawValue)
+                && int.TryParse(rawValue, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, CultureInfo.CurrentCulture, out int value))
             {
                 result = value;
                 return true;

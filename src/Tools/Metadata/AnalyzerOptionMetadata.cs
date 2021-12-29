@@ -22,7 +22,8 @@ namespace Roslynator.Metadata
             string minLanguageVersion,
             string summary,
             IEnumerable<SampleMetadata> samples,
-            bool isObsolete)
+            bool isObsolete,
+            IEnumerable<string> tags)
         {
             Identifier = identifier;
             Id = id;
@@ -37,6 +38,7 @@ namespace Roslynator.Metadata
             Summary = summary;
             Samples = new ReadOnlyCollection<SampleMetadata>(samples?.ToArray() ?? Array.Empty<SampleMetadata>());
             IsObsolete = isObsolete;
+            Tags = new ReadOnlyCollection<string>(tags?.ToArray() ?? Array.Empty<string>());
         }
 
         public AnalyzerMetadata CreateAnalyzerMetadata(AnalyzerMetadata parent)
@@ -57,8 +59,9 @@ namespace Roslynator.Metadata
                 remarks: null,
                 samples: Samples,
                 links: null,
-                globalOptions: null,
+                configOptions: null,
                 options: null,
+                tags: parent.Tags.Concat(Tags),
                 kind: Kind,
                 parent: parent);
         }
@@ -88,5 +91,6 @@ namespace Roslynator.Metadata
         public IReadOnlyList<SampleMetadata> Samples { get; }
 
         public bool IsObsolete { get; }
+        public IReadOnlyList<string> Tags { get; }
     }
 }

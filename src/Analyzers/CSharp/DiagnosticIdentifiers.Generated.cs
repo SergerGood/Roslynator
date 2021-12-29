@@ -20,9 +20,9 @@ namespace Roslynator.CSharp
         public const string UseVarInsteadOfExplicitTypeWhenTypeIsObvious = "RCS1010";
         public const string UseExplicitTypeInsteadOfVarWhenTypeIsObvious = "RCS1012";
         public const string UsePredefinedType = "RCS1013";
-        public const string UseExplicitlyTypedArrayOrViceVersa = "RCS1014";
+        public const string UseExplicitlyOrImplicitlyTypedArray = "RCS1014";
         public const string UseNameOfOperator = "RCS1015";
-        public const string ConvertBlockBodyToExpressionBodyOrViceVersa = "RCS1016";
+        public const string UseBlockOrExpressionBody = "RCS1016";
         public const string AddAccessibilityModifiersOrViceVersa = "RCS1018";
         public const string OrderModifiers = "RCS1019";
         public const string SimplifyNullableOfT = "RCS1020";
@@ -45,7 +45,7 @@ namespace Roslynator.CSharp
         public const string NonAsynchronousMethodNameShouldNotEndWithAsync = "RCS1047";
         public const string UseLambdaExpressionInsteadOfAnonymousMethod = "RCS1048";
         public const string SimplifyBooleanComparison = "RCS1049";
-        public const string AddArgumentListToObjectCreationOrViceVersa = "RCS1050";
+        public const string AddOrRemoveParenthesesWhenCreatingNewObject = "RCS1050";
         public const string ParenthesizeConditionOfConditionalExpression = "RCS1051";
         public const string DeclareEachAttributeSeparately = "RCS1052";
         public const string AvoidSemicolonAtEndOfDeclaration = "RCS1055";

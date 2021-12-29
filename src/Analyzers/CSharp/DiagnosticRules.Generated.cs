@@ -162,15 +162,15 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1014</summary>
-        public static readonly DiagnosticDescriptor UseExplicitlyTypedArrayOrViceVersa = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa, 
-            title:              "Use explicitly typed array (or vice versa).", 
-            messageFormat:      "Use explicitly typed array.", 
+        public static readonly DiagnosticDescriptor UseExplicitlyOrImplicitlyTypedArray = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray, 
+            title:              "Use explicitly/implicitly typed array.", 
+            messageFormat:      "Use {0} typed array.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa, 
+            helpLinkUri:        DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1015</summary>
@@ -188,18 +188,18 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UseNameOfOperatorFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UseNameOfOperator);
 
         /// <summary>RCS1016</summary>
-        public static readonly DiagnosticDescriptor ConvertBlockBodyToExpressionBodyOrViceVersa = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa, 
-            title:              "Convert block body to expression body (or vice versa).", 
-            messageFormat:      "Use expression-bodied member.", 
+        public static readonly DiagnosticDescriptor UseBlockOrExpressionBody = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.UseBlockOrExpressionBody, 
+            title:              "Use block/expression body.", 
+            messageFormat:      "Use block/expression body.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa, 
+            helpLinkUri:        DiagnosticIdentifiers.UseBlockOrExpressionBody, 
             customTags:         Array.Empty<string>());
 
-        public static readonly DiagnosticDescriptor ConvertBlockBodyToExpressionBodyOrViceVersaFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(ConvertBlockBodyToExpressionBodyOrViceVersa);
+        public static readonly DiagnosticDescriptor UseBlockOrExpressionBodyFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UseBlockOrExpressionBody);
 
         /// <summary>RCS1018</summary>
         public static readonly DiagnosticDescriptor AddAccessibilityModifiersOrViceVersa = DiagnosticDescriptorFactory.Create(
@@ -478,15 +478,15 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor SimplifyBooleanComparisonFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(SimplifyBooleanComparison);
 
         /// <summary>RCS1050</summary>
-        public static readonly DiagnosticDescriptor AddArgumentListToObjectCreationOrViceVersa = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddArgumentListToObjectCreationOrViceVersa, 
-            title:              "Add argument list to object creation expression (or vice versa).", 
-            messageFormat:      "Add argument list to object creation expression.", 
+        public static readonly DiagnosticDescriptor AddOrRemoveParenthesesWhenCreatingNewObject = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddOrRemoveParenthesesWhenCreatingNewObject, 
+            title:              "Add/remove parentheses when creating new object.", 
+            messageFormat:      "{0} parentheses when creating new object.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddArgumentListToObjectCreationOrViceVersa, 
+            helpLinkUri:        DiagnosticIdentifiers.AddOrRemoveParenthesesWhenCreatingNewObject, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1051</summary>
@@ -2443,64 +2443,16 @@ namespace Roslynator.CSharp
 
         public static partial class ReportOnly
         {
-            /// <summary>RCS1014a</summary>
-            public static readonly DiagnosticDescriptor UseImplicitlyTypedArrayWhenTypeIsObvious = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa, 
-                title:              "Use explicitly typed array (or vice versa).", 
-                messageFormat:      "Use implicitly typed array (when type is obvious).", 
-                category:           DiagnosticCategories.Roslynator, 
-                defaultSeverity:    DiagnosticSeverity.Info, 
-                isEnabledByDefault: false, 
-                description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa, 
-                customTags:         WellKnownDiagnosticTags.Unnecessary);
-
-            /// <summary>RCS1014i</summary>
-            public static readonly DiagnosticDescriptor UseImplicitlyTypedArray = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa, 
-                title:              "Use explicitly typed array (or vice versa).", 
-                messageFormat:      "Use implicitly typed array.", 
-                category:           DiagnosticCategories.Roslynator, 
-                defaultSeverity:    DiagnosticSeverity.Info, 
-                isEnabledByDefault: false, 
-                description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa, 
-                customTags:         Array.Empty<string>());
-
-            /// <summary>RCS1016a</summary>
-            public static readonly DiagnosticDescriptor ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa, 
-                title:              "Convert block body to expression body (or vice versa).", 
-                messageFormat:      "Convert expression body to block body when expression is multi-line.", 
-                category:           DiagnosticCategories.Roslynator, 
-                defaultSeverity:    DiagnosticSeverity.Hidden, 
-                isEnabledByDefault: false, 
-                description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa, 
-                customTags:         Array.Empty<string>());
-
-            /// <summary>RCS1016b</summary>
-            public static readonly DiagnosticDescriptor ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa, 
-                title:              "Convert block body to expression body (or vice versa).", 
-                messageFormat:      "Convert expression body to block body when declaration is multi-line.", 
-                category:           DiagnosticCategories.Roslynator, 
-                defaultSeverity:    DiagnosticSeverity.Hidden, 
-                isEnabledByDefault: false, 
-                description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa, 
-                customTags:         Array.Empty<string>());
-
             /// <summary>RCS1016i</summary>
             public static readonly DiagnosticDescriptor ConvertExpressionBodyToBlockBody = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa, 
-                title:              "Convert block body to expression body (or vice versa).", 
+                id:                 DiagnosticIdentifiers.UseBlockOrExpressionBody, 
+                title:              "Use block/expression body.", 
                 messageFormat:      "Convert expression body to block body.", 
                 category:           DiagnosticCategories.Roslynator, 
                 defaultSeverity:    DiagnosticSeverity.Hidden, 
                 isEnabledByDefault: false, 
                 description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa, 
+                helpLinkUri:        DiagnosticIdentifiers.UseBlockOrExpressionBody, 
                 customTags:         Array.Empty<string>());
 
             /// <summary>RCS1018i</summary>
@@ -2514,18 +2466,6 @@ namespace Roslynator.CSharp
                 description:        null, 
                 helpLinkUri:        DiagnosticIdentifiers.AddAccessibilityModifiersOrViceVersa, 
                 customTags:         WellKnownDiagnosticTags.Unnecessary);
-
-            /// <summary>RCS1050i</summary>
-            public static readonly DiagnosticDescriptor RemoveArgumentListFromObjectCreation = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.AddArgumentListToObjectCreationOrViceVersa, 
-                title:              "Add argument list to object creation expression (or vice versa).", 
-                messageFormat:      "Remove argument list from object creation expression.", 
-                category:           DiagnosticCategories.Roslynator, 
-                defaultSeverity:    DiagnosticSeverity.Info, 
-                isEnabledByDefault: false, 
-                description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.AddArgumentListToObjectCreationOrViceVersa, 
-                customTags:         Array.Empty<string>());
 
             /// <summary>RCS1051a</summary>
             public static readonly DiagnosticDescriptor RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken = DiagnosticDescriptorFactory.Create(

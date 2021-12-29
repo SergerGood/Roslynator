@@ -37,8 +37,20 @@ is_global = true
 # Applicable to: RCS0056
 roslynator.max_line_length = 140
 
+# Applicable to: RCS1014
+roslynator.prefer_explicitly_typed_array = true|false
+
+# Applicable to: RCS1014
+roslynator.prefer_implicitly_typed_array = true|false
+
+# Applicable to: RCS1014
+roslynator.prefer_implicitly_typed_array_when_type_is_obvious = true|false
+
 # Applicable to: RCS0058
-roslynator.prefer_new_line_at_end_of_file = true
+roslynator.prefer_new_line_at_end_of_file = true|false
+
+# Applicable to: RCS1050
+roslynator.prefer_parentheses_when_creating_new_object = true|false
 
 roslynator.prefix_field_identifier_with_underscore = false
 
@@ -244,7 +256,7 @@ dotnet_diagnostic.RCS1012.severity = none
 # Use predefined type
 dotnet_diagnostic.RCS1013.severity = none
 
-# Use explicitly typed array (or vice versa)
+# Use explicitly/implicitly typed array
 dotnet_diagnostic.RCS1014.severity = none
 # Use implicitly typed array
 roslynator.RCS1014.invert = false
@@ -333,9 +345,9 @@ dotnet_diagnostic.RCS1048.severity = suggestion
 # Simplify boolean comparison
 dotnet_diagnostic.RCS1049.severity = suggestion
 
-# Add argument list to object creation expression (or vice versa)
+# Add/remove parentheses when creating new object
 dotnet_diagnostic.RCS1050.severity = none
-# Remove argument list from object creation expression
+# Remove parentheses when creating new object
 roslynator.RCS1050.invert = false
 
 # Parenthesize condition of conditional expression

@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class UseExplicitlyTypedArrayOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseExplicitlyTypedArrayOrViceVersa, CommonDiagnosticRules.AnalyzerIsObsolete);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray, CommonDiagnosticRules.RequiredOptionNotSetForAnalyzer);
 
                 return _supportedDiagnostics;
             }
@@ -32,10 +32,12 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(
                 c =>
                 {
-                    if (AnalyzerOptions.UseImplicitlyTypedArrayWhenTypeIsObvious.IsEnabled(c)
-                        || !AnalyzerOptions.UseImplicitlyTypedArray.IsEnabled(c))
+                    ArrayCreationKind kind = GetArrayCreationKind(c);
+
+                    if (kind == ArrayCreationKind.Explicit
+                        || kind == ArrayCreationKind.ImplicitWhenTypeIsObvious)
                     {
-                        AnalyzeImplicitArrayCreationExpression(c);
+                        AnalyzeImplicitArrayCreationExpression(c, kind);
                     }
                 },
                 SyntaxKind.ImplicitArrayCreationExpression);
@@ -43,16 +45,40 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(
                 c =>
                 {
-                    if (AnalyzerOptions.UseImplicitlyTypedArrayWhenTypeIsObvious.IsEnabled(c)
-                        || AnalyzerOptions.UseImplicitlyTypedArray.IsEnabled(c))
+                    ArrayCreationKind kind = GetArrayCreationKind(c);
+
+                    if (kind == ArrayCreationKind.Implicit
+                        || kind == ArrayCreationKind.ImplicitWhenTypeIsObvious)
                     {
-                        AnalyzeArrayCreationExpression(c);
+                        AnalyzeArrayCreationExpression(c, kind);
                     }
                 },
                 SyntaxKind.ArrayCreationExpression);
         }
 
-        private static void AnalyzeImplicitArrayCreationExpression(SyntaxNodeAnalysisContext context)
+        private ArrayCreationKind GetArrayCreationKind(SyntaxNodeAnalysisContext context)
+        {
+            if (context.IsEnabled(ConfigOptions.PreferExplicitlyTypedArray))
+                return ArrayCreationKind.Explicit;
+
+            if (context.IsEnabled(ConfigOptions.PreferImplicitlyTypedArrayWhenTypeIsObvious))
+                return ArrayCreationKind.ImplicitWhenTypeIsObvious;
+
+            if (context.IsEnabled(ConfigOptions.PreferImplicitlyTypedArray))
+                return ArrayCreationKind.Implicit;
+
+            if (context.IsEnabled(LegacyConfigOptions.UseImplicitlyTypedArrayWhenTypeIsObvious))
+                return ArrayCreationKind.ImplicitWhenTypeIsObvious;
+
+            if (context.IsEnabled(LegacyConfigOptions.UseImplicitlyTypedArray))
+                return ArrayCreationKind.Implicit;
+
+            context.ReportRequiredOptionNotSet(DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray);
+
+            return ArrayCreationKind.None;
+        }
+
+        private static void AnalyzeImplicitArrayCreationExpression(SyntaxNodeAnalysisContext context, ArrayCreationKind kind)
         {
             var expression = (ImplicitArrayCreationExpressionSyntax)context.Node;
 
@@ -68,7 +94,7 @@ namespace Roslynator.CSharp.Analysis
             if (expression.CloseBracketToken.ContainsDirectives)
                 return;
 
-            if (AnalyzerOptions.UseImplicitlyTypedArrayWhenTypeIsObvious.IsEnabled(context))
+            if (kind == ArrayCreationKind.ImplicitWhenTypeIsObvious)
             {
                 InitializerExpressionSyntax initializer = expression.Initializer;
 
@@ -99,11 +125,12 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.UseExplicitlyTypedArrayOrViceVersa,
-                location);
+                DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
+                location,
+                "explicitly");
         }
 
-        private static void AnalyzeArrayCreationExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeArrayCreationExpression(SyntaxNodeAnalysisContext context, ArrayCreationKind kind)
         {
             var arrayCreation = (ArrayCreationExpressionSyntax)context.Node;
 
@@ -120,7 +147,7 @@ namespace Roslynator.CSharp.Analysis
             if (!expressions.Any())
                 return;
 
-            if (AnalyzerOptions.UseImplicitlyTypedArrayWhenTypeIsObvious.IsEnabled(context))
+            if (kind == ArrayCreationKind.ImplicitWhenTypeIsObvious)
             {
                 foreach (ExpressionSyntax expression in expressions)
                 {
@@ -140,8 +167,17 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.ReportOnly.UseImplicitlyTypedArray,
-                location);
+                DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
+                location,
+                "implicitly");
+        }
+
+        private enum ArrayCreationKind
+        {
+            None,
+            Explicit,
+            Implicit,
+            ImplicitWhenTypeIsObvious,
         }
     }
 }

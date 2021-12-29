@@ -39,7 +39,7 @@ namespace Roslynator.CodeGeneration
             ImmutableArray<RefactoringMetadata> refactorings = metadata.Refactorings;
             ImmutableArray<CodeFixMetadata> codeFixes = metadata.CodeFixes;
             ImmutableArray<CompilerDiagnosticMetadata> compilerDiagnostics = metadata.CompilerDiagnostics;
-            ImmutableArray<OptionMetadata> options = metadata.Options;
+            ImmutableArray<ConfigOptionMetadata> options = metadata.Options;
 
             WriteCompilationUnit(
                 @"Refactorings\CSharp\RefactoringDescriptors.Generated.cs",
@@ -87,7 +87,11 @@ namespace Roslynator.CodeGeneration
 
             WriteCompilationUnit(
                 @"Common\ConfigOptions.Generated.cs",
-                CodeGenerator.GenerateConfigOptions(options));
+                CodeGenerator.GenerateConfigOptions(options, metadata.GetAllAnalyzers()));
+
+            WriteCompilationUnit(
+                @"Common\LegacyConfigOptions.Generated.cs",
+                CodeGenerator.GenerateLegacyConfigOptions(metadata.GetAllAnalyzers()));
 
             WriteCompilationUnit(
                 @"Common\ConfigOptionKeys.Generated.cs",

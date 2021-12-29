@@ -7,19 +7,20 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddArgumentListToObjectCreationOrViceVersaCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddOrRemoveParenthesesWhenCreatingNewObjectCodeFixProvider))]
     [Shared]
-    public sealed class AddArgumentListToObjectCreationOrViceVersaCodeFixProvider : BaseCodeFixProvider
+    public sealed class AddOrRemoveParenthesesWhenCreatingNewObjectCodeFixProvider : BaseCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddArgumentListToObjectCreationOrViceVersa); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddOrRemoveParenthesesWhenCreatingNewObject); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -35,8 +36,8 @@ namespace Roslynator.CSharp.CodeFixes
             if (objectCreationExpression.ArgumentList != null)
             {
                 CodeAction codeAction = CodeAction.Create(
-                    "Remove argument list",
-                    ct => RemoveArgumentListFromObjectCreationAsync(document, objectCreationExpression.ArgumentList, ct),
+                    "Add parentheses",
+                    ct => RemoveParenthesesAsync(document, objectCreationExpression.ArgumentList, ct),
                     GetEquivalenceKey(diagnostic));
 
                 context.RegisterCodeFix(codeAction, diagnostic);
@@ -44,15 +45,29 @@ namespace Roslynator.CSharp.CodeFixes
             else
             {
                 CodeAction codeAction = CodeAction.Create(
-                    "Add argument list",
-                    ct => AddArgumentListToObjectCreationRefactoring.RefactorAsync(document, objectCreationExpression, ct),
+                    "Remove parentheses",
+                    ct => AddParenthesesAsync(document, objectCreationExpression, ct),
                     GetEquivalenceKey(diagnostic));
 
                 context.RegisterCodeFix(codeAction, diagnostic);
             }
         }
 
-        private static Task<Document> RemoveArgumentListFromObjectCreationAsync(
+        private static Task<Document> AddParenthesesAsync(
+            Document document,
+            ObjectCreationExpressionSyntax objectCreationExpression,
+            CancellationToken cancellationToken)
+        {
+            ObjectCreationExpressionSyntax newNode = objectCreationExpression
+                .WithType(objectCreationExpression.Type.WithoutTrailingTrivia())
+                .WithArgumentList(
+                    SyntaxFactory.ArgumentList()
+                        .WithTrailingTrivia(objectCreationExpression.Type.GetTrailingTrivia()));
+
+            return document.ReplaceNodeAsync(objectCreationExpression, newNode, cancellationToken);
+        }
+
+        private static Task<Document> RemoveParenthesesAsync(
             Document document,
             ArgumentListSyntax argumentList,
             CancellationToken cancellationToken)

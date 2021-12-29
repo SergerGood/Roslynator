@@ -24,7 +24,7 @@ namespace Roslynator.CodeGeneration
         private ImmutableArray<RefactoringMetadata> _refactorings;
         private ImmutableArray<CodeFixMetadata> _codeFixes;
         private ImmutableArray<CompilerDiagnosticMetadata> _compilerDiagnostics;
-        private ImmutableArray<OptionMetadata> _options;
+        private ImmutableArray<ConfigOptionMetadata> _options;
 
         private static readonly Regex _analyzersFileNameRegex = new(@"\A(\w+\.)?Analyzers(?!\.Template)(\.\w+)?\z");
 
@@ -99,7 +99,7 @@ namespace Roslynator.CodeGeneration
             }
         }
 
-        public ImmutableArray<OptionMetadata> Options
+        public ImmutableArray<ConfigOptionMetadata> Options
         {
             get
             {
